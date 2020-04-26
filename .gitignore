@@ -8,4 +8,5 @@ myVirtualEnv/
 
 temp/
 
+__pycache__/
 
