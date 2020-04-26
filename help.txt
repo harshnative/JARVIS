@@ -1,0 +1,27 @@
+   commands             options
+
+1.  weather             weather city-london
+                        weather city-london -f 
+                        weather -f
+                        weather
+
+    the defualt parameters from the settings page will be used if no aditional argument is passed
+
+
+2.  restore             restore
+
+    restore the defaut settings if you have messed around with them
+
+
+3.  change              change settings
+
+    open the settings file to change the defualt settings 
+
+
+4.  help                help
+                        help change settings # to search for the help of change settings
+                        help open # to open the txt file version of help
+
+5.  update              update
+    
+    to update the settings - automatically called when the program restarts

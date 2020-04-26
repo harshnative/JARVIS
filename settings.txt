@@ -1,14 +1,14 @@
 # your defualt city
-City : Panipat
+City : london
 
 # font size
 Font Size : 24
 
-# Directories of backup - seperated by comma's in "" - ex - D:/myfiles/images , E:/data/documents
+# Directories of backup - seperated by comma's in  - ex - D:/myfiles/images , E:/data/documents
 Directories : 
 
 # user Name :
-userName : 
+userName : harsh yoo
 
 # greeting :
 greeting : Welcome

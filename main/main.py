@@ -4,7 +4,96 @@ from packages.weather.getWeather import *
 from packages.settings.jarvisSetting import *
 import os
 from tabulate import tabulate
+import sys
+import psutil
+import logging
 
+
+# outsourced function 
+def restart_program():
+    """Restarts the current program, with file objects and descriptors
+       cleanup
+    """
+
+    try:
+        p = psutil.Process(os.getpid())
+        for handler in p.get_open_files() + p.connections():
+            os.close(handler.fd)
+    except Exception:
+        pass
+
+    python = sys.executable
+    os.execl(python, python, *sys.argv)
+
+
+# function to check for a substring in a string - returns true or false
+def isSubString(string , subString):
+    lengthOfSubString = len(subString)
+    for i,j in enumerate(string):
+        if(j == subString[0]):
+            if(subString == string[i:i+lengthOfSubString]):
+                return True 
+            else:
+                pass
+    return False
+
+
+# function for displaying help
+def getHelp(passObj):
+
+    # for displaying all the help available
+    if(passObj == "all"):
+        os.system("cls")
+        try:
+            with open("help.txt") as fil:
+                for line in fil:
+                    print(line)
+        except FileNotFoundError:
+            print("oops , the help file in missing , visit the website for help")
+        
+        print("\n\n")
+        os.system("pause")
+    
+    # for displaying specific help by searching for the keyords as substring in line
+    else:
+        os.system("cls")
+        try:
+            count = 0
+            with open("help.txt") as fil:
+                for line in fil:
+                    for i in passObj:
+                        if(isSubString(line , i)):
+                            print(line)
+                            count += 1
+                if(count == 0):
+                    print("oops no help found , try writting only help for seeing all help available")
+        except FileNotFoundError:
+            print("oops , the help file in missing , visit the website for help")
+            
+        print("\n\n")
+
+
+# function for handling the get help
+def handleGetHelp(command):
+    commandList = command.split()
+    # for getting the help - all - or specific things
+    if(("help" in commandList) or ("Help" in commandList)):
+        if(("open" in commandList) or ("Open" in commandList)):
+            try:
+                os.startfile('help.txt')
+            except FileNotFoundError:
+                print("oops the help.txt is missing , visit website for help")
+            return True
+
+        elif(len(commandList) > 1):
+            getHelp(commandList)
+            return True
+
+        else:
+            getHelp("all")
+            return True
+
+        return False
 
 
 class mainClass():
@@ -22,8 +111,11 @@ class mainClass():
     def setUserName(self):
         temp = os.environ # generates a object with the property called USERNAME containing the info
         tempUserName = temp["USERNAME"]
-        if(self.settingsDict["userName"] == ""):
-            self.settingsDict["userName"] = tempUserName        
+        try:
+            if(self.settingsDict["userName"] == ""):
+                self.settingsDict["userName"] = tempUserName        
+        except KeyError:
+            self.settingsDict["userName"] = tempUserName
 
     def returnUserName(self):
         return self.settingsDict["userName"]
@@ -71,27 +163,13 @@ class mainWeatherClass(mainClass):
             tempList.append(j)
             tabulateList.append(tempList)
         print(tabulate(tabulateList, headers=['Query', 'Data']))
-        print("\n")
         
-
-
-# function to check for a substring in a string - returns true or false
-def isSubString(string , subString):
-    lengthOfSubString = len(subString)
-    for i,j in enumerate(string):
-        if(j == subString[0]):
-            if(subString == string[i:i+lengthOfSubString]):
-                return True 
-            else:
-                pass
-    return False
 
 
 # function to execute the passed command by analysing it
 def executeCommands(command):
     # spliting with " " to form a command list
     commandList = command.split()
-
     # checking for weather commands
     if(("weather" in commandList) or ("Weather" in commandList)):
 
@@ -121,30 +199,61 @@ def executeCommands(command):
         objMainWeatherClass.printWeatherDetails()
 
         return True
+    
+    # for restoring the defualt setting
+    elif(("restore" in commandList) or ("Restore" in commandList)):
+        objSetting = setting()
+        objSetting.regenerateFile()
+        os.system("cls")
+        print("you have restored the settings successfully")
+        return True
+
+    # for changing teh setting - this function opens the settings.txt in the defualt txt viewer of the system
+    elif(("Change" in commandList) or ("change" in commandList)):
+        if(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
+            objSetting = setting()
+            objSetting.openFile()
+            os.system("cls")
+            print("the settings file is opened")
+            return True
+        
+        # as you can change settings only
+        else:
+            return False
+
+    # function for updating the settings
+    elif(("update" in commandList) or ("Update" in commandList)):
+        os.system("cls")
+        print("settings have been updated , programm will restart now\n\n")
+        os.system("pause")
+        restart_program()
+        return False
+
     else:
         return False
 
 def main():
     objMainClass = mainClass()
-    objMainClass.setUserName()
     while(1):
+        objMainClass.setUserName()
         os.system("cls")
         print(f"welcome {objMainClass.returnUserName()}\n")
         commandInput = input("enter command : ")
         if(commandInput == "exit" or commandInput == "Exit" or commandInput == "EXIT"):
             break
-        elif(commandInput == "help" or commandInput == "Help" or commandInput == "HELP"):
-            os.system("cls")
+        elif(handleGetHelp(commandInput)):
+            pass
         else:
             if(executeCommands(commandInput)):
                 pass
             else:
+                os.system("cls")
                 print("oops could not regonise the command try typing help for info")
 
+        print("\n\n")
         os.system("pause")
 
-# weather city-panipat
-# TODO : add help and what happens when the settings file is missing
+# TODO : integrate the backup system and build a exe file for publishing
 
 if __name__ == "__main__":
     main()
