@@ -30,13 +30,13 @@ You will get the weather details of cityName
 
 Weather information is provided by open weather , all information is available in SI units  
 
-
+&nbsp;
 ```
 weather city-cityName -f
 ```
 You will get the temperature in faraniet also  
 
-
+&nbsp;
 ```
 weather
 ```
