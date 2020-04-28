@@ -26,7 +26,7 @@ Download the executable from the releases section of [Github](https://github.com
 ```
 weather city-cityName
 ```
-# You will get the weather details of cityName
+You will get the weather details of cityName
 
 Weather information is provided by open weather , all information is available in SI units
 
@@ -34,63 +34,63 @@ Weather information is provided by open weather , all information is available i
 ```
 weather city-cityName -f
 ```
-# You will get the temperature in faraniet also
+You will get the temperature in faraniet also
 
 
 ```
 weather
 ```
-# If no city name is passed - Jarvis will use the default city saved in settings.txt
+If no city name is passed - Jarvis will use the default city saved in settings.txt
 
 
 #### BackUp
 ```
 backup -d 
 ```
-# To backup all the directories only , directories are taken from settings.txt
+To backup all the directories only , directories are taken from settings.txt
 
 
 ```
 backup -a
 ```
-# To backup all the data of all the users
+To backup all the data of all the users
 
 
 ```
 backup -a -c
 ```
-# To backup all the data the current user
+To backup all the data the current user
 
 
 ```
 backup -a -e
 ```
-# To backup all the essential data of all the users
+To backup all the essential data of all the users
  
 Essential data is data inside desktop, download, videos, music, pictures folders only
 
 ```
 backup -e -c 
 ```
-# To backup all the essential data of current user only
+To backup all the essential data of current user only
 
 
 ```
 backup -a -d
 ```
-# -d command can be clubbed with any other command to perform actions at once
+-d command can be clubbed with any other command to perform actions at once
 
 #### Restore
 ```
 restore
 ```
-# To restore the default settings if you have messed around with them
+To restore the default settings if you have messed around with them
 
 #### Settings
 ```
 change settings
 ```
-# command to open the settings file for editing the main program settings
+command to open the settings file for editing the main program settings
 
 ######Default settings page looks like [this](https://github.com/harshnative/JARVIS/blob/master/settings.txt) 
 
@@ -99,22 +99,22 @@ change settings
 ```
 help
 ```
-# To open the help in the console window itself
+To open the help in the console window itself
 
 ```
 help open
 ```
-# To open the help in the TEXT file format
+To open the help in the TEXT file format
 
 ```
 help weather
 ```
-# To open the help for the weather only
+To open the help for the weather only
 
 #### Update
 ```
 update
 ```
-# To update the settings in the program 
+To update the settings in the program 
 
 This is automatically called when the program restarts 
