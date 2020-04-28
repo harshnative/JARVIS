@@ -2,7 +2,7 @@
 A cool simple personal assistant that can do many things to make your life easier a little bit
 
 
-## Discription
+## Discription -
 this is simple personal assistant named after everyones favourite jarvis assistant in the MCU
 
 this as of now can perform the following actions :
@@ -16,11 +16,11 @@ scroll down to Usage section to see the examples and commands of performing the 
 As of now this project is under development but the goal list of feature is given at the end
 
 
-## Installation
+## Installation -
 Download the executable from the releases section of [Github](https://github.com/harshnative/JARVIS/releases)
 
 
-## Usage
+## Usage -
 
 #### Weather - 
 ```
@@ -124,3 +124,44 @@ update
 To update the settings in the program 
 
 This is automatically called when the program restarts 
+
+&nbsp;
+## Support 
+comming soon.....
+
+&nbsp;
+## Contribution
+Your every contribution is appreciated , if you want to contribute to the project please contact at Harshnative@gmail.com
+
+&nbsp;
+## Authors & Acknowledgement
+We thank every person who have commited anything to the open source world, those small contibutions combined together run this beautiful tech world
+
+we cannot even imagine the world without the open source things
+
+&nbsp;
+## License
+This code is licensed under GPL 3.0 terms 
+read more about it [here](https://github.com/harshnative/JARVIS/blob/master/LICENSE)
+
+&nbsp;
+## Project status
+This project is currently under development 
+
+#### Features available write now -
+1. weather
+2. backup
+
+#### Features comming soon -
+1. internet searching 
+2. in built notepad and sticky notes 
+3. play short iron man instrumental music 
+4. play any music from youtube 
+5. launch programmer on system 
+6. tell time and date by voice  
+7. gives a brief system status 
+8. password storer 
+9. to do list 
+10. remainder creator - google calender integration 
+11. shortcut commands to open certain apps or directories 
+12. accessible from anywhere - like pip is directly accessible from anyWhere  
