@@ -26,15 +26,15 @@ Download the executable from the releases section of [Github](https://github.com
 ```
 weather city-cityName
 ```
-You will get the weather details of cityName
+You will get the weather details of cityName  
 
-Weather information is provided by open weather , all information is available in SI units
+Weather information is provided by open weather , all information is available in SI units  
 
 
 ```
 weather city-cityName -f
 ```
-You will get the temperature in faraniet also
+You will get the temperature in faraniet also  
 
 
 ```
@@ -92,7 +92,7 @@ change settings
 ```
 command to open the settings file for editing the main program settings
 
-######Default settings page looks like [this](https://github.com/harshnative/JARVIS/blob/master/settings.txt) 
+###### Default settings page looks like [this](https://github.com/harshnative/JARVIS/blob/master/settings.txt) 
 
 
 #### Help
