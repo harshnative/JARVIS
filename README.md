@@ -42,26 +42,26 @@ weather
 ```
 If no city name is passed - Jarvis will use the default city saved in settings.txt
 
-
+&nbsp;
 #### BackUp
 ```
 backup -d 
 ```
 To backup all the directories only , directories are taken from settings.txt
 
-
+&nbsp;
 ```
 backup -a
 ```
 To backup all the data of all the users
 
-
+&nbsp;
 ```
 backup -a -c
 ```
 To backup all the data the current user
 
-
+&nbsp;
 ```
 backup -a -e
 ```
@@ -69,23 +69,26 @@ To backup all the essential data of all the users
  
 Essential data is data inside desktop, download, videos, music, pictures folders only
 
+&nbsp;
 ```
 backup -e -c 
 ```
 To backup all the essential data of current user only
 
-
+&nbsp;
 ```
 backup -a -d
 ```
 -d command can be clubbed with any other command to perform actions at once
 
+&nbsp;
 #### Restore
 ```
 restore
 ```
 To restore the default settings if you have messed around with them
 
+&nbsp;
 #### Settings
 ```
 change settings
@@ -94,23 +97,26 @@ command to open the settings file for editing the main program settings
 
 ###### Default settings page looks like [this](https://github.com/harshnative/JARVIS/blob/master/settings.txt) 
 
-
+&nbsp;
 #### Help
 ```
 help
 ```
 To open the help in the console window itself
 
+&nbsp;
 ```
 help open
 ```
 To open the help in the TEXT file format
 
+&nbsp;
 ```
 help weather
 ```
 To open the help for the weather only
 
+&nbsp;
 #### Update
 ```
 update
