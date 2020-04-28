@@ -1,41 +1,64 @@
 # JARVIS
-cool console based personal assistant 
+A cool simple personal assistant that can do many things to make your life easier a little bit
 
 
-this code is licensed under GPL3.0
+##Discription
+this is simple personal assistant named after everyones favourite jarvis assistant in the MCU 
 
-this project is currently under development and when finished jarvis is supposed to work this many things - 
-1. backup files 
-2. get weather 
-3. get search result & open them in web browser 
-4. setting get via reading txt files like vs code or sublime text 
-5. in built notepad and sticky notes 
-6. play short iron man instrumental music 
-7. play any music from youtube 
-8. launch programmer on system 
-9. tell time and date 
-10. gives a brief system status 
-11. password storer 
-12. to do list 
-13. remainder creator - google calender integration 
-14. shortcut commands to open certain apps or directories 
-15. accessible from anywhere - like python command run from cmd directly 
+this as of now can perform the following actions :
+
+1. Get you the weather details
+2. backUp your computer or certain folder on a single command
+
+scroll down to Usage section to see the examples and commands of performing the above tasks
+
+As of now this project is under development but the goal list is feature is given at the end
 
 
-if you would like to contribute to the project contact me at harshnative@gmail.com , your contribution will highly be appreciated
+##Installation
+Download the executable from the realeses section of github
 
 
-current status - 
-1. added files and methods to get the weather data of a city
+##Usage
+
+###Weather - 
+```console
+weather city-cityName
+```
+You will get the weather details of cityName
+
+Weather information is provided by open weather , all information is available in SI units
+
+```console
+weather city-cityName -f
+```
+You will get the temperature in faraniet also
+
+```console
+weather
+```
+Jarvis will use the default city saved in settings.txt
 
 
-__________thank you for downloading and using the program__________
+###BackUp
+```console
+backup -d 
+```
+To backup all the directories only , directories are taken from settings.txt
 
+```console
+backup -a
+```
+To backup all the data of all the users
 
+```console
+backup -a -c
+```
+To backup all the data the current user
 
-for any queries , you can contact me via email - 
-
-harshnative@gmail.com                 with the mail title IMP
-
-or just post down in the comments 
+```console
+backup -e -c
+```
+To backup all the essential data of current user 
+Essential data is data inside desktop, download, videos, music , pictures only
 
