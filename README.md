@@ -1,5 +1,5 @@
 # JARVIS
-A cool simple personal assistant that can do many things to make your life easier a little bit
+A cool simple personal assistant that can do many things to make your life easier a little bit built in house using python
 
 
 ## Discription -
