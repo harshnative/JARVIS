@@ -227,4 +227,4 @@ class backUp():
 if __name__ == "__main__":
     obj = backUp()
     commandList = ["-d"]
-    obj.startBackUp(commandList , ["C:/Users/harsh/Desktop/MY files/images"] , "F:/hello")
+    obj.startBackUp(commandList , ["C:/Users/harsh/Desktop/kurskuzart"] , "C:/Users/harsh/desktop/jarvisBackup/")

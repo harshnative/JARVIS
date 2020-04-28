@@ -11,19 +11,8 @@ import logging
 
 # outsourced function 
 def restart_program():
-    """Restarts the current program, with file objects and descriptors
-       cleanup
-    """
-
-    try:
-        p = psutil.Process(os.getpid())
-        for handler in p.get_open_files() + p.connections():
-            os.close(handler.fd)
-    except Exception:
-        pass
-
-    python = sys.executable
-    os.execl(python, python, *sys.argv)
+    os.system("cls")
+    main()
 
 
 # function to check for a substring in a string - returns true or false
@@ -228,6 +217,73 @@ def executeCommands(command):
         os.system("pause")
         restart_program()
         return False
+
+    # calling for backup command
+    elif(("backup" in commandList) or ("Backup" in commandList)):
+
+        # creating a copy of backup command without the backup keyword so that we can pass it to the startBackup function of the class backUp
+        commandListCopy = commandList.copy()
+        if("backup" in commandList):
+            commandListCopy.remove("backup")
+        elif("Backup" in commandList):
+            commandListCopy.remove("Backup")
+
+        # creating object of class backUp
+        objBackUp = backUp()
+
+        # creating object of class setting
+        objSetting = setting()
+
+        # creating some required assets
+        directoriesListEditted = []
+        dictionaryFromSetting = objSetting.getDictionary()
+
+        # checking if -d is in command
+        if("-d" in commandList):
+            if(dictionaryFromSetting["backUpPath"] == ""):
+                os.system("cls")
+                print("it looks like you have not added any folder's to backup in setting file")
+                print("\n\ntype change settings in the command to open the file and then run update command")
+                print("\n\ntype help settings for additional help")
+                return True
+            else:
+                pathToBackup = str(dictionaryFromSetting["backUpPath"])
+                try:
+                    os.mkdir(pathToBackup + "/" + "jarvisBackup")
+                    pathToBackup = pathToBackup + "/" + "jarvisBackup"
+                except OSError:
+                    os.system("cls")
+                    pathToBackup = pathToBackup + "/" + "jarvisBackup"
+                    print("folder in path to backup in settings already exit or may be the path is not found")
+                    print("\n\nif the folder already exit - then all the file's will be overRidden")
+                    print("\n\npress enter to continue with backup or close the program to stop it")
+                    input()
+                    os.system("cls")
+
+            # if backup path is correct then if need to ckeck if the directories are listed in setting's file or not 
+            if(dictionaryFromSetting["Directories"] == ""):
+                os.system("cls")
+                print("it looks like you have not added any folder's to directories in setting file")
+                print("\n\ntype change settings in the command to open the file and then run update command")
+                print("\n\ntype help settings for additional help")
+                return True
+            else:
+                directoriesGenerated = str(dictionaryFromSetting["Directories"])
+                directoriesList = directoriesGenerated.split(",")
+                
+                # created a list of directories to pass on to the function startbackup of class backup
+                for i in directoriesList:
+                    i = i.strip()
+                    directoriesListEditted.append(i)
+
+        # calling the function to start the copy process
+        os.system("cls")
+        print("\nBackUp in process - This may take several minutes....")
+        print("\nplease do not close the program , otherWise files may get corrupted")
+        objBackUp.startBackUp(commandListCopy , directoriesListEditted , pathToBackup + "/")
+        os.system("cls")
+        print("\n\nCopy completed\nlog file is generated at the desktop , their may me some files that may not have been copied due to permission errors :(")
+        return  True
 
     else:
         return False

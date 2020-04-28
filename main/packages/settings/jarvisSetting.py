@@ -26,7 +26,7 @@ class setting():
                         elif(line[0] == " " or line[0] == ""):
                             pass
                         else :
-                            splitedList = line.split(":")
+                            splitedList = line.split("=")
                             newSplitedList = []
 
                             for i in splitedList:

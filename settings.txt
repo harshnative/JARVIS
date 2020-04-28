@@ -1,15 +1,18 @@
 # your defualt city
-City : london
+City = london
 
 # font size
-Font Size : 24
+Font Size = 24
 
 # Directories of backup - seperated by comma's in  - ex - D:/myfiles/images , E:/data/documents
-Directories : 
+Directories = 
 
-# user Name :
-userName : harsh yoo
+# user Name 
+userName = 
 
-# greeting :
-greeting : Welcome
+# greeting 
+greeting = Welcome
+
+# defualt backupPath - ex - D:/myfiles/backUp
+backUpPath = 
 
