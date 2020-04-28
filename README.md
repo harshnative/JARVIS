@@ -2,7 +2,7 @@
 A cool simple personal assistant that can do many things to make your life easier a little bit
 
 
-##Discription
+## Discription
 this is simple personal assistant named after everyones favourite jarvis assistant in the MCU 
 
 this as of now can perform the following actions :
@@ -15,13 +15,13 @@ scroll down to Usage section to see the examples and commands of performing the 
 As of now this project is under development but the goal list is feature is given at the end
 
 
-##Installation
+## Installation
 Download the executable from the realeses section of github
 
 
-##Usage
+## Usage
 
-###Weather - 
+#### Weather - 
 ```console
 weather city-cityName
 ```
@@ -40,7 +40,7 @@ weather
 Jarvis will use the default city saved in settings.txt
 
 
-###BackUp
+#### BackUp
 ```console
 backup -d 
 ```
