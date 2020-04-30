@@ -33,5 +33,5 @@
     -a                  ->  for generating the backup of all the things of all the users 
     -a and -c           ->  for generating the backup of all the things of the current user
     -a and -e           ->  for generating the backup of all the essential things of all the users , essential items include things within - desktop , videos , pictures , music , downloads
-    -e and -c    ->  for generating the backup of all the essential things of the current user only
+    -e and -c           ->  for generating the backup of all the essential things of the current user only
     -d                  ->  this can be clubbed with above and is used to backup the folders of which the paths are send as list to additionalDirectoryList

@@ -2,11 +2,15 @@
 from packages.backUp_utility.backUp import *
 from packages.weather.getWeather import *
 from packages.settings.jarvisSetting import *
+from imports.harshNative_github.hangMan_game.hangmanGame import *
+from imports.harshNative_github.txtCompare.txtComparePy import *
+from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
 import os
 from tabulate import tabulate
 import sys
 import psutil
 import logging
+import pyperclip
 
 
 # outsourced function 
@@ -34,7 +38,7 @@ def getHelp(passObj):
     if(passObj == "all"):
         os.system("cls")
         try:
-            with open("help.txt") as fil:
+            with open("txtFiles/help.txt") as fil:
                 for line in fil:
                     print(line)
         except FileNotFoundError:
@@ -48,7 +52,7 @@ def getHelp(passObj):
         os.system("cls")
         try:
             count = 0
-            with open("help.txt") as fil:
+            with open("txtFiles/help.txt") as fil:
                 for line in fil:
                     for i in passObj:
                         if(isSubString(line , i)):
@@ -285,6 +289,109 @@ def executeCommands(command):
         print("\n\nCopy completed\nlog file is generated at the desktop , their may me some files that may not have been copied due to permission errors :(")
         return  True
 
+    # calling for hangman game
+    elif(("hangman" in commandList) or ("Hangman" in commandList)):
+        if(("game" in commandList) or ("Game" in commandList)):
+            os.system("cls")
+            #calling the game function 
+            boolValue = mainForHangmanGame()
+            os.system("cls")
+            if(boolValue == True):
+                print("thanks for playing game")
+            else:
+                print("some error ocurred :( , visit website for more info")
+
+            return True
+        else:
+            return False
+
+    # calling for txt compare
+    elif(("compare" in commandList) or ("Compare" in commandList)):
+        if(("txt" in commandList) or ("Txt" in commandList) or ("TXT" in commandList)):
+            os.system("cls")
+            print("starting txtCompare program :)\n\n")
+            mainForTxtCompare()
+            return True
+        else:
+            return False
+
+    # calling for google drive link
+    elif(("google" in commandList) or ("Google" in commandList)):
+        if(("drive" in commandList) or ("Drive" in commandList)):
+            os.system("cls")
+            print("Go to the file saved in google drive and click get shareable link\n")
+            linkGet = input("Paste the link here : ")
+            linkFinal = mainForGoogleDriveLink(linkGet)
+            if(linkFinal == False):
+                print("\n\nThe link is in valid :(")
+                return True
+            else:
+                pyperclip.copy(str(linkFinal))
+                pyperclip.paste()
+                print("\n\nThe link is {} and is been copied to clipboard :)".format(linkFinal))
+                return True
+
+    # calling for random generator
+    elif(("generate" in commandList) or ("Generate" in commandList)):
+        if(("random" in commandList) or ("Random" in commandList)):
+            os.system("cls")
+            print("The file is opened in other window :)")
+            os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
+            return True
+        else:
+            return False
+
+    # calling for number system convertor
+    elif(("number" in commandList) or ("Number" in commandList) or ("num" in commandList) or ("Num" in commandList) or ("no" in commandList) or ("No" in commandList) or ("NO" in commandList)):
+        if(("convert" in commandList) or ("conv" in commandList) or ("convertor" in commandList) or ("Convert" in commandList) or ("Conv" in commandList) or ("Convertor" in commandList)):
+            if(("system" in commandList) or ("sys" in commandList) or ("System" in commandList) or ("Sys" in commandList)):
+                os.system("cls")
+                print("The file is opened in other window :)")
+                os.startfile(r"external_exe\harshNative_github\NSC.exe")
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    # calling for average finder
+    elif(("average" in commandList) or ("Average" in commandList) or ("avg" in commandList) or ("Avg" in commandList) or ("AVG" in commandList)):
+        os.system("cls")
+        print("The file is opened in other window :)")
+        os.startfile(r"external_exe\harshNative_github\average_finder.exe")
+        return True
+
+    # calling for coin toss
+    elif(("Coin" in commandList) or ("coin" in commandList)):
+        if(("toss" in commandList) or ("Toss" in commandList)):
+            os.system("cls")
+            print("The file is opened in other window :)")
+            os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
+            return True
+        else:
+            return False
+
+    # calling for group generator
+    elif(("group" in commandList) or ("Group" in commandList)):
+        if(("generate" in commandList) or ("Generate" in commandList)):
+            os.system("cls")
+            print("The file is opened in other window :)")
+            os.startfile(r"external_exe\harshNative_github\group_Generator.exe")
+            return True
+        else:
+            return False
+
+    # calling for interest calculator 
+    elif(("calculator" in commandList) or ("Calculator" in commandList) or ("calc" in commandList) or ("Calc" in commandList)):
+        if(("Interest" in commandList) or ("interest" in commandList)):
+            os.system("cls")
+            print("The file is opened in other window :)")
+            os.startfile(r"external_exe\harshNative_github\interest_Calculator.exe")
+            return True
+        else:
+            return False
+
+
     else:
         return False
 
@@ -309,7 +416,6 @@ def main():
         print("\n\n")
         os.system("pause")
 
-# TODO : integrate the backup system and build a exe file for publishing
 
 if __name__ == "__main__":
     main()

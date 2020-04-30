@@ -126,6 +126,113 @@ To update the settings in the program
 This is automatically called when the program restarts 
 
 &nbsp;
+#### Play games
+&nbsp;
+###### HangMan game
+This is a cool word guessing game in which a random word in thrown at you containing 4-8 letters hidden *****
+&nbsp;
+you have to guess a character , if the character is the word then all the spaces with those character will be visible to you , suppose you enter e then in the above world hello you will be shown *e*** , now you have to guess other words 
+&nbsp;
+for each  wrong guess you become a additional letter of DumbAss , once you become full DumbAss , the game is over
+&nbsp;
+&nbsp;
+To play
+```
+hangman game
+```
+
+&nbsp;
+#### Txt compare
+This is really cool , sometimes you have two txt files that looks identical but somebody has changed somethings in one of the file , you can know what as changed , simply drag and drop files once the run command is executed , although you still will be prompted to do do this
+&nbsp;
+To run this
+```
+txt compare
+```
+
+&nbsp;
+#### Convert google drives shareable link to direct downloadable link
+The link that you share with others from google drive , the viewer first goes to the google drive page and the download it , but if you share link generate by this the viewer will directly download the file as soon as they click the link
+&nbsp;
+To run this
+```
+google drive
+```
+
+
+#### Some usefull external programms are also included :)
+&nbsp;
+###### Generate random stuff
+Want to generate some random stuff whether it be number or strings for encryption hell knows why , well jarvis as got you covered
+&nbsp;
+To run this
+```
+generate random
+```
+The program will open a other program for the task :)
+
+&nbsp;
+###### Number system converter
+Now convert any number from any number system to any other number system easily 
+&nbsp;
+To run this
+```
+number system convertor
+```
+or
+```
+no sys conv
+```
+The program will open a other program for the task :)
+
+&nbsp;
+###### Average finder
+just keep inputting numbers and the program will automatically count how much you inputted and find the avearge
+&nbsp;
+To run this
+```
+average
+```
+or 
+```
+avg
+```
+The program will open a other program for the task :)
+
+&nbsp;
+###### Coin toss 
+Stuck in a situation were you have to decide a decision by luck , luck is one hell of a thing , well now get coin toss result virtaully with absolute randomness
+&nbsp;
+To run this
+```
+coin toss
+```
+The program will open a other program for the task :)
+
+&nbsp;
+###### Group generator
+Sometimes in colleges or schools you need to divide students into groups acc to their roll no , no just input roll no's into the program and generate groups easily
+Input is very easy , just input 100-120 for inputting 100 to 120 roll no students or input each seperately
+To run this
+```
+group generator
+```
+The program will open a other program for the task :)
+
+&nbsp;
+###### Interest calculator
+Want to calculate interest on some thing btw diff dates , well just input details and get the most accurate result ever
+To run this
+```
+interest calculator
+```
+or
+```
+interest calc
+```
+The program will open a other program for the task :)
+
+&nbsp;
 ## Support 
 comming soon.....
 

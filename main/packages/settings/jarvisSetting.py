@@ -12,7 +12,7 @@ class setting():
 
         try:
             # opening the txt file
-            with open("settings.txt" , "r+") as fil:
+            with open("txtFiles/settings.txt" , "r+") as fil:
 
                 # reading line by line
                 for line in fil:
@@ -50,7 +50,7 @@ class setting():
 
     # function to regenerate the deleted settings file
     def regenerateFile(self):
-        with open("settings.txt" , "w+") as fil:
+        with open("txtFiles/settings.txt" , "w+") as fil:
             fil.write("# your defualt city\n")
             fil.write("City : london\n\n")
 
