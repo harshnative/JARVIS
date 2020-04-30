@@ -157,9 +157,8 @@ To run this
 google drive
 ```
 
-
-### Some usefull external programms are also included :)
 &nbsp;
+### Some usefull external programms are also included :)
 ##### Generate random stuff
 Want to generate some random stuff whether it be number or strings for encryption hell knows why , well jarvis as got you covered
 
@@ -170,9 +169,9 @@ generate random
 The program will open a other program for the task :)
 
 &nbsp;
-###### Number system converter
+##### Number system converter
 Now convert any number from any number system to any other number system easily 
-&nbsp;
+
 To run this
 ```
 number system convertor
@@ -184,9 +183,9 @@ no sys conv
 The program will open a other program for the task :)
 
 &nbsp;
-###### Average finder
+##### Average finder
 just keep inputting numbers and the program will automatically count how much you inputted and find the avearge
-&nbsp;
+
 To run this
 ```
 average
@@ -198,9 +197,9 @@ avg
 The program will open a other program for the task :)
 
 &nbsp;
-###### Coin toss 
+##### Coin toss 
 Stuck in a situation were you have to decide a decision by luck , luck is one hell of a thing , well now get coin toss result virtaully with absolute randomness
-&nbsp;
+
 To run this
 ```
 coin toss
@@ -208,9 +207,10 @@ coin toss
 The program will open a other program for the task :)
 
 &nbsp;
-###### Group generator
+##### Group generator
 Sometimes in colleges or schools you need to divide students into groups acc to their roll no , no just input roll no's into the program and generate groups easily
 Input is very easy , just input 100-120 for inputting 100 to 120 roll no students or input each seperately
+
 To run this
 ```
 group generator
@@ -218,8 +218,9 @@ group generator
 The program will open a other program for the task :)
 
 &nbsp;
-###### Interest calculator
+##### Interest calculator
 Want to calculate interest on some thing btw diff dates , well just input details and get the most accurate result ever
+
 To run this
 ```
 interest calculator
