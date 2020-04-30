@@ -129,14 +129,11 @@ This is automatically called when the program restarts
 ### Play games
 ##### HangMan game
 This is a cool word guessing game in which a random word in thrown at you containing 4-8 letters hidden *****
-&nbsp;
-&nbsp;
-you have to guess a character , if the character is the word then all the spaces with those character will be visible to you , suppose you enter e then in the above world hello you will be shown *e*** , now you have to guess other words 
-&nbsp;
-&nbsp;
-for each  wrong guess you become a additional letter of DumbAss , once you become full DumbAss , the game is over
-&nbsp;
-&nbsp;
+
+You have to guess a character , if the character is the word then all the spaces with those character will be visible to you , suppose you enter e then in the above world hello you will be shown *e*** , now you have to guess other words 
+
+For each  wrong guess you become a additional letter of DumbAss , once you become full DumbAss , the game is over
+
 To play
 ```
 hangman game
@@ -145,7 +142,7 @@ hangman game
 &nbsp;
 #### Txt compare
 This is really cool , sometimes you have two txt files that looks identical but somebody has changed somethings in one of the file , you can know what as changed , simply drag and drop files once the run command is executed , although you still will be prompted to do do this
-&nbsp;
+
 To run this
 ```
 txt compare
@@ -154,18 +151,18 @@ txt compare
 &nbsp;
 #### Convert google drives shareable link to direct downloadable link
 The link that you share with others from google drive , the viewer first goes to the google drive page and the download it , but if you share link generate by this the viewer will directly download the file as soon as they click the link
-&nbsp;
+
 To run this
 ```
 google drive
 ```
 
 
-#### Some usefull external programms are also included :)
+### Some usefull external programms are also included :)
 &nbsp;
-###### Generate random stuff
+##### Generate random stuff
 Want to generate some random stuff whether it be number or strings for encryption hell knows why , well jarvis as got you covered
-&nbsp;
+
 To run this
 ```
 generate random
