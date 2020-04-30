@@ -335,8 +335,11 @@ def executeCommands(command):
     elif(("generate" in commandList) or ("Generate" in commandList)):
         if(("random" in commandList) or ("Random" in commandList)):
             os.system("cls")
-            print("The file is opened in other window :)")
-            os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
+            try:
+                os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
+                print("The file is opened in other window :)")
+            except FileNotFoundError:
+                print("This is the minimal version, download complete version for this functionality :)")
             return True
         else:
             return False
@@ -346,8 +349,11 @@ def executeCommands(command):
         if(("convert" in commandList) or ("conv" in commandList) or ("convertor" in commandList) or ("Convert" in commandList) or ("Conv" in commandList) or ("Convertor" in commandList)):
             if(("system" in commandList) or ("sys" in commandList) or ("System" in commandList) or ("Sys" in commandList)):
                 os.system("cls")
-                print("The file is opened in other window :)")
-                os.startfile(r"external_exe\harshNative_github\NSC.exe")
+                try:
+                    os.startfile(r"external_exe\harshNative_github\NSC.exe")
+                    print("The file is opened in other window :)")
+                except FileNotFoundError:
+                    print("This is the minimal version, download complete version for this functionality :)")
                 return True
             else:
                 return False
@@ -357,16 +363,22 @@ def executeCommands(command):
     # calling for average finder
     elif(("average" in commandList) or ("Average" in commandList) or ("avg" in commandList) or ("Avg" in commandList) or ("AVG" in commandList)):
         os.system("cls")
-        print("The file is opened in other window :)")
-        os.startfile(r"external_exe\harshNative_github\average_finder.exe")
+        try:
+            os.startfile(r"external_exe\harshNative_github\average_finder.exe")
+            print("The file is opened in other window :)")
+        except FileNotFoundError:
+            print("This is the minimal version, download complete version for this functionality :)")
         return True
 
     # calling for coin toss
     elif(("Coin" in commandList) or ("coin" in commandList)):
         if(("toss" in commandList) or ("Toss" in commandList)):
             os.system("cls")
-            print("The file is opened in other window :)")
-            os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
+            try:
+                os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
+                print("The file is opened in other window :)")
+            except FileNotFoundError:
+                print("This is the minimal version, download complete version for this functionality :)")
             return True
         else:
             return False
@@ -375,8 +387,11 @@ def executeCommands(command):
     elif(("group" in commandList) or ("Group" in commandList)):
         if(("generate" in commandList) or ("Generate" in commandList)):
             os.system("cls")
-            print("The file is opened in other window :)")
-            os.startfile(r"external_exe\harshNative_github\group_Generator.exe")
+            try:
+                os.startfile(r"external_exe\harshNative_github\group_Generator.exe")
+                print("The file is opened in other window :)")
+            except FileNotFoundError:
+                print("This is the minimal version, download complete version for this functionality :)")
             return True
         else:
             return False
@@ -385,8 +400,11 @@ def executeCommands(command):
     elif(("calculator" in commandList) or ("Calculator" in commandList) or ("calc" in commandList) or ("Calc" in commandList)):
         if(("Interest" in commandList) or ("interest" in commandList)):
             os.system("cls")
-            print("The file is opened in other window :)")
-            os.startfile(r"external_exe\harshNative_github\interest_Calculator.exe")
+            try:
+                os.startfile(r"external_exe\harshNative_github\interest_Calculator.exe")
+                print("The file is opened in other window :)")
+            except FileNotFoundError:
+                print("This is the minimal version, download complete version for this functionality :)")
             return True
         else:
             return False
