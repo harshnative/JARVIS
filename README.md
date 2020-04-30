@@ -126,12 +126,13 @@ To update the settings in the program
 This is automatically called when the program restarts 
 
 &nbsp;
-#### Play games
-&nbsp;
-###### HangMan game
+### Play games
+##### HangMan game
 This is a cool word guessing game in which a random word in thrown at you containing 4-8 letters hidden *****
 &nbsp;
+&nbsp;
 you have to guess a character , if the character is the word then all the spaces with those character will be visible to you , suppose you enter e then in the above world hello you will be shown *e*** , now you have to guess other words 
+&nbsp;
 &nbsp;
 for each  wrong guess you become a additional letter of DumbAss , once you become full DumbAss , the game is over
 &nbsp;
