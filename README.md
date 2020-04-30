@@ -19,6 +19,12 @@ As of now this project is under development but the goal list of feature is give
 ## Installation -
 Download the executable from the releases section of [Github](https://github.com/harshnative/JARVIS/releases)
 
+Their are two executable -
+1. minimal - without the usefull external programmes
+2. complete - with usefull external programmes 
+
+See down to see what you will miss in the minimal version
+
 
 ## Usage -
 
