@@ -25,7 +25,7 @@ Their are two executable -
 
 See down to see what you will miss in the minimal version
 
-To open Jarvis in seperate window use click on Jarvis.exe
+To open Jarvis in seperate window click on Jarvis.exe
 
 To open Jarvis in cmd window click on jarvis_CMD.bat
 
