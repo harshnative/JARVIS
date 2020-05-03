@@ -1,5 +1,5 @@
 # your defualt city
-City = london
+City = new york
 
 # font size
 Font Size = 24

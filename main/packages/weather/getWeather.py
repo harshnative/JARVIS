@@ -77,7 +77,10 @@ class weatherData():
     
     # function to convert the json temp which is in kelvin to 'c
     def convTempToC(self):
-        self.tempInK = self.jsonData["main"]["temp"]
+        try:
+            self.tempInK = self.jsonData["main"]["temp"]
+        except KeyError:
+            print("error while getting weather details")
         self.tempInC = self.tempInK - 273
 
 

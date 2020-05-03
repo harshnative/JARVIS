@@ -148,14 +148,21 @@ class mainWeatherClass(mainClass):
         os.system("cls")
         print(f"weather details of {self.cityName} are - \n")
         tabulateList = []
+        errorYES = False
         for i,j in zip(self.weatherArgumentList , result):
             tempList = []
-            i = str(i)
-            j = int(j)
-            tempList.append(i)
-            tempList.append(j)
-            tabulateList.append(tempList)
-        print(tabulate(tabulateList, headers=['Query', 'Data']))
+            if ((i == None) or (j == None)):
+                errorYES = True
+            else:
+                i = str(i)
+                j = int(j)
+                tempList.append(i)
+                tempList.append(j)
+                tabulateList.append(tempList)
+        if (errorYES):
+            print("error while getting wheather details")
+        else:
+            print(tabulate(tabulateList, headers=['Query', 'Data']))
         
 
 
@@ -178,6 +185,15 @@ def executeCommands(command):
                     if(j == "c"):
                         if(com[i:i+4] == "city"):
                             cityName = com[i+5:]
+                            cityNameEdit = ""
+                            for i,j in enumerate(cityName):
+                                if(j == "_"):
+                                    cityNameEdit = cityName[:i] + " " + cityName[i+1:]
+                            if(cityNameEdit == ""):
+                                pass
+                            else:
+                                cityName = cityNameEdit
+
             else:
                 cityName = None
 
