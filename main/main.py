@@ -11,6 +11,7 @@ import sys
 import psutil
 import logging
 import pyperclip
+import time
 
 
 # outsourced function 
@@ -425,6 +426,16 @@ def executeCommands(command):
         else:
             return False
 
+    # calling for exit command
+	elif(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
+		print("Exiting the program" , end="")
+		time.sleep(0.3)
+		print("." , end="")
+		time.sleep(0.3)
+		print("." , end="")
+		time.sleep(0.3)
+		print("." , end="")
+		exit()
 
     else:
         return False
