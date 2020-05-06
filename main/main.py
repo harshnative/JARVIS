@@ -427,15 +427,16 @@ def executeCommands(command):
             return False
 
     # calling for exit command
-	elif(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
-		print("Exiting the program" , end="")
-		time.sleep(0.3)
-		print("." , end="")
-		time.sleep(0.3)
-		print("." , end="")
-		time.sleep(0.3)
-		print("." , end="")
-		exit()
+    elif(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
+        print("Exiting the program" , end="" , flush=True)
+        time.sleep(0.3)
+        print("." , end="" , flush=True)
+        time.sleep(0.4)
+        print("." , end="" , flush=True)
+        time.sleep(0.5)
+        print("." , end="" , flush=True)
+        exit()
+
 
     else:
         return False
@@ -447,9 +448,7 @@ def main():
         os.system("cls")
         print(f"welcome {objMainClass.returnUserName()}\n")
         commandInput = input("enter command : ")
-        if(commandInput == "exit" or commandInput == "Exit" or commandInput == "EXIT"):
-            break
-        elif(handleGetHelp(commandInput)):
+        if(handleGetHelp(commandInput)):
             pass
         else:
             if(executeCommands(commandInput)):
