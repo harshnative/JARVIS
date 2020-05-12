@@ -2,6 +2,7 @@
 from packages.backUp_utility.backUp import *
 from packages.weather.getWeather import *
 from packages.settings.jarvisSetting import *
+from packages.PasswordStorer.mainForPasswordStorer import *
 from imports.harshNative_github.hangMan_game.hangmanGame import *
 from imports.harshNative_github.txtCompare.txtComparePy import *
 from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
@@ -425,6 +426,13 @@ def executeCommands(command):
             return True
         else:
             return False
+
+
+    # calling for password manager
+    elif(("Password" in commandList) or ("password" in commandList) or ("pass" in commandList) or ("Pass" in commandList)):
+        objPasswordStorerClass = passwordStorerClass()
+        objPasswordStorerClass.driverFunc()
+        return True
 
     # calling for exit command
     elif(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
