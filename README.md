@@ -38,17 +38,17 @@ To open Jarvis in cmd window click on jarvis_CMD.bat
 
 #### Password Storer
 
-[Click Here]() to know about how to use [Password Module]()
+[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/passwordModule.md) to know about how to use [Password Module](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/passwordModule.md)
 
 &nbsp;
 #### Weather - 
 
-[Click Here]() to know about how to use [Weather Module]()
+[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/weatherModule.md) to know about how to use [Weather Module](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/weatherModule.md)
 
 &nbsp;
 #### BackUp
 
-[Click Here]() to know about how to use [backUp Module]()
+[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/BackupModule.md) to know about how to use [backUp Module](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/BackupModule.md)
 
 &nbsp;
 #### Restore
@@ -128,7 +128,7 @@ google drive
 
 &nbsp;
 ### Some usefull external programs are also included :)
-[Click Here]() To know about the external [programs]()
+[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/additionalPrograms.md) To know about the [external programs](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/additionalPrograms.md)
 
 &nbsp;
 ## Support 
