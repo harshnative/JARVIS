@@ -19,6 +19,8 @@ As of now this project is under development but the goal list of feature is give
 ## Installation -
 Download the executable from the releases section of [Github](https://github.com/harshnative/JARVIS/releases)
 
+###### 100% Virus Free - checked and scanned by top antivirus 
+
 Their are two executable -
 1. minimal - without the usefull external programmes
 2. complete - with usefull external programmes 
@@ -32,70 +34,21 @@ To open Jarvis in cmd window click on jarvis_CMD.bat
 
 ## Usage -
 
+### Main features guide - 
+
+#### Password Storer
+
+[Click Here]() to know about how to use [Password Module]()
+
+&nbsp;
 #### Weather - 
-```
-weather city-cityName
-```
-You will get the weather details of cityName  
 
-Weather information is provided by open weather , all information is available in SI units  
-
-&nbsp;
-```
-weather city-cityName -f
-```
-You will get the temperature in faraniet also  
-
-&nbsp;
-```
-weather city-new_york 
-```
-For the city having names in more than one word use underscore instead of space
-
-&nbsp;
-```
-weather
-```
-If no city name is passed - Jarvis will use the default city saved in settings.txt
+[Click Here]() to know about how to use [Weather Module]()
 
 &nbsp;
 #### BackUp
-```
-backup -d 
-```
-To backup all the directories only , directories are taken from settings.txt
 
-&nbsp;
-```
-backup -a
-```
-To backup all the data of all the users
-
-&nbsp;
-```
-backup -a -c
-```
-To backup all the data the current user
-
-&nbsp;
-```
-backup -a -e
-```
-To backup all the essential data of all the users
- 
-Essential data is data inside desktop, download, videos, music, pictures folders only
-
-&nbsp;
-```
-backup -e -c 
-```
-To backup all the essential data of current user only
-
-&nbsp;
-```
-backup -a -d
-```
--d command can be clubbed with any other command to perform actions at once
+[Click Here]() to know about how to use [backUp Module]()
 
 &nbsp;
 #### Restore
@@ -174,78 +127,8 @@ google drive
 ```
 
 &nbsp;
-### Some usefull external programms are also included :)
-##### Generate random stuff
-Want to generate some random stuff whether it be number or strings for encryption hell knows why , well jarvis as got you covered
-
-To run this
-```
-generate random
-```
-The program will open a other program for the task :)
-
-&nbsp;
-##### Number system converter
-Now convert any number from any number system to any other number system easily 
-
-To run this
-```
-number system convertor
-```
-or
-```
-no sys conv
-```
-The program will open a other program for the task :)
-
-&nbsp;
-##### Average finder
-just keep inputting numbers and the program will automatically count how much you inputted and find the avearge
-
-To run this
-```
-average
-```
-or 
-```
-avg
-```
-The program will open a other program for the task :)
-
-&nbsp;
-##### Coin toss 
-Stuck in a situation were you have to decide a decision by luck , luck is one hell of a thing , well now get coin toss result virtaully with absolute randomness
-
-To run this
-```
-coin toss
-```
-The program will open a other program for the task :)
-
-&nbsp;
-##### Group generator
-Sometimes in colleges or schools you need to divide students into groups acc to their roll no , no just input roll no's into the program and generate groups easily
-Input is very easy , just input 100-120 for inputting 100 to 120 roll no students or input each seperately
-
-To run this
-```
-group generator
-```
-The program will open a other program for the task :)
-
-&nbsp;
-##### Interest calculator
-Want to calculate interest on some thing btw diff dates , well just input details and get the most accurate result ever
-
-To run this
-```
-interest calculator
-```
-or
-```
-interest calc
-```
-The program will open a other program for the task :)
+### Some usefull external programs are also included :)
+[Click Here]() To know about the external [programs]()
 
 &nbsp;
 ## Support 
@@ -268,11 +151,12 @@ read more about it [here](https://github.com/harshnative/JARVIS/blob/master/LICE
 
 &nbsp;
 ## Project status
-This project is currently under development 
+This project is currently under development - some features are available fully in the current release version , you can use them without any worries
 
 #### Features available write now -
 1. weather
 2. backup
+3. password storer
 
 #### Features comming soon -
 1. internet searching 
@@ -281,9 +165,8 @@ This project is currently under development
 4. play any music from youtube 
 5. launch programmer on system 
 6. tell time and date by voice  
-7. gives a brief system status 
-8. password storer 
-9. to do list 
-10. remainder creator - google calender integration 
-11. shortcut commands to open certain apps or directories 
-12. accessible from anywhere - like pip is directly accessible from anyWhere  
+7. gives a brief system status  
+8. to do list 
+9. remainder creator - google calender integration 
+10. shortcut commands to open certain apps or directories 
+11. accessible from anywhere - like pip is directly accessible from anyWhere  
