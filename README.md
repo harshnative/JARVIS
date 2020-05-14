@@ -62,7 +62,7 @@ setting
 ```
 command to open the settings file for editing the main program settings
 
-###### Default settings page looks like [this](https://github.com/harshnative/JARVIS/blob/master/settings.txt) 
+###### Default settings page looks like [this](https://github.com/harshnative/JARVIS/blob/master/Sample_Settings.txt) 
 
 &nbsp;
 #### Help
