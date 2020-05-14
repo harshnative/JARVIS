@@ -30,7 +30,7 @@ class passwordStorerClass:
 
     # function to connect to the dataBase file
     def connectToDB(self):
-        self.connectionObj = sqlite3.connect("DataBaseFiles/" + self.dataBaseFileName)
+        self.connectionObj = sqlite3.connect("C:/programData/Jarvis/" + self.dataBaseFileName)
 
 
     # function to create table in data base file

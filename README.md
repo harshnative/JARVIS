@@ -21,15 +21,7 @@ Download the executable from the releases section of [Github](https://github.com
 
 ###### 100% Virus Free - checked and scanned by top antivirus 
 
-Their are two executable -
-1. minimal - without the usefull external programmes
-2. complete - with usefull external programmes 
-
-See down to see what you will miss in the minimal version
-
-To open Jarvis in seperate window click on Jarvis.exe
-
-To open Jarvis in cmd window click on jarvis_CMD.bat
+Just follow the on screen instructions to install
 
 
 ## Usage -
@@ -60,7 +52,13 @@ To restore the default settings if you have messed around with them
 &nbsp;
 #### Settings
 ```
-change settings
+settings
+```
+
+or
+
+```
+setting
 ```
 command to open the settings file for editing the main program settings
 
@@ -138,6 +136,8 @@ comming soon.....
 ## Contribution
 Your every contribution is appreciated , if you want to contribute to the project please contact at Harshnative@gmail.com
 
+Icon provided by [Those icons](https://www.flaticon.com/free-icon/iron-man_813505?term=iron%20man&page=1&position=5) from www.Flaticon.com
+
 &nbsp;
 ## Authors & Acknowledgement
 We thank every person who have commited anything to the open source world, those small contibutions combined together run this beautiful tech world
@@ -157,6 +157,7 @@ This project is currently under development - some features are available fully 
 1. weather
 2. backup
 3. password storer
+4. additional programs
 
 #### Features comming soon -
 1. internet searching 

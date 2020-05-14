@@ -1,0 +1,15 @@
+# Your defualt city
+City = london
+
+# Directories of backup - seperated by comma's in  - ex - D:/myfiles/images , E:/data/documents
+Directories = 
+
+# path to backup - ex - F:/myBackup
+backUpPath = 
+
+# User Name :
+userName = KING
+
+# Greeting :
+greeting = Welcome
+

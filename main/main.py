@@ -1,3 +1,6 @@
+print("\nLoading Jarvis.....")
+print("\nThis may take few minutes for the first time :)")
+
 # importing modules
 from packages.backUp_utility.backUp import *
 from packages.weather.getWeather import *
@@ -45,9 +48,7 @@ def getHelp(passObj):
                     print(line)
         except FileNotFoundError:
             print("oops , the help file in missing , visit the website for help")
-        
-        print("\n\n")
-        os.system("pause")
+
     
     # for displaying specific help by searching for the keyords as substring in line
     else:
@@ -65,7 +66,6 @@ def getHelp(passObj):
         except FileNotFoundError:
             print("oops , the help file in missing , visit the website for help")
             
-        print("\n\n")
 
 
 # function for handling the get help
@@ -75,7 +75,7 @@ def handleGetHelp(command):
     if(("help" in commandList) or ("Help" in commandList)):
         if(("open" in commandList) or ("Open" in commandList)):
             try:
-                os.startfile('help.txt')
+                os.startfile(r"txtFiles\help.txt")
             except FileNotFoundError:
                 print("oops the help.txt is missing , visit website for help")
             return True
@@ -138,7 +138,13 @@ class mainWeatherClass(mainClass):
         self.getDict()
         # if the cityName is not passed then we will take it from dictionary generated from settings app
         if(self.cityName == None):
-            self.cityName = self.settingsDict["City"]
+            try:
+                self.cityName = self.settingsDict["City"]
+            except Exception:
+                os.system("cls")
+                print("\nit looks like you have not setted any city in setting\n")
+                os.system("pause")
+                main()
         
         # making a object of weather data class
         objGetWeatherData = weatherData()
@@ -220,17 +226,12 @@ def executeCommands(command):
         return True
 
     # for changing teh setting - this function opens the settings.txt in the defualt txt viewer of the system
-    elif(("Change" in commandList) or ("change" in commandList)):
-        if(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
-            objSetting = setting()
-            objSetting.openFile()
-            os.system("cls")
-            print("the settings file is opened")
-            return True
-        
-        # as you can change settings only
-        else:
-            return False
+    elif(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
+        objSetting = setting()
+        objSetting.openFile()
+        os.system("cls")
+        print("the settings file is opened, make sure to save the file run update command in jarvis")
+        return True
 
     # function for updating the settings
     elif(("update" in commandList) or ("Update" in commandList)):
@@ -357,7 +358,7 @@ def executeCommands(command):
                 os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                print("This is the minimal version, download complete version for this functionality :)")
+                print("SomeThing went wrong :(")
             return True
         else:
             return False
@@ -371,7 +372,7 @@ def executeCommands(command):
                     os.startfile(r"external_exe\harshNative_github\NSC.exe")
                     print("The file is opened in other window :)")
                 except FileNotFoundError:
-                    print("This is the minimal version, download complete version for this functionality :)")
+                    print("SomeThing went wrong :(")
                 return True
             else:
                 return False
@@ -385,7 +386,7 @@ def executeCommands(command):
             os.startfile(r"external_exe\harshNative_github\average_finder.exe")
             print("The file is opened in other window :)")
         except FileNotFoundError:
-            print("This is the minimal version, download complete version for this functionality :)")
+            print("SomeThing went wrong :(")
         return True
 
     # calling for coin toss
@@ -396,7 +397,7 @@ def executeCommands(command):
                 os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                print("This is the minimal version, download complete version for this functionality :)")
+                print("SomeThing went wrong :(")
             return True
         else:
             return False
@@ -409,7 +410,7 @@ def executeCommands(command):
                 os.startfile(r"external_exe\harshNative_github\group_Generator.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                print("This is the minimal version, download complete version for this functionality :)")
+                print("SomeThing went wrong :(")
             return True
         else:
             return False
@@ -422,7 +423,7 @@ def executeCommands(command):
                 os.startfile(r"external_exe\harshNative_github\interest_Calculator.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                print("This is the minimal version, download complete version for this functionality :)")
+                print("SomeThing went wrong :(")
             return True
         else:
             return False
@@ -470,4 +471,13 @@ def main():
 
 
 if __name__ == "__main__":
+    # generating jarvis folder
+    try:
+    	os.makedirs(r"C:\programData\Jarvis", exist_ok = True)
+    except Exception:
+    	print("\nSome Error occured while installation, program may crash\n")
+    	os.system("pause")
+    	os.system("cls")
+
+    # calling main
     main()
