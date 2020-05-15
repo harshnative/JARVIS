@@ -1,7 +1,7 @@
 import os
 import time
 
-class setting():
+class Setting():
 
     # constructor
     def __init__(self):
@@ -113,5 +113,5 @@ class setting():
             
 # driver code - only for testing purpose
 if __name__ == "__main__":
-    obj = setting()
+    obj = Setting()
     print(obj.makeDictionaryFromTxt())

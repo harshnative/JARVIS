@@ -3,7 +3,7 @@ import json
 
 """ this is using the open weather api """
 
-class weatherData():
+class WeatherData():
 
     # building up constructor to set the defualt value's
     def __init__(self):
@@ -107,7 +107,7 @@ class weatherData():
 # driver code for test run
 if __name__ == "__main__":
     
-    obj = weatherData()
+    obj = WeatherData()
     myList = [ "tempInC" ,
                "pressure" , 
                "humidity" , "hello" ]

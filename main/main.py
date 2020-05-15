@@ -91,7 +91,7 @@ def handleGetHelp(command):
         return False
 
 
-class mainClass():
+class MainClass():
 
     # contructor
     def __init__(self):
@@ -100,7 +100,7 @@ class mainClass():
     
     # function to get the Dictionary from the settings module
     def getDict(self):
-       objSetting = setting()
+       objSetting = Setting()
        self.settingsDict = objSetting.getDictionary()
     
     def setUserName(self):
@@ -115,7 +115,7 @@ class mainClass():
     def returnUserName(self):
         return self.settingsDict["userName"]
 
-class mainWeatherClass(mainClass):
+class MainWeatherClass(MainClass):
 
     # constructor
     def __init__(self):
@@ -147,7 +147,7 @@ class mainWeatherClass(mainClass):
                 main()
         
         # making a object of weather data class
-        objGetWeatherData = weatherData()
+        objGetWeatherData = WeatherData()
 
         # getting the result
         result = objGetWeatherData.getWeatherData(self.cityName , self.weatherArgumentList)
@@ -182,7 +182,7 @@ def executeCommands(command):
     if(("weather" in commandList) or ("Weather" in commandList)):
 
         # creating object of main weather class
-        objMainWeatherClass = mainWeatherClass()
+        objMainWeatherClass = MainWeatherClass()
 
         # looping through command list to get the cityname if present 
         for com in commandList:
@@ -219,7 +219,7 @@ def executeCommands(command):
     
     # for restoring the defualt setting
     elif(("restore" in commandList) or ("Restore" in commandList)):
-        objSetting = setting()
+        objSetting = Setting()
         objSetting.regenerateFile()
         os.system("cls")
         print("you have restored the settings successfully")
@@ -227,7 +227,7 @@ def executeCommands(command):
 
     # for changing teh setting - this function opens the settings.txt in the defualt txt viewer of the system
     elif(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
-        objSetting = setting()
+        objSetting = Setting()
         objSetting.openFile()
         os.system("cls")
         print("the settings file is opened, make sure to save the file run update command in jarvis")
@@ -252,10 +252,10 @@ def executeCommands(command):
             commandListCopy.remove("Backup")
 
         # creating object of class backUp
-        objBackUp = backUp()
+        objBackUp = BackUp()
 
         # creating object of class setting
-        objSetting = setting()
+        objSetting = Setting()
 
         # creating some required assets
         directoriesListEditted = []
@@ -431,7 +431,7 @@ def executeCommands(command):
 
     # calling for password manager
     elif(("Password" in commandList) or ("password" in commandList) or ("pass" in commandList) or ("Pass" in commandList)):
-        objPasswordStorerClass = passwordStorerClass()
+        objPasswordStorerClass = PasswordStorerClass()
         objPasswordStorerClass.driverFunc()
         return True
 
@@ -451,7 +451,7 @@ def executeCommands(command):
         return False
 
 def main():
-    objMainClass = mainClass()
+    objMainClass = MainClass()
     while(1):
         objMainClass.setUserName()
         os.system("cls")

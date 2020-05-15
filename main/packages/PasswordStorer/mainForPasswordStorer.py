@@ -5,7 +5,7 @@ from getpass import getpass
 import onetimepad
 
 
-class passwordStorerClass:
+class PasswordStorerClass:
 
     # constructor
     def __init__(self):
@@ -381,5 +381,5 @@ class passwordStorerClass:
 
 # just for testing purpose
 if __name__ == "__main__":
-    obj = passwordStorerClass()
+    obj = PasswordStorerClass()
     obj.driverFunc()

@@ -3,7 +3,7 @@ import shutil
 import distutils.dir_util
 import datetime
 
-class backUp():
+class BackUp():
     """ startBackUp is the main function of this , only this function is usefull as it can drive can other function of this class itself
         
             This function excepts three arguments 
@@ -225,6 +225,6 @@ class backUp():
 
 # driver code for testing purpose only
 if __name__ == "__main__":
-    obj = backUp()
+    obj = BackUp()
     commandList = ["-d"]
     obj.startBackUp(commandList , ["C:/Users/harsh/Desktop/kurskuzart"] , "C:/Users/harsh/desktop/jarvisBackup/")
