@@ -2,7 +2,7 @@ import os
 import shutil
 import distutils.dir_util
 import datetime
-import logging
+from packages.loggerPackage.loggerFile import *
 
 class BackUp():
     """ startBackUp is the main function of this , only this function is usefull as it can drive can other function of this class itself
@@ -26,7 +26,10 @@ class BackUp():
 
 
     # constructor function
-    def __init__(self , loggerObj):
+    def __init__(self , troubleShootValuePass):
+        self.troubleShootValue = troubleShootValuePass
+        self.cLog = Clogger()
+        self.cLog.setTroubleShoot(self.troubleShootValue)
         self.loggerObj = loggerObj
         self.userName = None
         self.pathToBackup = None
@@ -44,13 +47,15 @@ class BackUp():
         try:
             temp = os.environ # generates a object with the property called USERNAME containing the info
             self.userName = temp["USERNAME"]
-        except Exception:
+        except Exception as e:
             os.system("cls")
+            self.cLog.log("Jarvis could not get the user name form os" , "e")
+            self.cLog.exception(str(e) , "In backUp.py/BackUp_Class-getUserName_func")
             print("ERROR : jarvis could not get userName")
             print("\nTry reinstalling the program with admistrative permissions\n")
             print("if the error remains follow instructions : ")
-            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(self.loggerObj.logFileName))
-            print("step 2 - {}\n\n".format(self.loggerObj.getLogFileMessage))
+            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(self.cLog.logFileName))
+            print("step 2 - {}\n\n".format(self.cLog.getLogFileMessage))
             os.system("pause")
 
 
@@ -62,7 +67,7 @@ class BackUp():
             shutil.copytree(path , self.pathToBackup , dirs_exist_ok=True)
         except Exception as e:
             self.exceptionList.append(str(e))
-        self.loggerObj.log("for Command_A function runned successfully" ,"i")
+        self.cLog.log("for Command_A function runned successfully" ,"i")
 
 
     # function for copying the essentials of all the users inside "C:/"
@@ -100,11 +105,11 @@ class BackUp():
         for i in pathToCopy:
             print(f"on {count} out of {lengthToCopy}")
             # making sure that the path to backup exsist
-            self.
             try:
                 os.makedirs(self.pathToBackup + "/" + i[9:], exist_ok = True)
-            except OSError:
-                logging.log("OSError exception occured" , exc_info=True)
+            except OSError as e:
+                self.cLog.log("folder might be present for backUp_class-forCommand_A_E_func" ,"e")
+                self.cLog.exception(str(e) , "In backUp.py/backUp_class-forCommand_A_E_func")
             
             # making the copy
             try:
@@ -112,6 +117,7 @@ class BackUp():
             except Exception as e:
                 self.exceptionList.append(str(e))     
             count += 1
+        self.cLog.log("for Command_A_E function runned successfully" ,"i")
 
 
     # function for write the error data to a log file
@@ -120,20 +126,32 @@ class BackUp():
 
         path = "C:/Users/" + self.userName + "/Desktop/logFileJarvis.txt"
 
-        with open(path , "a+") as fil:
+        try:
+            with open(path , "a+") as fil:
 
-            #writing some info to log file
-            currentDT = datetime.datetime.now()
-            fil.write("\n\n")
-            toWrite = "Process Time - " + str(currentDT)
-            fil.write(toWrite)
-            fil.write("\n")
-
-            #writing some actaul errors 
-            for i in self.exceptionList:
-                fil.write("Error - ")
-                fil.write(i)
+                #writing some info to log file
+                currentDT = datetime.datetime.now()
+                fil.write("\n\n")
+                toWrite = "Process Time - " + str(currentDT)
+                fil.write(toWrite)
                 fil.write("\n")
+
+                #writing some actaul errors 
+                for i in self.exceptionList:
+                    fil.write("Error - ")
+                    fil.write(i)
+                    fil.write("\n")
+
+            self.cLog.log("for logFileGenerator function runned successfully" ,"i")
+            
+        except Exception as e:
+            self.cLog.log("could not generate log file" , "e")
+            self.cLog.exception(str(e) , "In backUp.py/backUp_class-logFileGenerator_Func")
+            print("could not generate the log file")
+            print("\n\nif the error remains follow instructions : ")
+            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(self.cLog.logFileName))
+            print("step 2 - {}".format(self.cLog.getLogFileMessage))
+        
                    
 
     #function for copying all the current user
@@ -146,14 +164,18 @@ class BackUp():
         # setting up the destination path for the copy function
         try:
             os.makedirs(self.pathToBackup + "/" + self.userName)
-        except OSError:
-                pass
+        except OSError as e:
+            self.cLog.log("folder might be present for backUp_class-forCommand_A_C_func" , "e")
+            self.cLog.exception(str(e) , "In backUp.py/backUp_class-forCommand_A_C_func")
+            
         
         # copying
         try:
             shutil.copytree(path , self.pathToBackup + "/" + self.userName + "/" , dirs_exist_ok=True)
         except Exception as e:
             self.exceptionList.append(str(e))
+        
+        self.cLog.log("for forCommand_A_C function runned successfully" ,"i")
 
 
     # function for copying all the essential only of the current user
@@ -178,7 +200,9 @@ class BackUp():
             try:
                 os.makedirs(self.pathToBackup + "/" + i[9:], exist_ok = True)
             except OSError:
-                pass
+                self.cLog.log("folder might be present for backUp_class-forCommand_A_C_E_func" , "e")
+                self.cLog.exception(str(e) , "In backUp.py/backUp_class-forCommand_A_C_E_func")
+            
             
             # making the copy
             try:
@@ -186,6 +210,8 @@ class BackUp():
             except Exception as e:
                 self.exceptionList.append(str(e))     
             count += 1
+        
+        self.cLog.log("for forCommand_A_C_E function runned successfully" ,"i")
 
 
     # function to get the list of additional directories
@@ -193,6 +219,12 @@ class BackUp():
         for i in listPassed:
             if(os.path.isdir(i)):
                 self.listOfDirectories.append(i)
+                status = True
+            else:
+                status = False
+        
+        if(status == False):
+            self.cLog.log("path is incorrect error in getListOfDirectories" ,"e")
 
 
     # function for copying certain more directories from listPassed
@@ -205,7 +237,8 @@ class BackUp():
             try:
                 os.makedirs(self.pathToBackup + "/additionalFiles/" + string, exist_ok = True)
             except OSError:
-                pass
+                self.cLog.log("folder might be present for backUp_class-forCopyListOfDirectories_func" , "e")
+                self.cLog.exception(str(e) , "In backUp.py/backUp_class-forCopyListOfDirectories_func")
             
             # making the copy
             try:
@@ -234,6 +267,8 @@ class BackUp():
             self.forCopyListOfDirectories()
 
         self.logFileGenerator()
+
+        self.cLog.log("startBackUp function runned successfully", "i")
 
 
 # driver code for testing purpose only

@@ -323,10 +323,10 @@ def executeCommands(command):
             commandListCopy.remove("Backup")
 
         # creating object of class backUp
-        objBackUp = BackUp(cLog)
+        objBackUp = BackUp(troubleShootValue)
 
         # creating object of class setting
-        objSetting = Setting()
+        objSetting = Setting(troubleShootValue)
 
         # creating some required assets
         directoriesListEditted = []
@@ -345,9 +345,11 @@ def executeCommands(command):
                 try:
                     os.mkdir(pathToBackup + "/" + "jarvisBackup")
                     pathToBackup = pathToBackup + "/" + "jarvisBackup"
-                except OSError:
+                except OSError as e:
                     os.system("cls")
                     pathToBackup = pathToBackup + "/" + "jarvisBackup"
+                    cLog.log("OSError for execute command under backup" , "e")
+                    cLog.exception(str(e) , "In main.py/executeCommmand_func_backupCommand")
                     print("folder in path to backup in settings already exit or may be the path is not found")
                     print("\n\nif the folder already exit - then all the file's will be overRidden")
                     print("\n\npress enter to continue with backup or close the program to stop it")
@@ -360,6 +362,7 @@ def executeCommands(command):
                 print("it looks like you have not added any folder's to directories in setting file")
                 print("\n\ntype change settings in the command to open the file and then run update command")
                 print("\n\ntype help settings for additional help")
+                cLog.log("no folder added to directory error in execute command function in backup command" , "e")
                 return True
             else:
                 directoriesGenerated = str(dictionaryFromSetting["Directories"])
@@ -377,6 +380,7 @@ def executeCommands(command):
         objBackUp.startBackUp(commandListCopy , directoriesListEditted , pathToBackup + "/")
         os.system("cls")
         print("\n\nCopy completed\nlog file is generated at the desktop , their may me some files that may not have been copied due to permission errors :(")
+        cLog.log("executeCommand function runned backupCommand successfully" , "i")
         return  True
 
     # calling for hangman game
@@ -389,8 +393,8 @@ def executeCommands(command):
             if(boolValue == True):
                 print("thanks for playing game")
             else:
-                print("some error ocurred :( , visit website for more info")
-
+                print("some error ocurred :( , try reinstalling the program")
+                cLog.log("some error occured in hangman game" , "e")
             return True
         else:
             return False
@@ -400,7 +404,11 @@ def executeCommands(command):
         if(("txt" in commandList) or ("Txt" in commandList) or ("TXT" in commandList)):
             os.system("cls")
             print("starting txtCompare program :)\n\n")
-            mainForTxtCompare()
+            try:
+                mainForTxtCompare()
+            except Exception:
+                cLog.log("some error occured while comparing txt files" , "e")
+                print("some Error occured :(")
             return True
         else:
             return False
@@ -414,11 +422,13 @@ def executeCommands(command):
             linkFinal = mainForGoogleDriveLink(linkGet)
             if(linkFinal == False):
                 print("\n\nThe link is in valid :(")
+                cLog.log("google drive command runned succesfully , but the link was invalid" , "i")
                 return True
             else:
                 pyperclip.copy(str(linkFinal))
                 pyperclip.paste()
                 print("\n\nThe link is {} and is been copied to clipboard :)".format(linkFinal))
+                cLog.log("google drive command runned succesfully", "i")
                 return True
 
     # calling for random generator
@@ -429,7 +439,16 @@ def executeCommands(command):
                 os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                print("SomeThing went wrong :(")
+                cLog.log("external exe file not found" , "e")
+                print("The random generator file is missing")
+            except Exception as e:
+                print("someThing went wrong :(")
+                print("\n\nif the error remains follow instructions : ")
+                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+                print("step 2 - {}".format(cLog.getLogFileMessage))
+                cLog.log("error on generate random command" , "e")
+                cLog.exception(str(e) , "In generate random command" )
+
             return True
         else:
             return False
@@ -443,7 +462,15 @@ def executeCommands(command):
                     os.startfile(r"external_exe\harshNative_github\NSC.exe")
                     print("The file is opened in other window :)")
                 except FileNotFoundError:
-                    print("SomeThing went wrong :(")
+                    cLog.log("external exe file not found" , "e")
+                    print("The number convert file is missing")
+                except Exception as e:
+                    print("someThing went wrong :(")
+                    print("\n\nif the error remains follow instructions : ")
+                    print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+                    print("step 2 - {}".format(cLog.getLogFileMessage))
+                    cLog.log("error on number system command" , "e")
+                    cLog.exception(str(e) , "In number system convertor command" )
                 return True
             else:
                 return False
@@ -457,7 +484,15 @@ def executeCommands(command):
             os.startfile(r"external_exe\harshNative_github\average_finder.exe")
             print("The file is opened in other window :)")
         except FileNotFoundError:
-            print("SomeThing went wrong :(")
+            cLog.log("external exe file not found" , "e")
+            print("The average finder file is missing")
+        except Exception as e:
+            print("someThing went wrong :(")
+            print("\n\nif the error remains follow instructions : ")
+            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+            print("step 2 - {}".format(cLog.getLogFileMessage))
+            cLog.log("error on average finder command" , "e")
+            cLog.exception(str(e) , "In average finder command" )
         return True
 
     # calling for coin toss
@@ -468,7 +503,15 @@ def executeCommands(command):
                 os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                print("SomeThing went wrong :(")
+                cLog.log("external exe file not found" , "e")
+                print("The coin toss file is missing")
+            except Exception as e:
+                print("someThing went wrong :(")
+                print("\n\nif the error remains follow instructions : ")
+                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+                print("step 2 - {}".format(cLog.getLogFileMessage))
+                cLog.log("error on coin toss command" , "e")
+                cLog.exception(str(e) , "In coin toss command" )
             return True
         else:
             return False
@@ -481,7 +524,15 @@ def executeCommands(command):
                 os.startfile(r"external_exe\harshNative_github\group_Generator.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                print("SomeThing went wrong :(")
+                cLog.log("external exe file not found" , "e")
+                print("The group generator file is missing")
+            except Exception as e:
+                print("someThing went wrong :(")
+                print("\n\nif the error remains follow instructions : ")
+                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+                print("step 2 - {}".format(cLog.getLogFileMessage))
+                cLog.log("error on group generate command" , "e")
+                cLog.exception(str(e) , "In group generate command" )
             return True
         else:
             return False
@@ -494,7 +545,15 @@ def executeCommands(command):
                 os.startfile(r"external_exe\harshNative_github\interest_Calculator.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                print("SomeThing went wrong :(")
+                cLog.log("external exe file not found" , "e")
+                print("The interest calculator file is missing")
+            except Exception as e:
+                print("someThing went wrong :(")
+                print("\n\nif the error remains follow instructions : ")
+                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+                print("step 2 - {}".format(cLog.getLogFileMessage))
+                cLog.log("error on calc interest command" , "e")
+                cLog.exception(str(e) , "In calc interest command" )
             return True
         else:
             return False
