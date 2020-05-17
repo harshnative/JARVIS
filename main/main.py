@@ -1,3 +1,4 @@
+# showing loading jarvis message just before everything loads up as some times while opening the program for first time, antivirus may scan all the included dlls when importing them into code and it takes time
 print("\nLoading Jarvis.....")
 print("\nThis may take few minutes for the first time :)")
 
@@ -6,6 +7,7 @@ from packages.backUp_utility.backUp import *
 from packages.weather.getWeather import *
 from packages.settings.jarvisSetting import *
 from packages.PasswordStorer.mainForPasswordStorer import *
+from packages.loggerPackage.loggerFile import *
 from imports.harshNative_github.hangMan_game.hangmanGame import *
 from imports.harshNative_github.txtCompare.txtComparePy import *
 from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
@@ -17,22 +19,35 @@ import logging
 import pyperclip
 import time
 
+# creating global object of class Clogger
+cLog = Clogger()
 
-# outsourced function 
+# setting TroubleShoot Value
+troubleShootValue = False
+cLog.setTroubleShoot(troubleShootValue)
+
+# function to restart everything - just call the main again
 def restart_program():
     os.system("cls")
+    cLog.log("program restarting.." , "i")
     main()
 
 
 # function to check for a substring in a string - returns true or false
 def isSubString(string , subString):
     lengthOfSubString = len(subString)
-    for i,j in enumerate(string):
-        if(j == subString[0]):
-            if(subString == string[i:i+lengthOfSubString]):
-                return True 
-            else:
-                pass
+    try:
+        for i,j in enumerate(string):
+            if(j == subString[0]):
+                if(subString == string[i:i+lengthOfSubString]):
+                    return True 
+                else:
+                    pass
+        cLog.log("isSubString method runned successfully" , "i")
+    except Exception as e:
+        cLog.log("isSubString function failed" , "e")
+        cLog.exception(str(e) , "main.py/isSubString_func")
+
     return False
 
 
@@ -46,8 +61,19 @@ def getHelp(passObj):
             with open("txtFiles/help.txt") as fil:
                 for line in fil:
                     print(line)
+            cLog.log("if case in get help method runned successfully" , "i")
         except FileNotFoundError:
-            print("oops , the help file in missing , visit the website for help")
+            os.system("cls")
+            cLog.log("help.txt file not found" , "e")
+            print("oops , the help file in missing , try reinstalling the program or visit the website for help")
+        except Exception as e:
+            os.system("cls")
+            cLog.log("error while opening the help file" , "e")
+            cLog.exception(str(e) , "In main.py/getHelp_func-If_Part")
+            print("something went wrong , try again.\n\n")
+            print("if the error remains follow instructions : ")
+            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+            print("step 2 - {}".format(cLog.getLogFileMessage))
 
     
     # for displaying specific help by searching for the keyords as substring in line
@@ -62,11 +88,21 @@ def getHelp(passObj):
                             print(line)
                             count += 1
                 if(count == 0):
-                    print("oops no help found , try writting only help for seeing all help available")
+                    print("oops no help found for entered prase , try writting only help for seeing all help available")
+            cLog.log("else case in get help method runned successfully" , "i")
         except FileNotFoundError:
-            print("oops , the help file in missing , visit the website for help")
+            os.system("cls")
+            cLog.log("help.txt file not found" , "e")
+            print("oops , the help file in missing , try reinstalling the program or visit the website for help")
+        except Exception as e:
+            os.system("cls")
+            cLog.log("error while opening the help file" , "e")
+            cLog.exception(str(e) , "In main.py/getHelp_func-elsePart")
+            print("something went wrong , try again.\n\n")
+            print("if the error remains follow instructions : ")
+            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+            print("step 2 - {}".format(cLog.getLogFileMessage))
             
-
 
 # function for handling the get help
 def handleGetHelp(command):
@@ -76,19 +112,32 @@ def handleGetHelp(command):
         if(("open" in commandList) or ("Open" in commandList)):
             try:
                 os.startfile(r"txtFiles\help.txt")
+                cLog.log("help open command runned successfully" , "i")
             except FileNotFoundError:
-                print("oops the help.txt is missing , visit website for help")
+                os.system("cls")
+                cLog.log("help.txt file not found" , "e")
+                print("oops the help.txt is missing ,try reinstalling the program or visit website for help")
+            except Exception as e:
+                os.system("cls")
+                cLog.log("error while opening the help file" , "e")
+                cLog.exception(str(e) , "In main.py/handleGetHelp_func")
+                print("something went wrong , try again.\n\n")
+                print("if the error remains follow instructions : ")
+                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+                print("step 2 - {}".format(cLog.getLogFileMessage))
             return True
 
         elif(len(commandList) > 1):
             getHelp(commandList)
+            cLog.log("getHelp method called successfully" , "i")
             return True
 
         else:
             getHelp("all")
+            cLog.log("getHelp method called successfully" , "i")
             return True
 
-        return False
+    return False
 
 
 class MainClass():
@@ -100,8 +149,14 @@ class MainClass():
     
     # function to get the Dictionary from the settings module
     def getDict(self):
-       objSetting = Setting()
-       self.settingsDict = objSetting.getDictionary()
+        objSetting = Setting(troubleShootValue)
+        self.settingsDict = objSetting.getDictionary()
+        if(self.settingsDict == False):
+           cLog.log("Their was some error in the settings module so we cannot retreive the dictionary" , "e")
+           return False
+        else:
+            cLog.log("getDict function runned successfully" , "i")
+            return True 
     
     def setUserName(self):
         temp = os.environ # generates a object with the property called USERNAME containing the info
@@ -110,7 +165,12 @@ class MainClass():
             if(self.settingsDict["userName"] == ""):
                 self.settingsDict["userName"] = tempUserName        
         except KeyError:
-            self.settingsDict["userName"] = tempUserName
+            cLog.log("cannot get the username from setting" , "i")
+            try:
+                self.settingsDict["userName"] = tempUserName
+            except Exception as e:
+                cLog.log("cannot get the username from system" , "e")
+                cLog.exception(str(e) , "In main.py/class_mainClass-setUserName_function")
 
     def returnUserName(self):
         return self.settingsDict["userName"]
@@ -142,12 +202,15 @@ class MainWeatherClass(MainClass):
                 self.cityName = self.settingsDict["City"]
             except Exception:
                 os.system("cls")
-                print("\nit looks like you have not setted any city in setting\n")
+                cLog.log("user as not setted city in setting" , "i")
+                print("\nit looks like you have not setted any city in setting , run setting command to open settings\n")
                 os.system("pause")
+
+                # this is a critical error , so calling main again to restart the program
                 main()
         
         # making a object of weather data class
-        objGetWeatherData = WeatherData()
+        objGetWeatherData = WeatherData(troubleShootValue)
 
         # getting the result
         result = objGetWeatherData.getWeatherData(self.cityName , self.weatherArgumentList)
@@ -168,7 +231,13 @@ class MainWeatherClass(MainClass):
                 tempList.append(j)
                 tabulateList.append(tempList)
         if (errorYES):
-            print("error while getting wheather details")
+            os.system("cls")
+            print("Error While printing weather details")
+            cLog.log("error while getting the wheather details" , "e")
+            print("\n\nif the error remains follow instructions : ")
+            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+            print("step 2 - {}".format(cLog.getLogFileMessage))
+            cLog.log("error while printing whether details , some things will be None" , "e")
         else:
             print(tabulate(tabulateList, headers=['Query', 'Data']))
         
@@ -214,23 +283,25 @@ def executeCommands(command):
         
         # executing the command
         objMainWeatherClass.printWeatherDetails()
-
+        cLog.log("weather command executed successfully" , "i")
         return True
     
     # for restoring the defualt setting
     elif(("restore" in commandList) or ("Restore" in commandList)):
-        objSetting = Setting()
+        objSetting = Setting(troubleShootValue)
         objSetting.regenerateFile()
         os.system("cls")
         print("you have restored the settings successfully")
+        cLog.log("restore command runned successfully" , "i")
         return True
 
     # for changing teh setting - this function opens the settings.txt in the defualt txt viewer of the system
     elif(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
-        objSetting = Setting()
+        objSetting = Setting(troubleShootValue)
         objSetting.openFile()
         os.system("cls")
         print("the settings file is opened, make sure to save the file run update command in jarvis")
+        cLog.log("setting command runned successfully" , "i")
         return True
 
     # function for updating the settings
@@ -252,7 +323,7 @@ def executeCommands(command):
             commandListCopy.remove("Backup")
 
         # creating object of class backUp
-        objBackUp = BackUp()
+        objBackUp = BackUp(cLog)
 
         # creating object of class setting
         objSetting = Setting()
@@ -437,6 +508,7 @@ def executeCommands(command):
 
     # calling for exit command
     elif(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
+        os.system("cls")
         print("Exiting the program" , end="" , flush=True)
         time.sleep(0.3)
         print("." , end="" , flush=True)

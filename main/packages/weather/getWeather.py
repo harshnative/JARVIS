@@ -1,12 +1,19 @@
 import requests
 import json
-
+import logging
+import os
+from packages.loggerPackage.loggerFile import *
 """ this is using the open weather api """
 
 class WeatherData():
 
     # building up constructor to set the defualt value's
-    def __init__(self):
+    def __init__(self , troubleShootValuePass):
+
+        self.troubleShootValue = troubleShootValuePass
+        self.cLog = Clogger()
+        self.cLog.setTroubleShoot(self.troubleShootValue)
+
         self._apiKey = "fe82651e607e46db61dba45e39aa7e17"
         self.cityName = "london"
         self.stringKey = "https://api.openweathermap.org/data/2.5/weather?q="
@@ -33,16 +40,21 @@ class WeatherData():
     def getDataFromWeb(self):
         try:
             self.data = requests.get(self.stringKey).text
-        except Exception:
-            pass    # since the defualt value of the data is already None
+            self.cLog.log("getDataFromWeb runned successfully" , "i")
+        except Exception as e:
+            self.cLog.log("cannot make request in getDataFromWeb" , "w")
+            self.cLog.exception(str(e) , "In getWeather.py/WeatherData_class-getDataFromWeb")
+            # just logging the exception because defualt value of self.data is None
 
 
     # function to convert the data from the web to json format
     def loadDataIntoJson(self):
         if self.data == None:
+            # just pass as by default json data is also none
             pass
         else:
             self.jsonData = json.loads(self.data)
+            self.cLog.log("loadDataIntoJson runned successfully" , "i")
 
 
     # function to read the list of infomation need and append the result to resultList by getting the values from the json
@@ -72,21 +84,43 @@ class WeatherData():
                 try:
                     self.resultList.append(self.jsonData["main"][str(i)])
                 except KeyError:
+                    self.cLog.log("key error in extractInfo function - self.jsonData[main][str(i)]" , "i")
                     self.resultList.append(None)
-
+                except Exception as e:
+                    os.system("cls")
+                    self.cLog.log("critical error in extract info function" , "e")
+                    self.cLog.exception(str(e) , "In getWeather.py/WeatherData_class-extractInfo_func")
+                    print("something went wrong , try again.\n\n")
+                    print("if the error remains follow instructions : ")
+                    print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(self.cLog.logFileName))
+                    print("step 2 - {}".format(self.cLog.getLogFileMessage))
+        return True
     
     # function to convert the json temp which is in kelvin to 'c
     def convTempToC(self):
         try:
             self.tempInK = self.jsonData["main"]["temp"]
         except KeyError:
-            print("error while getting weather details")
+            self.tempInK = None
+            return False
+        except Exception:
+            os.system("cls")
+            self.cLog.log("error while opening the help file" , "e")
+            self.cLog.exception(str(e) , "In getWeather.py/WeatherData_class-convTempToC_func")
+            print("something went wrong , try again.\n\n")
+            print("if the error remains follow instructions : ")
+            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(self.cLog.logFileName))
+            print("step 2 - {}".format(self.cLog.getLogFileMessage))
         self.tempInC = self.tempInK - 273
+        return True
 
 
     # function to convert the 'C to 'F
     def convTempToF(self):
-        self.tempInF = ( self.tempInC * (9/5) ) + 32
+        if(self.tempInC == None):
+            self.tempInF = None
+        else:
+            self.tempInF = ( self.tempInC * (9/5) ) + 32
 
 
     # function that the user will be using to get the data
@@ -100,8 +134,13 @@ class WeatherData():
         self.loadDataIntoJson()
         self.convTempToC()
         self.convTempToF()
-        self.extractInfo()
-        return self.resultList
+        status = self.extractInfo()
+
+        if(status == False):
+            self.cLog.log("weather module failed to work properly" , "i")
+            return self.resultList
+        else:
+            return self.resultList
    
 
 # driver code for test run

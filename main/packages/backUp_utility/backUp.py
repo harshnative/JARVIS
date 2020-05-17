@@ -2,6 +2,7 @@ import os
 import shutil
 import distutils.dir_util
 import datetime
+import logging
 
 class BackUp():
     """ startBackUp is the main function of this , only this function is usefull as it can drive can other function of this class itself
@@ -25,7 +26,8 @@ class BackUp():
 
 
     # constructor function
-    def __init__(self):
+    def __init__(self , loggerObj):
+        self.loggerObj = loggerObj
         self.userName = None
         self.pathToBackup = None
         self.exceptionList = []
@@ -39,8 +41,17 @@ class BackUp():
 
     # function to get the userName of the current user
     def getUserName(self):
-        temp = os.environ # generates a object with the property called USERNAME containing the info
-        self.userName = temp["USERNAME"]
+        try:
+            temp = os.environ # generates a object with the property called USERNAME containing the info
+            self.userName = temp["USERNAME"]
+        except Exception:
+            os.system("cls")
+            print("ERROR : jarvis could not get userName")
+            print("\nTry reinstalling the program with admistrative permissions\n")
+            print("if the error remains follow instructions : ")
+            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(self.loggerObj.logFileName))
+            print("step 2 - {}\n\n".format(self.loggerObj.getLogFileMessage))
+            os.system("pause")
 
 
     # function for copying the all stuff inside the c:/user
@@ -51,6 +62,7 @@ class BackUp():
             shutil.copytree(path , self.pathToBackup , dirs_exist_ok=True)
         except Exception as e:
             self.exceptionList.append(str(e))
+        self.loggerObj.log("for Command_A function runned successfully" ,"i")
 
 
     # function for copying the essentials of all the users inside "C:/"
@@ -88,10 +100,11 @@ class BackUp():
         for i in pathToCopy:
             print(f"on {count} out of {lengthToCopy}")
             # making sure that the path to backup exsist
+            self.
             try:
                 os.makedirs(self.pathToBackup + "/" + i[9:], exist_ok = True)
             except OSError:
-                pass
+                logging.log("OSError exception occured" , exc_info=True)
             
             # making the copy
             try:
