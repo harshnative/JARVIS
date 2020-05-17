@@ -592,6 +592,16 @@ def executeCommands(command):
         objPasswordStorerClass.driverFunc()
         return True
 
+    # handling command to run in jarvis window
+    elif(("cmd" in commandList) or ("Cmd" in commandList) or ("CMD" in commandList)):
+        os.system("cls")
+        print("opening jarvis in command prompt")
+        os.startfile(r"jarvis_CMD.bat")
+        print("\njarvis opened in command prompt")
+        print("\nExisting this instance of jarvis")
+        time.sleep(1)
+        exit()
+
     # calling for exit command
     elif(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
         os.system("cls")

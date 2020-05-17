@@ -362,7 +362,7 @@ class PasswordStorerClass:
                     if(self.isSubString(row[0] , toUpdate)):
                         print(indexCount , end = " : ")
                         print("Site - ", row[0] , end = "    ")
-                        print("Old Password - " , row[1])
+                        print("Old Password - " , self.decryptThing(row[1] , self.password))
                         toUpdateList.append(row[0])  
 
                 indexInput = int(input("\nEnter Index for update\n"))

@@ -5,11 +5,12 @@ A cool simple personal assistant that can do many things to make your life easie
 ## Discription -
 this is simple personal assistant named after everyones favourite jarvis assistant in the MCU
 
-this as of now can perform the following actions :
+jarvis as of now can perform the following actions :
 
 1. Get you the weather details
 2. backUp your computer or certain folder on a single command
-
+3. Store your passwords in the encrypted format and lets you see them easily with just one master password and many more features for handling passwords
+4. several different actions like playing game , converting links , coin toss , interest calculate , group generate , convert number systems , find average etc can be performed from one interface
 
 scroll down to Usage section to see the examples and commands of performing the above tasks
 
@@ -25,6 +26,11 @@ Just follow the on screen instructions to install
 
 
 ## Usage -
+
+```
+cmd
+```
+To run jarvis in cmd window instead of main window - this helps in knowing the reason of jarvis crash in the future
 
 ### Main features guide - 
 
