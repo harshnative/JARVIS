@@ -3,12 +3,15 @@ from tabulate import tabulate
 import os
 from getpass import getpass
 import onetimepad
-
+from packages.loggerPackage.loggerFile import *
 
 class PasswordStorerClass:
 
     # constructor
-    def __init__(self):
+    def __init__(self , troubleShootValuePass):
+        self.troubleShootValue = troubleShootValuePass
+        self.cLog = Clogger()
+        self.cLog.setTroubleShoot(self.troubleShootValue)
         self.tableNameForDB = "PASSWORDSTORER"
         self.dataBaseFileName = "Jarvis.db"
         self.connectionObj = None
@@ -18,19 +21,32 @@ class PasswordStorerClass:
 
     # function to find whether a word is present in string or not
     def isSubString(self , string , subString):
-        lengthOfSubString = len(subString)
-        for i,j in enumerate(string):
-            if(j == subString[0]):
-                if(subString == string[i:i+lengthOfSubString]):
-                    return True 
-                else:
-                    pass
-        return False
+        try:
+            lengthOfSubString = len(subString)
+            for i,j in enumerate(string):
+                if(j == subString[0]):
+                    if(subString == string[i:i+lengthOfSubString]):
+                        self.cLog.log("isSubStringFunc in mainForPassword" , "i")
+                        return True 
+                    else:
+                        pass
+            self.cLog.log("isSubStringFunc in mainForPassword" , "i")
+            return False
+        except Exception as e:
+            self.cLog.log("isSubString function failed" , "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/isSubString_func")
+            return False
+        
 
 
     # function to connect to the dataBase file
     def connectToDB(self):
-        self.connectionObj = sqlite3.connect("C:/programData/Jarvis/" + self.dataBaseFileName)
+        try:
+            self.connectionObj = sqlite3.connect("C:/programData/Jarvis/" + self.dataBaseFileName)
+            self.cLog.log("connected to database" , "i")
+        except Exception as e:
+            self.cLog.log("cannot connect to dataBase in main for password" , "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/connectToDB")
 
 
     # function to create table in data base file
@@ -41,177 +57,236 @@ class PasswordStorerClass:
                                                                     );'''
         try:
             self.connectionObj.execute(stringToPass)
+            self.cLog.log("table created successfully in main for password" , "i")
         except Exception:
-            pass
+            self.cLog.log("table already exsist" , "w")
 
 
     # function to add contents to the table in DB
     def addToTable(self , key , value):
         # generating query for sqlite3 obj to execute
-        stringToPass = "INSERT INTO " + self.tableNameForDB + " (PASSWORD_FOR , PASSWORD_VALUE) VALUES ( " + "'" + str(key) + "'" + " , " + "'" + str(value) + "'" + " )"
-        self.connectionObj.execute(stringToPass)
-        self.connectionObj.commit()
+        try:
+            stringToPass = "INSERT INTO " + self.tableNameForDB + " (PASSWORD_FOR , PASSWORD_VALUE) VALUES ( " + "'" + str(key) + "'" + " , " + "'" + str(value) + "'" + " )"
+            self.connectionObj.execute(stringToPass)
+            self.connectionObj.commit()
+            self.cLog.log("added to table successfully in main for password" , "i")
+        except Exception as e:
+            toLog = "cannot add to table in main for password - query: " + stringToPass
+            self.cLog.log(str(toLog) , "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/addToTable")
 
 
     # function to update contents to the table in DB
     def updateInTable(self, key , updateValue):
         # generating query for sqlite3 obj to execute
-        stringToPass = "UPDATE " + self.tableNameForDB + " set PASSWORD_VALUE = " + "'" + str(updateValue) + "'" + " where PASSWORD_FOR = " + "'" + str(key) + "'"
-        cursor = self.connectionObj.execute(stringToPass)
-        self.connectionObj.commit()
+        try:
+            stringToPass = "UPDATE " + self.tableNameForDB + " set PASSWORD_VALUE = " + "'" + str(updateValue) + "'" + " where PASSWORD_FOR = " + "'" + str(key) + "'"
+            cursor = self.connectionObj.execute(stringToPass)
+            self.connectionObj.commit()
+            self.cLog.log("updated in table successfully in main for password" , "i")
+        except Exception as e:
+            toLog = "cannot update table in main for password - query: " + stringToPass
+            self.cLog.log(str(toLog) , "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/updateInTable_func")
 
 
     # function to delete content from table in DB
     def deleteFromTable(self , key):
-        # generating query for sqlite3 obj to execute
-        stringToPass = "DELETE from " + self.tableNameForDB + " where PASSWORD_FOR = " + "'" + str(key) + "'" + ";"
-        cursor = self.connectionObj.execute(stringToPass)
-        self.connectionObj.commit()
+        try:
+            # generating query for sqlite3 obj to execute
+            stringToPass = "DELETE from " + self.tableNameForDB + " where PASSWORD_FOR = " + "'" + str(key) + "'" + ";"
+            cursor = self.connectionObj.execute(stringToPass)
+            self.connectionObj.commit()
+            self.cLog.log("deleted in table successfully in main for password" , "i")
+        except Exception as e:
+            toLog = "cannot delete in table in main for password - query: " + stringToPass
+            self.cLog.log(str(toLog) , "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/connectToDB")
 
 
     # function to display all the contents from the table in DB
     def displayAll(self):
-        # generating query for sqlite3 obj to execute
-        stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
-        cursor = self.connectionObj.execute(stringToPass)
-        tabulateList = []
-        for row in cursor:
-            # master password stored - so cannot be shown in which we have stored it to user
-            if(row[0] == "!@#$%^&*("):
-                    pass
-            else:
-                # getting list for tablute module to show data
-                tempList = []
-                tempList.append(str(row[0]))
-                tempList.append(self.decryptThing(str(row[1]) , self.password))
-                tabulateList.append(tempList)
-        
-        # showing the data 
-        os.system("cls")
-        print(tabulate(tabulateList, headers=['Site', 'Password']))
-
-
-    # function to display certain items only based on search
-    def displaySearch(self , searchItem):
-        # generating query for sqlite3 obj to execute
-        stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
-        cursor = self.connectionObj.execute(stringToPass)
-        tabulateList = []
-        for row in cursor:
-            if(self.isSubString(row[0] , searchItem)):
+        try:
+            # generating query for sqlite3 obj to execute
+            stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
+            cursor = self.connectionObj.execute(stringToPass)
+            tabulateList = []
+            for row in cursor:
+                # master password stored - so cannot be shown in which we have stored it to user
                 if(row[0] == "!@#$%^&*("):
-                    pass
+                        pass
                 else:
-                    # generating list for tabulate module
+                    # getting list for tablute module to show data
                     tempList = []
                     tempList.append(str(row[0]))
                     tempList.append(self.decryptThing(str(row[1]) , self.password))
                     tabulateList.append(tempList)
-        
-        # showing the data
-        os.system("cls")
-        print(tabulate(tabulateList, headers=['Site', 'Password']))
+            
+            # showing the data 
+            os.system("cls")
+            print(tabulate(tabulateList, headers=['Site', 'Password']))
+            self.cLog.log("displayAll function runned successfully in main for password" , "i")
+        except Exception as e:
+            self.cLog.log("error while displaying all", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/displayAll")
+
+
+    # function to display certain items only based on search
+    def displaySearch(self , searchItem):
+        try:
+            # generating query for sqlite3 obj to execute
+            stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
+            cursor = self.connectionObj.execute(stringToPass)
+            tabulateList = []
+            for row in cursor:
+                if(self.isSubString(row[0] , searchItem)):
+                    if(row[0] == "!@#$%^&*("):
+                        pass
+                    else:
+                        # generating list for tabulate module
+                        tempList = []
+                        tempList.append(str(row[0]))
+                        tempList.append(self.decryptThing(str(row[1]) , self.password))
+                        tabulateList.append(tempList)
+            
+            # showing the data
+            os.system("cls")
+            print(tabulate(tabulateList, headers=['Site', 'Password']))
+            self.cLog.log("display search function runned successfully in main for password" , "i")
+        except Exception as e:
+            self.cLog.log("error while displaying search", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/displaySearch")
 
 
     # function to set Password for encryption
     def setPass(self):
+        try:
+            # infinite loop for if the password does not match while entering
+            while(1):
+                os.system("cls")
+                passwordInput1 = str(getpass("Enter  New  Master Password : "))
+                passwordInput2 = str(getpass("Enter Master Password again : "))
 
-        # infinite loop for if the password does not match while entering
-        while(1):
-            os.system("cls")
-            passwordInput1 = str(getpass("Enter  New  Master Password : "))
-            passwordInput2 = str(getpass("Enter Master Password again : "))
+                # checking if the password are same or not to avoid miss entering of password
+                if(passwordInput1 == passwordInput2):
+                    passwordInput1 = self.encryptThing(passwordInput1 , passwordInput2)
 
-            # checking if the password are same or not to avoid miss entering of password
-            if(passwordInput1 == passwordInput2):
-                passwordInput1 = self.encryptThing(passwordInput1 , passwordInput2)
+                    # adding password to data base and class variable
+                    self.addToTable("!@#$%^&*(" , passwordInput1)
+                    self.password = passwordInput2
+                    print("congo , new Password setted successfully")
+                    break
 
-                # adding password to data base and class variable
-                self.addToTable("!@#$%^&*(" , passwordInput1)
-                self.password = passwordInput2
-                print("congo , new Password setted successfully")
-                break
-
-            # if the password does not match , continue the loop
-            else:
-                print("\nPassword did not match\n")
-                os.system("pause")
+                # if the password does not match , continue the loop
+                else:
+                    print("\nPassword did not match\n")
+                    os.system("pause")
+            self.cLog.log("setPass func runned successfully in main for password" , "i")
+        except Exception as e:
+            self.cLog.log("error while setting password in main for password", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/setPass")
 
 
     # function to authenticate - checking whether the password stored in the database is this or not
     # we do this by getting the password from the DB and decrypting it with the key = password enter , now if both match then we got the rigth user
     # returns bool value
     def authenticate(self):
-        os.system("cls")
-        passwordInput = str(getpass("Enter Master Password : "))
+        try:
+            os.system("cls")
+            passwordInput = str(getpass("Enter Master Password : "))
 
-        # generating query for sqlite3 obj to execute
-        stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
-        cursor = self.connectionObj.execute(stringToPass)
-        for row in cursor:
-            if(row[0] == "!@#$%^&*("):
-                passwordFromDataBase = row[1]
-                passwordFromDataBase = self.decryptThing(passwordFromDataBase , passwordInput)
-                if(passwordFromDataBase == passwordInput):
-                    self.password = passwordInput
-                    self.oldPassword = passwordInput
-                    return True
-        
-        else:
-            return False
+            # generating query for sqlite3 obj to execute
+            stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
+            cursor = self.connectionObj.execute(stringToPass)
+            for row in cursor:
+                if(row[0] == "!@#$%^&*("):
+                    passwordFromDataBase = row[1]
+                    passwordFromDataBase = self.decryptThing(passwordFromDataBase , passwordInput)
+                    if(passwordFromDataBase == passwordInput):
+                        self.password = passwordInput
+                        self.oldPassword = passwordInput
+                        return True
+            
+            else:
+                return False
+
+            self.cLog.log("authenticate function runned successfully in main for password" , "i")
+
+        except Exception as e:
+            self.cLog.log("error while authenticating", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/authenticate")
 
 
     # function for changing the password
     # it is bit more complicated as we to encrypt all passwords again with the key = newPassword    
     def changePassword(self):
-        while(1):
+        try:
+            while(1):
 
-            # you can only change password if you are rigth user
-            if(self.authenticate()):
-                self.deleteFromTable("!@#$%^&*(")
-                self.setPass()
+                # you can only change password if you are rigth user
+                if(self.authenticate()):
+                    self.deleteFromTable("!@#$%^&*(")
+                    self.setPass()
 
-                # generating query for sqlite3 obj to execute
-                stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
-                cursor = self.connectionObj.execute(stringToPass)
-                
-                # just to create "\n"
-                print()
+                    # generating query for sqlite3 obj to execute
+                    stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
+                    cursor = self.connectionObj.execute(stringToPass)
+                    
+                    # just to create "\n"
+                    print()
 
-                for row in cursor:
-                    # do not want to change master password as it as already been updated
-                    if(row[0] == "!@#$%^&*("):
-                        pass
-                    else:
-                        # getting passwords
-                        old = row[1]
-                        # decryting it 
-                        new = self.decryptThing(old, self.oldPassword)
-                        # encrypting it again with new password
-                        new = self.encryptThing(new, self.password)
-                        key = row[0]
-                        value = new
-                        # updating the values in the DB
-                        self.updateInTable(key , value)
+                    for row in cursor:
+                        # do not want to change master password as it as already been updated
+                        if(row[0] == "!@#$%^&*("):
+                            pass
+                        else:
+                            # getting passwords
+                            old = row[1]
+                            # decryting it 
+                            new = self.decryptThing(old, self.oldPassword)
+                            # encrypting it again with new password
+                            new = self.encryptThing(new, self.password)
+                            key = row[0]
+                            value = new
+                            # updating the values in the DB
+                            self.updateInTable(key , value)
 
-                print("\n\nPassword changed successfully")
-                break
+                    print("\n\nPassword changed successfully")
+                    break
 
-            else:
-                print("Wrong password...")
-                os.system("pause")
+                else:
+                    print("Wrong password...")
+                    os.system("pause")
+            self.cLog.log("change password function runned successfully in main for password" , "i")
+        except Exception as e:
+            self.cLog.log("error while changing password in main for password", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/changePassword")
 
 
     # function for encrypting a thing with the key passed
     def encryptThing(self , thing , key):
-        stringToReturn = onetimepad.encrypt(thing , key)
-        return str(stringToReturn)
+        try:
+            stringToReturn = onetimepad.encrypt(thing , key)
+            self.cLog.log("encrypting thing func runned successfully in main for password" , "i")
+            return str(stringToReturn)
+        except Exception as e:
+            print("something went wrong while encrypting\n")
+            os.system("pause")
+            self.cLog.log("error while encrypting thing in main for password", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/encryptThing")
 
 
     # function for decrypting a thing with the key passed
     def decryptThing(self , thing , key):
-        stringToReturn = onetimepad.decrypt(thing , key)
-        return str(stringToReturn)
+        try:
+            stringToReturn = onetimepad.decrypt(thing , key)
+            self.cLog.log("decrypting thing func runned successfully in main for password" , "i")
+            return str(stringToReturn)
+        except Exception as e:
+            print("something went wrong while decrypting\n")
+            os.system("pause")
+            self.cLog.log("error while decrypting in main for password", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/decryptingThing")
 
 
     # function for Getting things done
@@ -300,11 +375,13 @@ class PasswordStorerClass:
                         self.updateInTable(str(j) , str(updated))
                 
                 print("Value updated successfully")
+                self.cLog.log("getDone func runned successfully in main for password" , "i")
                 return True
 
             # for seeing all the things in the DB
             elif("-sa" in commandList):
                 self.displayAll()
+                self.cLog.log("getDone func runned successfully in main for password" , "i")
                 return True
 
             # displaying things in the DB according to search query
@@ -312,17 +389,21 @@ class PasswordStorerClass:
                 os.system("cls")
                 searchItem = input("Enter the website name to display Password : ")
                 self.displaySearch(searchItem)
+                self.cLog.log("getDone func runned successfully in main for password" , "i")
                 return True
 
             # for changing password
             elif("-c" in commandList):
                 self.changePassword()
+                self.cLog.log("getDone func runned successfully in main for password" , "i")
                 return True
-            
+
+            self.cLog.log("getDone func runned successfully in main for password" , "i")
             return False
 
-        except Exception:
-            os.system("cls")
+        except Exception as e:
+            self.cLog.log("error while performing the function getDone in main for password", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/getDone")
             print("Oops something went wrong :( ")
 
     # fuction for driving all the things
@@ -363,7 +444,11 @@ class PasswordStorerClass:
             stringOfCommandInput = input("Enter Command For Password Manager in JARVIS : ")
             
             # generating commandList from input
-            commandList = list(stringOfCommandInput.split())
+            try:
+                commandList = list(stringOfCommandInput.split())
+            except Exception as e:
+                self.cLog.log("error while list in driver function", "e")
+                self.cLog.exception(str(e) , "mainForPassword.py/driverFunc")
             if("exit" in commandList):
                 break
             else:

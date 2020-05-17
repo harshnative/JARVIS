@@ -2,53 +2,55 @@
 print("\nLoading Jarvis.....")
 print("\nThis may take few minutes for the first time :)")
 
-# importing modules
-from packages.backUp_utility.backUp import *
-from packages.weather.getWeather import *
-from packages.settings.jarvisSetting import *
-from packages.PasswordStorer.mainForPasswordStorer import *
-from packages.loggerPackage.loggerFile import *
-from imports.harshNative_github.hangMan_game.hangmanGame import *
-from imports.harshNative_github.txtCompare.txtComparePy import *
-from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
-import os
-from tabulate import tabulate
-import sys
-import psutil
-import logging
-import pyperclip
 import time
+import pyperclip
+import logging
+import psutil
+import sys
+from tabulate import tabulate
+import os
+from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
+from imports.harshNative_github.txtCompare.txtComparePy import *
+from imports.harshNative_github.hangMan_game.hangmanGame import *
+from packages.loggerPackage.loggerFile import *
+from packages.PasswordStorer.mainForPasswordStorer import *
+from packages.settings.jarvisSetting import *
+from packages.weather.getWeather import *
+from packages.backUp_utility.backUp import *
 
 # creating global object of class Clogger
 cLog = Clogger()
 
 # setting TroubleShoot Value
-troubleShootValue = False
+troubleShootValue = True
 cLog.setTroubleShoot(troubleShootValue)
 
 # function to restart everything - just call the main again
+
+
 def restart_program():
     os.system("cls")
-    cLog.log("program restarting.." , "i")
+    cLog.log("program restarting..", "i")
     main()
 
 
 # function to check for a substring in a string - returns true or false
-def isSubString(string , subString):
+def isSubString(string, subString):
     lengthOfSubString = len(subString)
     try:
-        for i,j in enumerate(string):
+        for i, j in enumerate(string):
             if(j == subString[0]):
                 if(subString == string[i:i+lengthOfSubString]):
-                    return True 
+                    cLog.log("isSubString method runned successfully", "i")
+                    return True
                 else:
                     pass
-        cLog.log("isSubString method runned successfully" , "i")
+        cLog.log("isSubString method runned successfully", "i")
+        return False
     except Exception as e:
-        cLog.log("isSubString function failed" , "e")
-        cLog.exception(str(e) , "main.py/isSubString_func")
-
-    return False
+        cLog.log("isSubString function failed", "e")
+        cLog.exception(str(e), "main.py/isSubString_func")
+        return False
 
 
 # function for displaying help
@@ -61,21 +63,21 @@ def getHelp(passObj):
             with open("txtFiles/help.txt") as fil:
                 for line in fil:
                     print(line)
-            cLog.log("if case in get help method runned successfully" , "i")
+            cLog.log("if case in get help method runned successfully", "i")
         except FileNotFoundError:
             os.system("cls")
-            cLog.log("help.txt file not found" , "e")
-            print("oops , the help file in missing , try reinstalling the program or visit the website for help")
+            cLog.log("help.txt file not found", "e")
+            print(
+                "oops , the help file in missing , try reinstalling the program or visit the website for help")
         except Exception as e:
             os.system("cls")
-            cLog.log("error while opening the help file" , "e")
-            cLog.exception(str(e) , "In main.py/getHelp_func-If_Part")
+            cLog.log("error while opening the help file", "e")
+            cLog.exception(str(e), "In main.py/getHelp_func-If_Part")
             print("something went wrong , try again.\n\n")
             print("if the error remains follow instructions : ")
             print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
             print("step 2 - {}".format(cLog.getLogFileMessage))
 
-    
     # for displaying specific help by searching for the keyords as substring in line
     else:
         os.system("cls")
@@ -84,25 +86,27 @@ def getHelp(passObj):
             with open("txtFiles/help.txt") as fil:
                 for line in fil:
                     for i in passObj:
-                        if(isSubString(line , i)):
+                        if(isSubString(line, i)):
                             print(line)
                             count += 1
                 if(count == 0):
-                    print("oops no help found for entered prase , try writting only help for seeing all help available")
-            cLog.log("else case in get help method runned successfully" , "i")
+                    print(
+                        "oops no help found for entered prase , try writting only help for seeing all help available")
+            cLog.log("else case in get help method runned successfully", "i")
         except FileNotFoundError:
             os.system("cls")
-            cLog.log("help.txt file not found" , "e")
-            print("oops , the help file in missing , try reinstalling the program or visit the website for help")
+            cLog.log("help.txt file not found", "e")
+            print(
+                "oops , the help file in missing , try reinstalling the program or visit the website for help")
         except Exception as e:
             os.system("cls")
-            cLog.log("error while opening the help file" , "e")
-            cLog.exception(str(e) , "In main.py/getHelp_func-elsePart")
+            cLog.log("error while opening the help file", "e")
+            cLog.exception(str(e), "In main.py/getHelp_func-elsePart")
             print("something went wrong , try again.\n\n")
             print("if the error remains follow instructions : ")
             print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
             print("step 2 - {}".format(cLog.getLogFileMessage))
-            
+
 
 # function for handling the get help
 def handleGetHelp(command):
@@ -112,15 +116,16 @@ def handleGetHelp(command):
         if(("open" in commandList) or ("Open" in commandList)):
             try:
                 os.startfile(r"txtFiles\help.txt")
-                cLog.log("help open command runned successfully" , "i")
+                cLog.log("help open command runned successfully", "i")
             except FileNotFoundError:
                 os.system("cls")
-                cLog.log("help.txt file not found" , "e")
-                print("oops the help.txt is missing ,try reinstalling the program or visit website for help")
+                cLog.log("help.txt file not found", "e")
+                print(
+                    "oops the help.txt is missing ,try reinstalling the program or visit website for help")
             except Exception as e:
                 os.system("cls")
-                cLog.log("error while opening the help file" , "e")
-                cLog.exception(str(e) , "In main.py/handleGetHelp_func")
+                cLog.log("error while opening the help file", "e")
+                cLog.exception(str(e), "In main.py/handleGetHelp_func")
                 print("something went wrong , try again.\n\n")
                 print("if the error remains follow instructions : ")
                 print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
@@ -129,12 +134,12 @@ def handleGetHelp(command):
 
         elif(len(commandList) > 1):
             getHelp(commandList)
-            cLog.log("getHelp method called successfully" , "i")
+            cLog.log("getHelp method called successfully", "i")
             return True
 
         else:
             getHelp("all")
-            cLog.log("getHelp method called successfully" , "i")
+            cLog.log("getHelp method called successfully", "i")
             return True
 
     return False
@@ -146,54 +151,57 @@ class MainClass():
     def __init__(self):
         self.settingsDict = {}
         self.getDict()
-    
+
     # function to get the Dictionary from the settings module
     def getDict(self):
         objSetting = Setting(troubleShootValue)
         self.settingsDict = objSetting.getDictionary()
         if(self.settingsDict == False):
-           cLog.log("Their was some error in the settings module so we cannot retreive the dictionary" , "e")
-           return False
+            cLog.log(
+                "Their was some error in the settings module so we cannot retreive the dictionary", "e")
+            return False
         else:
-            cLog.log("getDict function runned successfully" , "i")
-            return True 
-    
+            cLog.log("getDict function runned successfully", "i")
+            return True
+
     def setUserName(self):
-        temp = os.environ # generates a object with the property called USERNAME containing the info
+        temp = os.environ  # generates a object with the property called USERNAME containing the info
         tempUserName = temp["USERNAME"]
         try:
             if(self.settingsDict["userName"] == ""):
-                self.settingsDict["userName"] = tempUserName        
+                self.settingsDict["userName"] = tempUserName
         except KeyError:
-            cLog.log("cannot get the username from setting" , "i")
+            cLog.log("cannot get the username from setting", "i")
             try:
                 self.settingsDict["userName"] = tempUserName
             except Exception as e:
-                cLog.log("cannot get the username from system" , "e")
-                cLog.exception(str(e) , "In main.py/class_mainClass-setUserName_function")
+                cLog.log("cannot get the username from system", "e")
+                cLog.exception(
+                    str(e), "In main.py/class_mainClass-setUserName_function")
 
     def returnUserName(self):
         return self.settingsDict["userName"]
+
 
 class MainWeatherClass(MainClass):
 
     # constructor
     def __init__(self):
         self.cityName = None
-        self.weatherArgumentList = ["tempInC" , "pressure" , "humidity"]
-    
+        self.weatherArgumentList = ["tempInC", "pressure", "humidity"]
 
     # function to set the cityName
-    def getCityName(self , cityPass):
+
+    def getCityName(self, cityPass):
         self.cityName = cityPass
 
-
     # function to add another elements to list to get their info as well
-    def addToList(self , element):
+
+    def addToList(self, element):
         self.weatherArgumentList.append(element)
 
-
     # function to print the weather details
+
     def printWeatherDetails(self):
         self.getDict()
         # if the cityName is not passed then we will take it from dictionary generated from settings app
@@ -202,25 +210,27 @@ class MainWeatherClass(MainClass):
                 self.cityName = self.settingsDict["City"]
             except Exception:
                 os.system("cls")
-                cLog.log("user as not setted city in setting" , "i")
-                print("\nit looks like you have not setted any city in setting , run setting command to open settings\n")
+                cLog.log("user as not setted city in setting", "i")
+                print(
+                    "\nit looks like you have not setted any city in setting , run setting command to open settings\n")
                 os.system("pause")
 
                 # this is a critical error , so calling main again to restart the program
                 main()
-        
+
         # making a object of weather data class
         objGetWeatherData = WeatherData(troubleShootValue)
 
         # getting the result
-        result = objGetWeatherData.getWeatherData(self.cityName , self.weatherArgumentList)
-        
-        #showing the result in tabular form
+        result = objGetWeatherData.getWeatherData(
+            self.cityName, self.weatherArgumentList)
+
+        # showing the result in tabular form
         os.system("cls")
         print(f"weather details of {self.cityName} are - \n")
         tabulateList = []
         errorYES = False
-        for i,j in zip(self.weatherArgumentList , result):
+        for i, j in zip(self.weatherArgumentList, result):
             tempList = []
             if ((i == None) or (j == None)):
                 errorYES = True
@@ -233,14 +243,14 @@ class MainWeatherClass(MainClass):
         if (errorYES):
             os.system("cls")
             print("Error While printing weather details")
-            cLog.log("error while getting the wheather details" , "e")
+            cLog.log("error while getting the wheather details", "e")
             print("\n\nif the error remains follow instructions : ")
             print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
             print("step 2 - {}".format(cLog.getLogFileMessage))
-            cLog.log("error while printing whether details , some things will be None" , "e")
+            cLog.log(
+                "error while printing whether details , some things will be None", "e")
         else:
             print(tabulate(tabulateList, headers=['Query', 'Data']))
-        
 
 
 # function to execute the passed command by analysing it
@@ -253,19 +263,20 @@ def executeCommands(command):
         # creating object of main weather class
         objMainWeatherClass = MainWeatherClass()
 
-        # looping through command list to get the cityname if present 
+        # looping through command list to get the cityname if present
         for com in commandList:
 
             # getting the city name - as to be city-cityName
-            if(isSubString(str(command) , "city")):
-                for i,j in enumerate(com):
+            if(isSubString(str(command), "city")):
+                for i, j in enumerate(com):
                     if(j == "c"):
                         if(com[i:i+4] == "city"):
                             cityName = com[i+5:]
                             cityNameEdit = ""
-                            for i,j in enumerate(cityName):
+                            for i, j in enumerate(cityName):
                                 if(j == "_"):
-                                    cityNameEdit = cityName[:i] + " " + cityName[i+1:]
+                                    cityNameEdit = cityName[:i] + \
+                                        " " + cityName[i+1:]
                             if(cityNameEdit == ""):
                                 pass
                             else:
@@ -277,22 +288,22 @@ def executeCommands(command):
         # passing the city name to the class
         objMainWeatherClass.getCityName(cityName)
 
-        # checking for additional commands 
+        # checking for additional commands
         if("-f" in commandList or "-F" in commandList):
             objMainWeatherClass.addToList("tempInF")
-        
+
         # executing the command
         objMainWeatherClass.printWeatherDetails()
-        cLog.log("weather command executed successfully" , "i")
+        cLog.log("weather command executed successfully", "i")
         return True
-    
+
     # for restoring the defualt setting
     elif(("restore" in commandList) or ("Restore" in commandList)):
         objSetting = Setting(troubleShootValue)
         objSetting.regenerateFile()
         os.system("cls")
         print("you have restored the settings successfully")
-        cLog.log("restore command runned successfully" , "i")
+        cLog.log("restore command runned successfully", "i")
         return True
 
     # for changing teh setting - this function opens the settings.txt in the defualt txt viewer of the system
@@ -301,7 +312,7 @@ def executeCommands(command):
         objSetting.openFile()
         os.system("cls")
         print("the settings file is opened, make sure to save the file run update command in jarvis")
-        cLog.log("setting command runned successfully" , "i")
+        cLog.log("setting command runned successfully", "i")
         return True
 
     # function for updating the settings
@@ -336,8 +347,10 @@ def executeCommands(command):
         if("-d" in commandList):
             if(dictionaryFromSetting["backUpPath"] == ""):
                 os.system("cls")
-                print("it looks like you have not added any folder's to backup in setting file")
-                print("\n\ntype change settings in the command to open the file and then run update command")
+                print(
+                    "it looks like you have not added any folder's to backup in setting file")
+                print(
+                    "\n\ntype change settings in the command to open the file and then run update command")
                 print("\n\ntype help settings for additional help")
                 return True
             else:
@@ -348,26 +361,34 @@ def executeCommands(command):
                 except OSError as e:
                     os.system("cls")
                     pathToBackup = pathToBackup + "/" + "jarvisBackup"
-                    cLog.log("OSError for execute command under backup" , "e")
-                    cLog.exception(str(e) , "In main.py/executeCommmand_func_backupCommand")
-                    print("folder in path to backup in settings already exit or may be the path is not found")
-                    print("\n\nif the folder already exit - then all the file's will be overRidden")
-                    print("\n\npress enter to continue with backup or close the program to stop it")
+                    cLog.log("OSError for execute command under backup", "e")
+                    cLog.exception(
+                        str(e), "In main.py/executeCommmand_func_backupCommand")
+                    print(
+                        "folder in path to backup in settings already exit or may be the path is not found")
+                    print(
+                        "\n\nif the folder already exit - then all the file's will be overRidden")
+                    print(
+                        "\n\npress enter to continue with backup or close the program to stop it")
                     input()
                     os.system("cls")
 
-            # if backup path is correct then if need to ckeck if the directories are listed in setting's file or not 
+            # if backup path is correct then if need to ckeck if the directories are listed in setting's file or not
             if(dictionaryFromSetting["Directories"] == ""):
                 os.system("cls")
-                print("it looks like you have not added any folder's to directories in setting file")
-                print("\n\ntype change settings in the command to open the file and then run update command")
+                print(
+                    "it looks like you have not added any folder's to directories in setting file")
+                print(
+                    "\n\ntype change settings in the command to open the file and then run update command")
                 print("\n\ntype help settings for additional help")
-                cLog.log("no folder added to directory error in execute command function in backup command" , "e")
+                cLog.log(
+                    "no folder added to directory error in execute command function in backup command", "e")
                 return True
             else:
-                directoriesGenerated = str(dictionaryFromSetting["Directories"])
+                directoriesGenerated = str(
+                    dictionaryFromSetting["Directories"])
                 directoriesList = directoriesGenerated.split(",")
-                
+
                 # created a list of directories to pass on to the function startbackup of class backup
                 for i in directoriesList:
                     i = i.strip()
@@ -377,24 +398,25 @@ def executeCommands(command):
         os.system("cls")
         print("\nBackUp in process - This may take several minutes....")
         print("\nplease do not close the program , otherWise files may get corrupted")
-        objBackUp.startBackUp(commandListCopy , directoriesListEditted , pathToBackup + "/")
+        objBackUp.startBackUp(
+            commandListCopy, directoriesListEditted, pathToBackup + "/")
         os.system("cls")
         print("\n\nCopy completed\nlog file is generated at the desktop , their may me some files that may not have been copied due to permission errors :(")
-        cLog.log("executeCommand function runned backupCommand successfully" , "i")
-        return  True
+        cLog.log("executeCommand function runned backupCommand successfully", "i")
+        return True
 
     # calling for hangman game
     elif(("hangman" in commandList) or ("Hangman" in commandList)):
         if(("game" in commandList) or ("Game" in commandList)):
             os.system("cls")
-            #calling the game function 
+            # calling the game function
             boolValue = mainForHangmanGame()
             os.system("cls")
             if(boolValue == True):
                 print("thanks for playing game")
             else:
                 print("some error ocurred :( , try reinstalling the program")
-                cLog.log("some error occured in hangman game" , "e")
+                cLog.log("some error occured in hangman game", "e")
             return True
         else:
             return False
@@ -407,7 +429,7 @@ def executeCommands(command):
             try:
                 mainForTxtCompare()
             except Exception:
-                cLog.log("some error occured while comparing txt files" , "e")
+                cLog.log("some error occured while comparing txt files", "e")
                 print("some Error occured :(")
             return True
         else:
@@ -422,12 +444,14 @@ def executeCommands(command):
             linkFinal = mainForGoogleDriveLink(linkGet)
             if(linkFinal == False):
                 print("\n\nThe link is in valid :(")
-                cLog.log("google drive command runned succesfully , but the link was invalid" , "i")
+                cLog.log(
+                    "google drive command runned succesfully , but the link was invalid", "i")
                 return True
             else:
                 pyperclip.copy(str(linkFinal))
                 pyperclip.paste()
-                print("\n\nThe link is {} and is been copied to clipboard :)".format(linkFinal))
+                print("\n\nThe link is {} and is been copied to clipboard :)".format(
+                    linkFinal))
                 cLog.log("google drive command runned succesfully", "i")
                 return True
 
@@ -439,15 +463,15 @@ def executeCommands(command):
                 os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                cLog.log("external exe file not found" , "e")
+                cLog.log("external exe file not found", "e")
                 print("The random generator file is missing")
             except Exception as e:
                 print("someThing went wrong :(")
                 print("\n\nif the error remains follow instructions : ")
                 print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
                 print("step 2 - {}".format(cLog.getLogFileMessage))
-                cLog.log("error on generate random command" , "e")
-                cLog.exception(str(e) , "In generate random command" )
+                cLog.log("error on generate random command", "e")
+                cLog.exception(str(e), "In generate random command")
 
             return True
         else:
@@ -462,15 +486,17 @@ def executeCommands(command):
                     os.startfile(r"external_exe\harshNative_github\NSC.exe")
                     print("The file is opened in other window :)")
                 except FileNotFoundError:
-                    cLog.log("external exe file not found" , "e")
+                    cLog.log("external exe file not found", "e")
                     print("The number convert file is missing")
                 except Exception as e:
                     print("someThing went wrong :(")
                     print("\n\nif the error remains follow instructions : ")
-                    print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+                    print(
+                        "step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
                     print("step 2 - {}".format(cLog.getLogFileMessage))
-                    cLog.log("error on number system command" , "e")
-                    cLog.exception(str(e) , "In number system convertor command" )
+                    cLog.log("error on number system command", "e")
+                    cLog.exception(
+                        str(e), "In number system convertor command")
                 return True
             else:
                 return False
@@ -484,15 +510,15 @@ def executeCommands(command):
             os.startfile(r"external_exe\harshNative_github\average_finder.exe")
             print("The file is opened in other window :)")
         except FileNotFoundError:
-            cLog.log("external exe file not found" , "e")
+            cLog.log("external exe file not found", "e")
             print("The average finder file is missing")
         except Exception as e:
             print("someThing went wrong :(")
             print("\n\nif the error remains follow instructions : ")
             print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
             print("step 2 - {}".format(cLog.getLogFileMessage))
-            cLog.log("error on average finder command" , "e")
-            cLog.exception(str(e) , "In average finder command" )
+            cLog.log("error on average finder command", "e")
+            cLog.exception(str(e), "In average finder command")
         return True
 
     # calling for coin toss
@@ -503,15 +529,15 @@ def executeCommands(command):
                 os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                cLog.log("external exe file not found" , "e")
+                cLog.log("external exe file not found", "e")
                 print("The coin toss file is missing")
             except Exception as e:
                 print("someThing went wrong :(")
                 print("\n\nif the error remains follow instructions : ")
                 print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
                 print("step 2 - {}".format(cLog.getLogFileMessage))
-                cLog.log("error on coin toss command" , "e")
-                cLog.exception(str(e) , "In coin toss command" )
+                cLog.log("error on coin toss command", "e")
+                cLog.exception(str(e), "In coin toss command")
             return True
         else:
             return False
@@ -521,65 +547,66 @@ def executeCommands(command):
         if(("generate" in commandList) or ("Generate" in commandList)):
             os.system("cls")
             try:
-                os.startfile(r"external_exe\harshNative_github\group_Generator.exe")
+                os.startfile(
+                    r"external_exe\harshNative_github\group_Generator.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                cLog.log("external exe file not found" , "e")
+                cLog.log("external exe file not found", "e")
                 print("The group generator file is missing")
             except Exception as e:
                 print("someThing went wrong :(")
                 print("\n\nif the error remains follow instructions : ")
                 print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
                 print("step 2 - {}".format(cLog.getLogFileMessage))
-                cLog.log("error on group generate command" , "e")
-                cLog.exception(str(e) , "In group generate command" )
+                cLog.log("error on group generate command", "e")
+                cLog.exception(str(e), "In group generate command")
             return True
         else:
             return False
 
-    # calling for interest calculator 
+    # calling for interest calculator
     elif(("calculator" in commandList) or ("Calculator" in commandList) or ("calc" in commandList) or ("Calc" in commandList)):
         if(("Interest" in commandList) or ("interest" in commandList)):
             os.system("cls")
             try:
-                os.startfile(r"external_exe\harshNative_github\interest_Calculator.exe")
+                os.startfile(
+                    r"external_exe\harshNative_github\interest_Calculator.exe")
                 print("The file is opened in other window :)")
             except FileNotFoundError:
-                cLog.log("external exe file not found" , "e")
+                cLog.log("external exe file not found", "e")
                 print("The interest calculator file is missing")
             except Exception as e:
                 print("someThing went wrong :(")
                 print("\n\nif the error remains follow instructions : ")
                 print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
                 print("step 2 - {}".format(cLog.getLogFileMessage))
-                cLog.log("error on calc interest command" , "e")
-                cLog.exception(str(e) , "In calc interest command" )
+                cLog.log("error on calc interest command", "e")
+                cLog.exception(str(e), "In calc interest command")
             return True
         else:
             return False
 
-
     # calling for password manager
     elif(("Password" in commandList) or ("password" in commandList) or ("pass" in commandList) or ("Pass" in commandList)):
-        objPasswordStorerClass = PasswordStorerClass()
+        objPasswordStorerClass = PasswordStorerClass(troubleShootValue)
         objPasswordStorerClass.driverFunc()
         return True
 
     # calling for exit command
     elif(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
         os.system("cls")
-        print("Exiting the program" , end="" , flush=True)
+        print("Exiting the program", end="", flush=True)
         time.sleep(0.3)
-        print("." , end="" , flush=True)
+        print(".", end="", flush=True)
         time.sleep(0.4)
-        print("." , end="" , flush=True)
+        print(".", end="", flush=True)
         time.sleep(0.5)
-        print("." , end="" , flush=True)
+        print(".", end="", flush=True)
         exit()
-
 
     else:
         return False
+
 
 def main():
     objMainClass = MainClass()
@@ -601,14 +628,22 @@ def main():
         os.system("pause")
 
 
-if __name__ == "__main__":
+def driverForMain():
     # generating jarvis folder
     try:
-    	os.makedirs(r"C:\programData\Jarvis", exist_ok = True)
-    except Exception:
-    	print("\nSome Error occured while installation, program may crash\n")
-    	os.system("pause")
-    	os.system("cls")
+        os.makedirs(r"C:\programData\Jarvis", exist_ok=True)
+        # calling main
+        main()
+    except Exception as e:
+        print("\nSome Error occured while installation, program may crash in future\n")
+        print("if the error remains follow instructions : ")
+        print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+        print("step 2 - {}".format(cLog.getLogFileMessage))
+        cLog.log("jarvis folder making error", "c")
+        cLog.exception(str(e), "In main.py/driverForMain_func")
+        os.system("pause")
+        os.system("cls")
 
-    # calling main
-    main()
+
+if __name__ == "__main__":
+    driverForMain()
