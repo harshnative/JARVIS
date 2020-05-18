@@ -1,6 +1,8 @@
 # JARVIS
 A cool simple personal assistant that can do many things to make your life easier a little bit built in house using python
 
+***
+***
 
 ## Discription -
 this is simple personal assistant named after everyones favourite jarvis assistant in the MCU
@@ -16,6 +18,8 @@ scroll down to Usage section to see the examples and commands of performing the 
 
 As of now this project is under development but the goal list of feature is given at the end
 
+***
+***
 
 ## Installation -
 Download the executable from the releases section of [Github](https://github.com/harshnative/JARVIS/releases)
@@ -24,6 +28,8 @@ Download the executable from the releases section of [Github](https://github.com
 
 Just follow the on screen instructions to install
 
+***
+***
 
 ## Usage -
 
@@ -32,21 +38,29 @@ cmd
 ```
 To run jarvis in cmd window instead of main window - this helps in knowing the reason of jarvis crash in the future
 
+***
+
 ### Main features guide - 
 
 #### Password Storer
 
 [Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/passwordModule.md) to know about how to use [Password Module](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/passwordModule.md)
 
+***
+
 &nbsp;
 #### Weather - 
 
 [Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/weatherModule.md) to know about how to use [Weather Module](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/weatherModule.md)
 
+***
+
 &nbsp;
 #### BackUp
 
 [Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/BackupModule.md) to know about how to use [backUp Module](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/BackupModule.md)
+
+***
 
 &nbsp;
 #### Restore
@@ -54,6 +68,8 @@ To run jarvis in cmd window instead of main window - this helps in knowing the r
 restore
 ```
 To restore the default settings if you have messed around with them
+
+***
 
 &nbsp;
 #### Settings
@@ -69,6 +85,8 @@ setting
 command to open the settings file for editing the main program settings
 
 ###### Default settings page looks like [this](https://github.com/harshnative/JARVIS/blob/master/Sample_Settings.txt) 
+
+***
 
 &nbsp;
 #### Help
@@ -89,6 +107,8 @@ help weather
 ```
 To open the help for the weather only
 
+***
+
 &nbsp;
 #### Update
 ```
@@ -97,6 +117,8 @@ update
 To update the settings in the program 
 
 This is automatically called when the program restarts 
+
+***
 
 &nbsp;
 ### Play games
@@ -112,6 +134,8 @@ To play
 hangman game
 ```
 
+***
+
 &nbsp;
 #### Txt compare
 This is really cool , sometimes you have two txt files that looks identical but somebody has changed somethings in one of the file , you can know what as changed , simply drag and drop files once the run command is executed , although you still will be prompted to do do this
@@ -120,6 +144,8 @@ To run this
 ```
 txt compare
 ```
+
+***
 
 &nbsp;
 #### Convert google drives shareable link to direct downloadable link
@@ -130,13 +156,21 @@ To run this
 google drive
 ```
 
+***
+
 &nbsp;
 ### Some usefull external programs are also included :)
 [Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/additionalPrograms.md) To know about the [external programs](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/additionalPrograms.md)
 
+***
+***
+
 &nbsp;
 ## Support 
 comming soon.....
+
+***
+***
 
 &nbsp;
 ## Contribution
@@ -144,16 +178,25 @@ Your every contribution is appreciated , if you want to contribute to the projec
 
 Icon provided by [Those icons](https://www.flaticon.com/free-icon/iron-man_813505?term=iron%20man&page=1&position=5) from www.Flaticon.com
 
+***
+***
+
 &nbsp;
 ## Authors & Acknowledgement
 We thank every person who have commited anything to the open source world, those small contibutions combined together run this beautiful tech world
 
 we cannot even imagine the world without the open source things
 
+***
+***
+
 &nbsp;
 ## License
 This code is licensed under GPL 3.0 terms 
 read more about it [here](https://github.com/harshnative/JARVIS/blob/master/LICENSE)
+
+***
+***
 
 &nbsp;
 ## Project status
