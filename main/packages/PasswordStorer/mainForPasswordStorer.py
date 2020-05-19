@@ -6,6 +6,7 @@ import onetimepad
 from packages.loggerPackage.loggerFile import *
 import sys
 import time
+import pyperclip
 
 
 class PasswordStorerClass:
@@ -130,6 +131,10 @@ class PasswordStorerClass:
             print(tabulate(tabulateList, headers=['Site', 'Password']))
             self.cLog.log("displayAll function runned successfully in main for password" , "i")
         except Exception as e:
+            print("someThing went wrong :(")
+            print("\n\nif the error remains follow instructions : ")
+            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+            print("step 2 - {}".format(cLog.getLogFileMessage))
             self.cLog.log("error while displaying all", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/displayAll")
 
@@ -141,20 +146,50 @@ class PasswordStorerClass:
             stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
             cursor = self.connectionObj.execute(stringToPass)
             tabulateList = []
+            indexOfToCopy = []
+            dictToHelpInCopying = {}
+            countForTabulate = 1
             for row in cursor:
-                if(self.isSubString(row[0] , searchItem)):
-                    if(row[0] == "!@#$%^&*("):
-                        pass
-                    else:
+                if(row[0] == "!@#$%^&*("):
+                    pass
+                else:
+                    if(self.isSubString(row[0] , searchItem)):
                         # generating list for tabulate module
                         tempList = []
+                        tempList.append(str(countForTabulate))
                         tempList.append(str(row[0]))
                         tempList.append(self.decryptThing(str(row[1]) , self.password))
                         tabulateList.append(tempList)
+
+                        # adding things to dict to help in copying - 
+                        dictToHelpInCopying[str(countForTabulate)] = str(self.decryptThing(str(row[1]) , self.password))
+                        countForTabulate += 1
             
             # showing the data
             os.system("cls")
-            print(tabulate(tabulateList, headers=['Site', 'Password']))
+            if(countForTabulate <= 1):
+                print("\nno password found related to search term")
+            
+            else:
+                print(tabulate(tabulateList, headers=['Index' , 'Site' , 'Password']))
+
+                indexOfToCopy = input("\n\nEnter the index number of site to copy its password : ")
+                try:
+                    toCopy = dictToHelpInCopying[indexOfToCopy]
+                    pyperclip.copy(str(toCopy))
+                    pyperclip.paste()
+                    print("\nPassword copied to the clipboard")
+                except KeyError:
+                    print("\nWrong index number entered")
+                    self.cLog.log("Wrong index number entered in display search function in main for password" , "e")
+                except Exception:
+                    print("\nsomething went wrong , try again")
+                    print("\n\nif the error remains follow instructions : ")
+                    print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
+                    print("step 2 - {}".format(cLog.getLogFileMessage))
+                    self.cLog.log("error while displaying search after index number entered", "e")
+                    self.cLog.exception(str(e) , "mainForPassword.py/displaySearch")
+
             self.cLog.log("display search function runned successfully in main for password" , "i")
         except Exception as e:
             self.cLog.log("error while displaying search", "e")
@@ -240,6 +275,7 @@ class PasswordStorerClass:
                     print()
                     countInCursor = 0
 
+                    # for loading animation
                     for row in cursorForCounting:
                         countInCursor += 1
                     
@@ -262,11 +298,12 @@ class PasswordStorerClass:
                             # updating the values in the DB
                             self.updateInTable(key , value)
                         
+                        # for loading animation
                         print("\rUpdating database : {}/{}".format(countForCursor , countInCursor),end = "")
                         countForCursor += 1
                     
                     print()
-                    print("\nPassword changed successfully")
+                    print("\nPasswod change process completed")
                     break
 
                 else:
@@ -317,6 +354,8 @@ class PasswordStorerClass:
                 y = self.encryptThing(y , self.password)
 
                 self.addToTable(str(x) , str(y))
+
+                print("\nAdded successfully...")
                 return True
 
             # for deleting things

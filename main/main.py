@@ -450,8 +450,7 @@ def executeCommands(command):
             else:
                 pyperclip.copy(str(linkFinal))
                 pyperclip.paste()
-                print("\n\nThe link is {} and is been copied to clipboard :)".format(
-                    linkFinal))
+                print("\n\nThe link is {} and is been copied to clipboard :)".format(linkFinal))
                 cLog.log("google drive command runned succesfully", "i")
                 return True
 

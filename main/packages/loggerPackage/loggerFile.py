@@ -18,9 +18,9 @@ class Clogger:
         """ Must be called """
         # setting up logging configration
         if(self.troubleShoot == True):
-            logging.basicConfig(level=logging.DEBUG , filename = self.logFileName , format='%(asctime)s - %(message)s' , datefmt='%d-%b-%y %H:%M:%S')
+            logging.basicConfig(level=logging.DEBUG , filename = self.logFileName , format='%(asctime)s - %(levelname)s : %(message)s' , datefmt='%d-%b-%y %H:%M:%S')
         else:
-            logging.basicConfig(level=logging.WARNING , filename = self.logFileName , format='%(asctime)s - %(message)s' , datefmt='%d-%b-%y %H:%M:%S')
+            logging.basicConfig(level=logging.WARNING , filename = self.logFileName , format='%(asctime)s - %(levelname)s : %(message)s' , datefmt='%d-%b-%y %H:%M:%S')
 
     # creating a logger function for easy logging
     # levels can be debug , info , warning , error , critical or shortly d , i , w , e , c
