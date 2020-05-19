@@ -4,6 +4,9 @@ import os
 from getpass import getpass
 import onetimepad
 from packages.loggerPackage.loggerFile import *
+import sys
+import time
+
 
 class PasswordStorerClass:
 
@@ -230,11 +233,19 @@ class PasswordStorerClass:
 
                     # generating query for sqlite3 obj to execute
                     stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
+                    cursorForCounting = self.connectionObj.execute(stringToPass)
                     cursor = self.connectionObj.execute(stringToPass)
                     
                     # just to create "\n"
                     print()
+                    countInCursor = 0
 
+                    for row in cursorForCounting:
+                        countInCursor += 1
+                    
+                    countForCursor = 1
+
+                    
                     for row in cursor:
                         # do not want to change master password as it as already been updated
                         if(row[0] == "!@#$%^&*("):
@@ -250,8 +261,12 @@ class PasswordStorerClass:
                             value = new
                             # updating the values in the DB
                             self.updateInTable(key , value)
-
-                    print("\n\nPassword changed successfully")
+                        
+                        print("\rUpdating database : {}/{}".format(countForCursor , countInCursor),end = "")
+                        countForCursor += 1
+                    
+                    print()
+                    print("\nPassword changed successfully")
                     break
 
                 else:
@@ -450,6 +465,7 @@ class PasswordStorerClass:
                 self.cLog.log("error while list in driver function", "e")
                 self.cLog.exception(str(e) , "mainForPassword.py/driverFunc")
             if("exit" in commandList):
+                print("\nYou are going to exit Password manager in Jarvis\n")
                 break
             else:
                 # calling function to execute command

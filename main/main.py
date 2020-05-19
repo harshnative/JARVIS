@@ -605,13 +605,14 @@ def executeCommands(command):
     # calling for exit command
     elif(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
         os.system("cls")
-        print("Exiting the program", end="", flush=True)
+        print("See you soon :) , Exiting the program ", end="", flush=True)
+        time.sleep(0.3)
+        print(".", end="", flush=True)
         time.sleep(0.3)
         print(".", end="", flush=True)
         time.sleep(0.4)
         print(".", end="", flush=True)
-        time.sleep(0.5)
-        print(".", end="", flush=True)
+        os.system("cls")
         exit()
 
     else:
