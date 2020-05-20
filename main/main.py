@@ -188,7 +188,9 @@ class MainWeatherClass(MainClass):
     # constructor
     def __init__(self):
         self.cityName = None
-        self.weatherArgumentList = ["tempInC", "pressure", "humidity"]
+        self.weatherArgumentList = ["tempInC", "pressure", "humidity" , "temp_min" , "temp_max"]
+        self.humidityDetail = 0
+        self.currentTempInC = -277
 
     # function to set the cityName
 
@@ -199,6 +201,27 @@ class MainWeatherClass(MainClass):
 
     def addToList(self, element):
         self.weatherArgumentList.append(element)
+
+
+    # function to delete from list
+    def toDeleteFromList(self , element):
+        try:
+            self.weatherArgumentList.remove(element)
+            return True
+        except Exception as e:
+            cLog.log("connot delete from list in MainWeatherClass-toDeleteFromList function" , "e")
+            cLog.exception(str(e) , "In main.py/MainWeatherClass-toDeleteFromList function")
+            return False
+
+    # function to modify item in list
+    def modifyList(self , elementToModify , elementToModifyWith):
+        listCopy = self.weatherArgumentList.copy()
+        for i,j in enumerate(self.weatherArgumentList):
+            if(j == elementToModify):
+                listCopy[i] = elementToModifyWith
+        self.weatherArgumentList = listCopy
+
+
 
     # function to print the weather details
 
@@ -222,8 +245,7 @@ class MainWeatherClass(MainClass):
         objGetWeatherData = WeatherData(troubleShootValue)
 
         # getting the result
-        result = objGetWeatherData.getWeatherData(
-            self.cityName, self.weatherArgumentList)
+        result = objGetWeatherData.getWeatherData(self.cityName, self.weatherArgumentList)
 
         # showing the result in tabular form
         os.system("cls")
@@ -232,18 +254,26 @@ class MainWeatherClass(MainClass):
         errorYES = False
         for i, j in zip(self.weatherArgumentList, result):
             tempList = []
-            if ((i == None) or (j == None)):
+            if ((j == None)):
+                toPass = "none for " + str(i)
+                cLog.log(toPass , "e")
                 errorYES = True
             else:
                 i = str(i)
-                j = int(j)
+                if(i == "humidity"):
+                    self.humidityDetail = float(j)
+                elif(i == "tempInC"):
+                    self.currentTempInC = float(j)
+                elif(i == "tempInF"):
+                    self.currentTempInC = (( float(j) - 32 ) * (5/9))
+                j = str(j)
                 tempList.append(i)
                 tempList.append(j)
                 tabulateList.append(tempList)
         if (errorYES):
             os.system("cls")
             print("Error While printing weather details")
-            cLog.log("error while getting the wheather details", "e")
+            cLog.log("error while getting the wheather details in main.py", "e")
             print("\n\nif the error remains follow instructions : ")
             print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
             print("step 2 - {}".format(cLog.getLogFileMessage))
@@ -251,6 +281,32 @@ class MainWeatherClass(MainClass):
                 "error while printing whether details , some things will be None", "e")
         else:
             print(tabulate(tabulateList, headers=['Query', 'Data']))
+            print("\n")
+            if(self.currentTempInC != -277):
+                if(self.currentTempInC < 0):
+                    print("Its pretty cold outside..")
+                elif(self.currentTempInC < 12):
+                    print("Its cold outside...")
+                elif(self.currentTempInC < 25):
+                    print("Its cozy outside...")
+                elif(self.currentTempInC < 35):
+                    print("Its Warm outside...")
+                else:
+                    print("Its pretty hot outside")
+            else:
+                cLog.log("Error while if condition for self.currentTempInC" , "e")
+            
+            print()
+            if((self.humidityDetail >= 95) and (self.currentTempInC > 10)):
+                print("Their is high probability of rain today , please carry your umbrella :)")
+            elif((self.humidityDetail >= 90) and (self.currentTempInC > 10)):
+                print("Their is some probability of rain today , you can carry your umbrella :)")
+            elif((self.humidityDetail >= 95) and (self.currentTempInC <= 10)):
+                print("Their is fog outside :)")
+            elif((self.humidityDetail >= 90) and (self.currentTempInC <= 10)):
+                print("Their is some fog outside :)")
+            else:
+                print("No chance of rain and fog today :)")
 
 
 # function to execute the passed command by analysing it
@@ -290,7 +346,7 @@ def executeCommands(command):
 
         # checking for additional commands
         if("-f" in commandList or "-F" in commandList):
-            objMainWeatherClass.addToList("tempInF")
+            objMainWeatherClass.modifyList("tempInC" , "tempInF")
 
         # executing the command
         objMainWeatherClass.printWeatherDetails()
@@ -642,8 +698,7 @@ def driverForMain():
     # generating jarvis folder
     try:
         os.makedirs(r"C:\programData\Jarvis", exist_ok=True)
-        # calling main
-        main()
+        
     except Exception as e:
         print("\nSome Error occured while installation, program may crash in future\n")
         print("if the error remains follow instructions : ")
@@ -653,7 +708,8 @@ def driverForMain():
         cLog.exception(str(e), "In main.py/driverForMain_func")
         os.system("pause")
         os.system("cls")
-
+    # calling main
+    main()
 
 if __name__ == "__main__":
     driverForMain()

@@ -72,17 +72,30 @@ class WeatherData():
         visibility	:	10000
         tempInC : get the temp in celcius
         tempInF : get the temp in faraniet """
-
+        
+        cCount = 0
+        fCount = 0
         for i in self.listPassed:
             if(self.jsonData == None):
                 self.resultList.append(None)
             elif(i == "tempInC"):
                 self.resultList.append(self.tempInC)
+                cCount += 1
             elif(i == "tempInF"):
                 self.resultList.append(self.tempInF)
+                fCount += 1
             else:
                 try:
-                    self.resultList.append(self.jsonData["main"][str(i)])
+                    toappend = self.jsonData["main"][str(i)]
+                    # checking to convertor temp min and mac to c or f as required
+                    if(str(i) == "temp_min" or str(i) == "temp_max"):
+                        if(cCount > 0):
+                            toappend = self.convTempToC(float(toappend))
+                        elif(fCount > 0):
+                            toappend = self.convTempToC(float(toappend))
+                            toappend = self.convTempToF(float(toappend))
+
+                    self.resultList.append(str(toappend))
                 except KeyError:
                     self.cLog.log("key error in extractInfo function - self.jsonData[main][str(i)]" , "i")
                     self.resultList.append(None)
@@ -97,13 +110,13 @@ class WeatherData():
         return True
     
     # function to convert the json temp which is in kelvin to 'c
-    def convTempToC(self):
+    def getTempInC(self):
         try:
             self.tempInK = self.jsonData["main"]["temp"]
         except KeyError:
             self.tempInK = None
             return False
-        except Exception:
+        except Exception as e:
             os.system("cls")
             self.cLog.log("error while opening the help file" , "e")
             self.cLog.exception(str(e) , "In getWeather.py/WeatherData_class-convTempToC_func")
@@ -113,12 +126,19 @@ class WeatherData():
             print("step 2 - {}".format(self.cLog.getLogFileMessage))
         self.tempInC = self.tempInK - 273
         return True
+    
+    def convTempToC(self , tempInKPass):
+        return (tempInKPass - 273)
+    
+    def convTempToF(self , tempInCPass):
+        return (( tempInCPass * (9/5) ) + 32)
 
 
     # function to convert the 'C to 'F
-    def convTempToF(self):
+    def getTempInF(self):
         if(self.tempInC == None):
             self.tempInF = None
+            self.cLog.log("temp in c was none in getTempInF in weather Data class in get weather.py" , "e")
         else:
             self.tempInF = ( self.tempInC * (9/5) ) + 32
 
@@ -132,8 +152,9 @@ class WeatherData():
         self.makeUrl()
         self.getDataFromWeb()
         self.loadDataIntoJson()
-        self.convTempToC()
-        self.convTempToF()
+        self.getTempInC()
+        self.getTempInF()
+        self.cLog.log("runned till get temp in F in getweather data in weather data class in get weather.py" , "i")
         status = self.extractInfo()
 
         if(status == False):
