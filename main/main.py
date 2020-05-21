@@ -9,6 +9,7 @@ import psutil
 import sys
 from tabulate import tabulate
 import os
+import datetime
 from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
 from imports.harshNative_github.txtCompare.txtComparePy import *
 from imports.harshNative_github.hangMan_game.hangmanGame import *
@@ -382,6 +383,11 @@ def executeCommands(command):
     # calling for backup command
     elif(("backup" in commandList) or ("Backup" in commandList)):
 
+        # for backupUp jarvis things i.e things in folder program data - jarvis
+        if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
+            pass
+
+
         # creating a copy of backup command without the backup keyword so that we can pass it to the startBackup function of the class backUp
         commandListCopy = commandList.copy()
         if("backup" in commandList):
@@ -647,7 +653,7 @@ def executeCommands(command):
         objPasswordStorerClass.driverFunc()
         return True
 
-    # handling command to run in jarvis window
+    # handling command to run in jarvis in cmd window
     elif(("cmd" in commandList) or ("Cmd" in commandList) or ("CMD" in commandList)):
         os.system("cls")
         print("opening jarvis in command prompt")
@@ -656,6 +662,30 @@ def executeCommands(command):
         print("\nExisting this instance of jarvis")
         time.sleep(1)
         exit()
+    
+    # handling utc time and date
+    elif(("utc" in commandList) or ("UTC" in commandList) or ("Utc" in commandList)):
+        if(("time" in commandList) or ("Time" in commandList)):
+            newObj = str(datetime.datetime.utcnow())
+            currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
+            currentTime = newObj[11:19] 
+            os.system("cls")
+            print("UTC TIME = {}".format(currentTime))
+            print("UTC DATE = {}".format(currentDate))
+            return True
+        return False
+    
+    elif(("time" in commandList) or ("Time" in commandList)):
+        newObj = str(datetime.datetime.now())
+        currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
+        currentTime = newObj[11:19] 
+        os.system("cls")
+        print("TIME = {}".format(currentTime))
+        print("DATE = {}".format(currentDate))
+        return True
+
+
+
 
     # calling for exit command
     elif(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
