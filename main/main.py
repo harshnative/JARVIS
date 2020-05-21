@@ -10,6 +10,7 @@ import sys
 from tabulate import tabulate
 import os
 import datetime
+import shutil
 from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
 from imports.harshNative_github.txtCompare.txtComparePy import *
 from imports.harshNative_github.hangMan_game.hangmanGame import *
@@ -158,12 +159,18 @@ class MainClass():
         objSetting = Setting(troubleShootValue)
         self.settingsDict = objSetting.getDictionary()
         if(self.settingsDict == False):
-            cLog.log(
-                "Their was some error in the settings module so we cannot retreive the dictionary", "e")
+            cLog.log("Their was some error in the settings module so we cannot retreive the dictionary", "e")
             return False
         else:
             cLog.log("getDict function runned successfully", "i")
             return True
+    
+    def returnDict(self):
+        status = self.getDict()
+        if(status == True):
+            return self.settingsDict
+        else:
+            return None
 
     def setUserName(self):
         temp = os.environ  # generates a object with the property called USERNAME containing the info
@@ -382,10 +389,43 @@ def executeCommands(command):
 
     # calling for backup command
     elif(("backup" in commandList) or ("Backup" in commandList)):
-
+        os.system("cls")
         # for backupUp jarvis things i.e things in folder program data - jarvis
         if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
-            pass
+            objMainClass = MainClass()
+            dictGet = objMainClass.returnDict()
+
+            if(dictGet == None):
+                print("Oops cannot backup jarvis :(")
+                cLog.log("dictGet gets None value from returnDict" , "e")
+                print("\nTry again, if error persist, run troubleShoot command")
+                return True
+            
+            try:
+                pathToBackupForJarvis = dictGet["backUpPathForJarvis"]
+            except KeyError:
+                print("it looks like you have not setted up path to backup for jarvis in setting , please set the path and try again ")
+                print("\nif the error persist try running restore command")
+                cLog.log("key error in jarvis backup in main.py" ,"e")
+                return True
+            except Exception:
+                print("\nTry again, if error persist, run troubleShoot command")
+
+            print("backing up jarvis , please wait...")
+            # running backup
+            try:
+                shutil.copytree("C:/programData/Jarvis" , pathToBackupForJarvis + "/" + "JarvisBackup" , dirs_exist_ok=True)
+            except Exception as e:
+                print("Cannot backup jarvis properly")
+                print("\nTry again, if error persist, run troubleShoot command")
+                cLog.log("Some exception occured while backuping up jarvis" , "e")
+                cLog.exception(str(e) , "In main.py/ececuteCommand_func-in jarvis backup")
+                return True
+
+            print("\nBackup completed.....")
+            return True
+
+
 
 
         # creating a copy of backup command without the backup keyword so that we can pass it to the startBackup function of the class backUp

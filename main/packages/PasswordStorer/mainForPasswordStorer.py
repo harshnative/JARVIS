@@ -21,6 +21,7 @@ class PasswordStorerClass:
         self.connectionObj = None
         self.password = None
         self.oldPassword = None
+        self.onlyAuthenticate = None
     
 
     # function to find whether a word is present in string or not
@@ -461,9 +462,10 @@ class PasswordStorerClass:
             print("Oops something went wrong :( ")
 
     # fuction for driving all the things
-    def driverFunc(self):
+    def driverFunc(self , onlyAuthenticate = False):
         self.connectToDB()
         self.createTable()
+        self.onlyAuthenticate = onlyAuthenticate
 
         # generating query for sqlite3 obj to execute
         stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
@@ -485,6 +487,8 @@ class PasswordStorerClass:
         # checking whether the user is right or not
         while(1):
             if(self.authenticate()):
+                if(self.onlyAuthenticate == True):
+                    return self.password
                 break
             else:
                 print("wrong password....")

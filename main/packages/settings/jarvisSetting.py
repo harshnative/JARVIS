@@ -88,6 +88,9 @@ class Setting():
             fil.write("# path to backup - ex - F:/myBackup\n")
             fil.write("backUpPath = \n\n")
 
+            fil.write("# path to backup for jarvis - ex - F:/myBackup\n")
+            fil.write("backUpPathForJarvis = \n\n")
+
             fil.write("# User Name :\n")
             fil.write("userName = \n\n")
 
