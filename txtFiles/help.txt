@@ -9,10 +9,8 @@
 
 
 
-2.  restore             restore
-
-    restore the defaut settings if you have messed around with them
-
+2.  restore             restore setting    #restore the defaut settings if you have messed around with them
+                        restore jarvis     #to restore the previously saved setting databases etc by running backup jarvis command
 
 
 3.  settings            settings
@@ -47,6 +45,10 @@
     command example - backup -a -d
                     - backup -e -c -d
 
+    jarvis              ->  command - backup jarvis
+
+    backup up your databases and settings file in the path specified by you in the settings app 
+    backup jarvis cannot be combined with other tasks
 
 
 7.  password            password *to open password module*

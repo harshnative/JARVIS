@@ -58,10 +58,7 @@ class Setting():
             os.system("cls")
             self.cLog.log("error while opening the help file" , "e")
             self.cLog.exception(str(e) , "In jarvisSetting.py/makeDictionaryFromTxt_func")
-            print("something went wrong , try again.\n\n")
-            print("if the error remains follow instructions : ")
-            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(self.cLog.logFileName))
-            print("step 2 - {}".format(self.cLog.getLogFileMessage))
+            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
             return False
 
 
@@ -104,9 +101,7 @@ class Setting():
             os.system("cls")
             print("It seems like Jarvis do not have write permission in this folder")
             print("try reinstalling the program with administrative premission\n")
-            print("if the error remains follow instructions : ")
-            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(self.cLog.logFileName))
-            print("step 2 - {}\n\n".format(self.cLog.getLogFileMessage))
+            print("\nPlease Try again, if error persist, run troubleShoot command")
             os.system("pause")
             os.system("cls")
             return False
@@ -144,9 +139,7 @@ class Setting():
                     os.system("cls")
                     print("settings file cannot be opened even after regeneration\n")
                     print("try reinstalling the program with administrative premission\n")
-                    print("if the error remains follow instructions : ")
-                    print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(self.cLog.logFileName))
-                    print("step 2 - {}\n\n".format(self.cLog.getLogFileMessage))
+                    print("\nPlease Try again, if error persist, run troubleShoot command")
                     os.system("pause")
                     os.system("cls")
                     return False

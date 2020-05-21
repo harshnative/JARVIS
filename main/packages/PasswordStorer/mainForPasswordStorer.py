@@ -132,10 +132,7 @@ class PasswordStorerClass:
             print(tabulate(tabulateList, headers=['Site', 'Password']))
             self.cLog.log("displayAll function runned successfully in main for password" , "i")
         except Exception as e:
-            print("someThing went wrong :(")
-            print("\n\nif the error remains follow instructions : ")
-            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-            print("step 2 - {}".format(cLog.getLogFileMessage))
+            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
             self.cLog.log("error while displaying all", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/displayAll")
 
@@ -184,10 +181,7 @@ class PasswordStorerClass:
                     print("\nWrong index number entered")
                     self.cLog.log("Wrong index number entered in display search function in main for password" , "e")
                 except Exception:
-                    print("\nsomething went wrong , try again")
-                    print("\n\nif the error remains follow instructions : ")
-                    print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-                    print("step 2 - {}".format(cLog.getLogFileMessage))
+                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
                     self.cLog.log("error while displaying search after index number entered", "e")
                     self.cLog.exception(str(e) , "mainForPassword.py/displaySearch")
 
@@ -323,7 +317,7 @@ class PasswordStorerClass:
             self.cLog.log("encrypting thing func runned successfully in main for password" , "i")
             return str(stringToReturn)
         except Exception as e:
-            print("something went wrong while encrypting\n")
+            print("\nSomething went wrong while encrypting, Please Try again, if error persist, run troubleShoot command")
             os.system("pause")
             self.cLog.log("error while encrypting thing in main for password", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/encryptThing")
@@ -336,7 +330,7 @@ class PasswordStorerClass:
             self.cLog.log("decrypting thing func runned successfully in main for password" , "i")
             return str(stringToReturn)
         except Exception as e:
-            print("something went wrong while decrypting\n")
+            print("\nSomething went wrong while decrypting, Please Try again, if error persist, run troubleShoot command")
             os.system("pause")
             self.cLog.log("error while decrypting in main for password", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/decryptingThing")

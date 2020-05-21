@@ -75,10 +75,7 @@ def getHelp(passObj):
             os.system("cls")
             cLog.log("error while opening the help file", "e")
             cLog.exception(str(e), "In main.py/getHelp_func-If_Part")
-            print("something went wrong , try again.\n\n")
-            print("if the error remains follow instructions : ")
-            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-            print("step 2 - {}".format(cLog.getLogFileMessage))
+            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
 
     # for displaying specific help by searching for the keyords as substring in line
     else:
@@ -104,10 +101,7 @@ def getHelp(passObj):
             os.system("cls")
             cLog.log("error while opening the help file", "e")
             cLog.exception(str(e), "In main.py/getHelp_func-elsePart")
-            print("something went wrong , try again.\n\n")
-            print("if the error remains follow instructions : ")
-            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-            print("step 2 - {}".format(cLog.getLogFileMessage))
+            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
 
 
 # function for handling the get help
@@ -128,10 +122,7 @@ def handleGetHelp(command):
                 os.system("cls")
                 cLog.log("error while opening the help file", "e")
                 cLog.exception(str(e), "In main.py/handleGetHelp_func")
-                print("something went wrong , try again.\n\n")
-                print("if the error remains follow instructions : ")
-                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-                print("step 2 - {}".format(cLog.getLogFileMessage))
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
             return True
 
         elif(len(commandList) > 1):
@@ -184,8 +175,7 @@ class MainClass():
                 self.settingsDict["userName"] = tempUserName
             except Exception as e:
                 cLog.log("cannot get the username from system", "e")
-                cLog.exception(
-                    str(e), "In main.py/class_mainClass-setUserName_function")
+                cLog.exception(str(e), "In main.py/class_mainClass-setUserName_function")
 
     def returnUserName(self):
         return self.settingsDict["userName"]
@@ -242,8 +232,7 @@ class MainWeatherClass(MainClass):
             except Exception:
                 os.system("cls")
                 cLog.log("user as not setted city in setting", "i")
-                print(
-                    "\nit looks like you have not setted any city in setting , run setting command to open settings\n")
+                print("\nit looks like you have not setted any city in setting , run setting command to open settings\n")
                 os.system("pause")
 
                 # this is a critical error , so calling main again to restart the program
@@ -363,12 +352,50 @@ def executeCommands(command):
 
     # for restoring the defualt setting
     elif(("restore" in commandList) or ("Restore" in commandList)):
-        objSetting = Setting(troubleShootValue)
-        objSetting.regenerateFile()
-        os.system("cls")
-        print("you have restored the settings successfully")
-        cLog.log("restore command runned successfully", "i")
-        return True
+        if(("setting" in commandList) or ("settings" in commandList) or ("Setting" in commandList) or ("Settings" in commandList)):
+            objSetting = Setting(troubleShootValue)
+            objSetting.regenerateFile()
+            os.system("cls")
+            print("you have restored the settings successfully")
+            cLog.log("restore command runned successfully", "i")
+            return True
+        if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
+            os.system("cls")
+            #getting backup path
+            objMainClass = MainClass()
+            dictGet = objMainClass.returnDict()
+
+            if(dictGet == None):
+                print("Oops cannot restore jarvis :(")
+                cLog.log("dictGet gets None value from returnDict" , "e")
+                print("\nTry again, if error persist, run troubleShoot command")
+                return True
+            
+            try:
+                pathToBackupForJarvis = dictGet["backUpPathForJarvis"]
+            except KeyError:
+                print("it looks like you have not setted up path to backup for jarvis in setting , please set the path and try again ")
+                print("\nif the error persist try running restore command")
+                cLog.log("key error in jarvis backup in main.py" ,"e")
+                return True
+            except Exception as e:
+                cLog.log("Exception occured in executeCommand in restore jarvis" , "e")
+                cLog.exception(str(e) , "In main.py/executeCommand_function - restore jarvis")
+                print("\nTry again, if error persist, run troubleShoot command")
+
+            #running restore
+            print("running restore , please wait...")
+            try:
+                shutil.copytree( pathToBackupForJarvis + "/" + "JarvisBackup" , "C:/programData/Jarvis" , dirs_exist_ok=True)
+            except Exception as e:
+                print("Cannot restore jarvis properly")
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                cLog.log("Some exception occured while restoring jarvis" , "e")
+                cLog.exception(str(e) , "In main.py/ececuteCommand_func-in jarvis restore")
+                return True
+            
+            print("\nRestore completed...")
+            return True
 
     # for changing teh setting - this function opens the settings.txt in the defualt txt viewer of the system
     elif(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
@@ -408,16 +435,19 @@ def executeCommands(command):
                 print("\nif the error persist try running restore command")
                 cLog.log("key error in jarvis backup in main.py" ,"e")
                 return True
-            except Exception:
+            except Exception as e:
+                cLog.log("Exception occured in executeCommand in backupjarvis" , "e")
+                cLog.exception(str(e) , "In main.py/executeCommand_function - backup jarvis")
                 print("\nTry again, if error persist, run troubleShoot command")
+                return True
 
             print("backing up jarvis , please wait...")
             # running backup
             try:
-                shutil.copytree("C:/programData/Jarvis" , pathToBackupForJarvis + "/" + "JarvisBackup" , dirs_exist_ok=True)
+                shutil.copytree("C:/programData/Jarvis" , pathToBackupForJarvis + "/" + "JarvisBackup" ,  dirs_exist_ok=True)
             except Exception as e:
                 print("Cannot backup jarvis properly")
-                print("\nTry again, if error persist, run troubleShoot command")
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
                 cLog.log("Some exception occured while backuping up jarvis" , "e")
                 cLog.exception(str(e) , "In main.py/ececuteCommand_func-in jarvis backup")
                 return True
@@ -464,14 +494,10 @@ def executeCommands(command):
                     os.system("cls")
                     pathToBackup = pathToBackup + "/" + "jarvisBackup"
                     cLog.log("OSError for execute command under backup", "e")
-                    cLog.exception(
-                        str(e), "In main.py/executeCommmand_func_backupCommand")
-                    print(
-                        "folder in path to backup in settings already exit or may be the path is not found")
-                    print(
-                        "\n\nif the folder already exit - then all the file's will be overRidden")
-                    print(
-                        "\n\npress enter to continue with backup or close the program to stop it")
+                    cLog.exception(str(e), "In main.py/executeCommmand_func_backupCommand")
+                    print("folder in path to backup in settings already exit or may be the path is not found")
+                    print("\n\nif the folder already exit - then all the file's will be overRidden")
+                    print("\n\npress enter to continue with backup or close the program to stop it")
                     input()
                     os.system("cls")
 
@@ -532,7 +558,7 @@ def executeCommands(command):
                 mainForTxtCompare()
             except Exception:
                 cLog.log("some error occured while comparing txt files", "e")
-                print("some Error occured :(")
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
             return True
         else:
             return False
@@ -567,10 +593,7 @@ def executeCommands(command):
                 cLog.log("external exe file not found", "e")
                 print("The random generator file is missing")
             except Exception as e:
-                print("someThing went wrong :(")
-                print("\n\nif the error remains follow instructions : ")
-                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-                print("step 2 - {}".format(cLog.getLogFileMessage))
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
                 cLog.log("error on generate random command", "e")
                 cLog.exception(str(e), "In generate random command")
 
@@ -590,14 +613,9 @@ def executeCommands(command):
                     cLog.log("external exe file not found", "e")
                     print("The number convert file is missing")
                 except Exception as e:
-                    print("someThing went wrong :(")
-                    print("\n\nif the error remains follow instructions : ")
-                    print(
-                        "step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-                    print("step 2 - {}".format(cLog.getLogFileMessage))
+                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
                     cLog.log("error on number system command", "e")
-                    cLog.exception(
-                        str(e), "In number system convertor command")
+                    cLog.exception(str(e), "In number system convertor command")
                 return True
             else:
                 return False
@@ -614,10 +632,7 @@ def executeCommands(command):
             cLog.log("external exe file not found", "e")
             print("The average finder file is missing")
         except Exception as e:
-            print("someThing went wrong :(")
-            print("\n\nif the error remains follow instructions : ")
-            print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-            print("step 2 - {}".format(cLog.getLogFileMessage))
+            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
             cLog.log("error on average finder command", "e")
             cLog.exception(str(e), "In average finder command")
         return True
@@ -633,10 +648,7 @@ def executeCommands(command):
                 cLog.log("external exe file not found", "e")
                 print("The coin toss file is missing")
             except Exception as e:
-                print("someThing went wrong :(")
-                print("\n\nif the error remains follow instructions : ")
-                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-                print("step 2 - {}".format(cLog.getLogFileMessage))
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
                 cLog.log("error on coin toss command", "e")
                 cLog.exception(str(e), "In coin toss command")
             return True
@@ -655,10 +667,7 @@ def executeCommands(command):
                 cLog.log("external exe file not found", "e")
                 print("The group generator file is missing")
             except Exception as e:
-                print("someThing went wrong :(")
-                print("\n\nif the error remains follow instructions : ")
-                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-                print("step 2 - {}".format(cLog.getLogFileMessage))
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
                 cLog.log("error on group generate command", "e")
                 cLog.exception(str(e), "In group generate command")
             return True
@@ -677,10 +686,7 @@ def executeCommands(command):
                 cLog.log("external exe file not found", "e")
                 print("The interest calculator file is missing")
             except Exception as e:
-                print("someThing went wrong :(")
-                print("\n\nif the error remains follow instructions : ")
-                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-                print("step 2 - {}".format(cLog.getLogFileMessage))
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
                 cLog.log("error on calc interest command", "e")
                 cLog.exception(str(e), "In calc interest command")
             return True
@@ -770,10 +776,7 @@ def driverForMain():
         os.makedirs(r"C:\programData\Jarvis", exist_ok=True)
         
     except Exception as e:
-        print("\nSome Error occured while installation, program may crash in future\n")
-        print("if the error remains follow instructions : ")
-        print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(cLog.logFileName))
-        print("step 2 - {}".format(cLog.getLogFileMessage))
+        print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
         cLog.log("jarvis folder making error", "c")
         cLog.exception(str(e), "In main.py/driverForMain_func")
         os.system("pause")
