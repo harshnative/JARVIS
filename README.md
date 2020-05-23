@@ -63,6 +63,12 @@ To run jarvis in cmd window instead of main window - this helps in knowing the r
 ***
 
 &nbsp;
+#### Speed Test
+[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) to know about how to use [Speed Test module/](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) 
+
+***
+
+&nbsp;
 #### Restore
 ```
 restore
@@ -133,12 +139,6 @@ time utc
 To get current UTC date and time
 
 [ UTC (Universal Time Coordinated) previously called GMT (Greenwich Mean Time ) ]
-
-***
-
-&nbsp;
-#### Speed Test
-[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) to know about how to use [Speed Test module/](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) 
 
 ***
 
