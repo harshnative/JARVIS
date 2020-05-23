@@ -63,6 +63,18 @@
     -c                 ->   to change the master password
 
 
+9.  cmd                 run the jarvis in your favroute cmd window
+
+
+10. time               time     - for getting current date and time
+                       time utc - for getting current utc date and time
+
+
+11. speed test          speed test         -> for running normal speed test
+                        speed test -b      -> add -b to speed test to get result in MegaBytes instead of Megabites
+                        speed test 3       -> to avearge out the result 3 times - the defaut value is two
+                        speed test -b 3    -> combine commands
+
 
 8.  game                hangman game *opens game*
 

@@ -121,6 +121,28 @@ This is automatically called when the program restarts
 ***
 
 &nbsp;
+#### Time
+```
+time
+```
+To get current date and time 
+
+```
+time utc
+```
+To get current UTC date and time
+
+[ UTC (Universal Time Coordinated) previously called GMT (Greenwich Mean Time ) ]
+
+***
+
+&nbsp;
+#### Speed Test
+[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) to know about how to use [Speed Test module/](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) 
+
+***
+
+&nbsp;
 ### Play games
 ##### HangMan game
 This is a cool word guessing game in which a random word in thrown at you containing 4-8 letters hidden *****

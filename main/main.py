@@ -19,6 +19,7 @@ from packages.PasswordStorer.mainForPasswordStorer import *
 from packages.settings.jarvisSetting import *
 from packages.weather.getWeather import *
 from packages.backUp_utility.backUp import *
+from packages.speedTest_utility.speedTestFile import *
 
 # creating global object of class Clogger
 cLog = Clogger()
@@ -729,6 +730,64 @@ def executeCommands(command):
         print("TIME = {}".format(currentTime))
         print("DATE = {}".format(currentDate))
         return True
+
+    elif(("speed" in commandList) or ("Speed" in commandList)):
+        if(("test" in commandList) or ("Test" in commandList)):
+            commandListCopy = commandList.copy()
+
+            # removing speed and test word from the command list
+            try:
+                commandListCopy.remove("speed")
+            except Exception:
+                try:
+                    commandListCopy.remove("Speed")
+                except Exception as e:
+                    print("Failed to run speed test")
+                    cLog.log("could not delete speed from command list copy in speed test command in executecommand in main.py" , "e")
+                    cLog.exception(str(e) , "in main.py/executeCommand_function - running command speed test")
+                    return True
+            
+            try:
+                commandListCopy.remove("test")
+            except Exception:
+                try:
+                    commandListCopy.remove("Test")
+                except Exception as e:
+                    print("Failed to run speed test")
+                    cLog.log("could not delete test from command list copy in speed test command in executecommand in main.py" , "e")
+                    cLog.exception(str(e) , "in main.py/executeCommand_function - running command speed test")
+                    return True
+            
+            # for getting result in bytes - default value is NO
+            inBytes = False
+            
+            # number of time the result should average out - default value of module is also 2
+            numberOfTime = 2
+            
+            # checking if user wants result in bytes 
+            for i in commandListCopy:
+                if("-b" in commandListCopy):
+                    inBytes = True
+                try:
+                    numberOfTime = int(i)
+
+                    # if the number of time is greator than 5 then it will take very long time to process to making it again default
+                    if(numberOfTime >= 5):
+                        numberOfTime = 2
+                except Exception:
+                    pass
+
+            # creating object of class in module speed test utility 
+            objSpeedTestClass = SpeedTestClass(troubleShootValue)
+
+            # calling method of class for execution
+            objSpeedTestClass.runSpeedTestUtility(inBytes , numberOfTime)
+            return True     # as all runned successfully
+
+            
+        else:
+            return False
+
 
 
 
