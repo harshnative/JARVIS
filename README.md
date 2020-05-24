@@ -64,7 +64,28 @@ To run jarvis in cmd window instead of main window - this helps in knowing the r
 
 &nbsp;
 #### Speed Test
-[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) to know about how to use [Speed Test module/](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) 
+[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) to know about how to use [Speed Test module](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) 
+
+***
+
+&nbsp;
+#### Backup & Restore Jarvis - 
+
+Have important password stored in jarvis ?
+
+Want to backup your settings ?
+
+Just run this command
+```
+backup jarvis
+```
+
+###### Make sure to set backUpPathForJarvis in setting before running any command
+
+Now to restore Jarvis run this
+```
+restore jarvis
+```
 
 ***
 

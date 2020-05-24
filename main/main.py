@@ -352,7 +352,8 @@ def executeCommands(command):
         return True
 
     # for restoring the defualt setting
-    elif(("restore" in commandList) or ("Restore" in commandList)):
+    if(("restore" in commandList) or ("Restore" in commandList)):
+
         if(("setting" in commandList) or ("settings" in commandList) or ("Setting" in commandList) or ("Settings" in commandList)):
             objSetting = Setting(troubleShootValue)
             objSetting.regenerateFile()
@@ -360,6 +361,7 @@ def executeCommands(command):
             print("you have restored the settings successfully")
             cLog.log("restore command runned successfully", "i")
             return True
+
         if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
             os.system("cls")
             #getting backup path
@@ -399,7 +401,7 @@ def executeCommands(command):
             return True
 
     # for changing teh setting - this function opens the settings.txt in the defualt txt viewer of the system
-    elif(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
+    if(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
         objSetting = Setting(troubleShootValue)
         objSetting.openFile()
         os.system("cls")
@@ -408,16 +410,16 @@ def executeCommands(command):
         return True
 
     # function for updating the settings
-    elif(("update" in commandList) or ("Update" in commandList)):
+    if(("update" in commandList) or ("Update" in commandList)):
         os.system("cls")
         print("settings have been updated , programm will restart now\n\n")
         os.system("pause")
         restart_program()
-        return False
 
     # calling for backup command
-    elif(("backup" in commandList) or ("Backup" in commandList)):
+    if(("backup" in commandList) or ("Backup" in commandList)):
         os.system("cls")
+
         # for backupUp jarvis things i.e things in folder program data - jarvis
         if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
             objMainClass = MainClass()
@@ -455,10 +457,10 @@ def executeCommands(command):
 
             print("\nBackup completed.....")
             return True
+            # backup jarvis code ends here
 
 
-
-
+        # excecuting backup module functionalities
         # creating a copy of backup command without the backup keyword so that we can pass it to the startBackup function of the class backUp
         commandListCopy = commandList.copy()
         if("backup" in commandList):
@@ -535,7 +537,7 @@ def executeCommands(command):
         return True
 
     # calling for hangman game
-    elif(("hangman" in commandList) or ("Hangman" in commandList)):
+    if(("hangman" in commandList) or ("Hangman" in commandList)):
         if(("game" in commandList) or ("Game" in commandList)):
             os.system("cls")
             # calling the game function
@@ -547,11 +549,10 @@ def executeCommands(command):
                 print("some error ocurred :( , try reinstalling the program")
                 cLog.log("some error occured in hangman game", "e")
             return True
-        else:
-            return False
+
 
     # calling for txt compare
-    elif(("compare" in commandList) or ("Compare" in commandList)):
+    if(("compare" in commandList) or ("Compare" in commandList)):
         if(("txt" in commandList) or ("Txt" in commandList) or ("TXT" in commandList)):
             os.system("cls")
             print("starting txtCompare program :)\n\n")
@@ -561,11 +562,10 @@ def executeCommands(command):
                 cLog.log("some error occured while comparing txt files", "e")
                 print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
             return True
-        else:
-            return False
+
 
     # calling for google drive link
-    elif(("google" in commandList) or ("Google" in commandList)):
+    if(("google" in commandList) or ("Google" in commandList)):
         if(("drive" in commandList) or ("Drive" in commandList)):
             os.system("cls")
             print("Go to the file saved in google drive and click get shareable link\n")
@@ -584,7 +584,7 @@ def executeCommands(command):
                 return True
 
     # calling for random generator
-    elif(("generate" in commandList) or ("Generate" in commandList)):
+    if(("generate" in commandList) or ("Generate" in commandList)):
         if(("random" in commandList) or ("Random" in commandList)):
             os.system("cls")
             try:
@@ -597,13 +597,11 @@ def executeCommands(command):
                 print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
                 cLog.log("error on generate random command", "e")
                 cLog.exception(str(e), "In generate random command")
-
             return True
-        else:
-            return False
+
 
     # calling for number system convertor
-    elif(("number" in commandList) or ("Number" in commandList) or ("num" in commandList) or ("Num" in commandList) or ("no" in commandList) or ("No" in commandList) or ("NO" in commandList)):
+    if(("number" in commandList) or ("Number" in commandList) or ("num" in commandList) or ("Num" in commandList) or ("no" in commandList) or ("No" in commandList) or ("NO" in commandList)):
         if(("convert" in commandList) or ("conv" in commandList) or ("convertor" in commandList) or ("Convert" in commandList) or ("Conv" in commandList) or ("Convertor" in commandList)):
             if(("system" in commandList) or ("sys" in commandList) or ("System" in commandList) or ("Sys" in commandList)):
                 os.system("cls")
@@ -618,13 +616,10 @@ def executeCommands(command):
                     cLog.log("error on number system command", "e")
                     cLog.exception(str(e), "In number system convertor command")
                 return True
-            else:
-                return False
-        else:
-            return False
+
 
     # calling for average finder
-    elif(("average" in commandList) or ("Average" in commandList) or ("avg" in commandList) or ("Avg" in commandList) or ("AVG" in commandList)):
+    if(("average" in commandList) or ("Average" in commandList) or ("avg" in commandList) or ("Avg" in commandList) or ("AVG" in commandList)):
         os.system("cls")
         try:
             os.startfile(r"external_exe\harshNative_github\average_finder.exe")
@@ -639,7 +634,7 @@ def executeCommands(command):
         return True
 
     # calling for coin toss
-    elif(("Coin" in commandList) or ("coin" in commandList)):
+    if(("Coin" in commandList) or ("coin" in commandList)):
         if(("toss" in commandList) or ("Toss" in commandList)):
             os.system("cls")
             try:
@@ -653,11 +648,10 @@ def executeCommands(command):
                 cLog.log("error on coin toss command", "e")
                 cLog.exception(str(e), "In coin toss command")
             return True
-        else:
-            return False
+
 
     # calling for group generator
-    elif(("group" in commandList) or ("Group" in commandList)):
+    if(("group" in commandList) or ("Group" in commandList)):
         if(("generate" in commandList) or ("Generate" in commandList)):
             os.system("cls")
             try:
@@ -672,11 +666,10 @@ def executeCommands(command):
                 cLog.log("error on group generate command", "e")
                 cLog.exception(str(e), "In group generate command")
             return True
-        else:
-            return False
+
 
     # calling for interest calculator
-    elif(("calculator" in commandList) or ("Calculator" in commandList) or ("calc" in commandList) or ("Calc" in commandList)):
+    if(("calculator" in commandList) or ("Calculator" in commandList) or ("calc" in commandList) or ("Calc" in commandList)):
         if(("Interest" in commandList) or ("interest" in commandList)):
             os.system("cls")
             try:
@@ -691,17 +684,16 @@ def executeCommands(command):
                 cLog.log("error on calc interest command", "e")
                 cLog.exception(str(e), "In calc interest command")
             return True
-        else:
-            return False
+ 
 
     # calling for password manager
-    elif(("Password" in commandList) or ("password" in commandList) or ("pass" in commandList) or ("Pass" in commandList)):
+    if(("Password" in commandList) or ("password" in commandList) or ("pass" in commandList) or ("Pass" in commandList)):
         objPasswordStorerClass = PasswordStorerClass(troubleShootValue)
         objPasswordStorerClass.driverFunc()
         return True
 
     # handling command to run in jarvis in cmd window
-    elif(("cmd" in commandList) or ("Cmd" in commandList) or ("CMD" in commandList)):
+    if(("cmd" in commandList) or ("Cmd" in commandList) or ("CMD" in commandList)):
         os.system("cls")
         print("opening jarvis in command prompt")
         os.startfile(r"jarvis_CMD.bat")
@@ -711,7 +703,7 @@ def executeCommands(command):
         exit()
     
     # handling utc time and date
-    elif(("utc" in commandList) or ("UTC" in commandList) or ("Utc" in commandList)):
+    if(("utc" in commandList) or ("UTC" in commandList) or ("Utc" in commandList)):
         if(("time" in commandList) or ("Time" in commandList)):
             newObj = str(datetime.datetime.utcnow())
             currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
@@ -720,9 +712,9 @@ def executeCommands(command):
             print("UTC TIME = {}".format(currentTime))
             print("UTC DATE = {}".format(currentDate))
             return True
-        return False
+
     
-    elif(("time" in commandList) or ("Time" in commandList)):
+    if(("time" in commandList) or ("Time" in commandList)):
         newObj = str(datetime.datetime.now())
         currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
         currentTime = newObj[11:19] 
@@ -731,7 +723,8 @@ def executeCommands(command):
         print("DATE = {}".format(currentDate))
         return True
 
-    elif(("speed" in commandList) or ("Speed" in commandList)):
+
+    if(("speed" in commandList) or ("Speed" in commandList)):
         if(("test" in commandList) or ("Test" in commandList)):
             commandListCopy = commandList.copy()
 
@@ -784,16 +777,9 @@ def executeCommands(command):
             objSpeedTestClass.runSpeedTestUtility(inBytes , numberOfTime)
             return True     # as all runned successfully
 
-            
-        else:
-            return False
-
-
-
-
 
     # calling for exit command
-    elif(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
+    if(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
         os.system("cls")
         print("See you soon :) , Exiting the program ", end="", flush=True)
         time.sleep(0.3)
@@ -805,8 +791,8 @@ def executeCommands(command):
         os.system("cls")
         exit()
 
-    else:
-        return False
+    # if none of the above command is executed than return false to tell the user that the command entered was incorrect
+    return False
 
 
 def main():

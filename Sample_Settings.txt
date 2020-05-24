@@ -7,6 +7,9 @@ Directories =
 # path to backup - ex - F:/myBackup
 backUpPath = 
 
+# path to backup for jarvis - ex - F:/myBackup
+backUpPathForJarvis = 
+
 # User Name :
 userName = KING
 
