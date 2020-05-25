@@ -141,6 +141,15 @@ def handleGetHelp(command):
 
 class MainClass():
 
+    """
+This class is used to generate dictionary from settings so that it can be used in program
+                  
+methods include - getDict()           ->  To generate dictionary - not for outside use
+                - returnDict()        ->  To get the dictionary for use - returns dictionary directly when called
+                - setUserName()       ->  To generate the user name from reading opearting system object - not for outside use
+                - returnUserName()    ->  To get the username - returns user name in string format directly when called 
+    """
+
     # contructor
     def __init__(self):
         self.settingsDict = {}
@@ -184,6 +193,22 @@ class MainClass():
 
 class MainWeatherClass(MainClass):
 
+    """
+This Class is a child of the MainClass and is used for handling the weather command
+
+methods include - setCityName()          ->    used to set the city name  
+                - addToList()            ->    used to add argument to the command list that will passed to weather module
+                - toDeleteFromList()     ->    used to Delete the passed element from the command list
+                - modifyList()           ->    used to modify the element in command list - both element to modify 
+                                               & element to modify with arguments are to be passed
+                - printWeatherDetails()  ->    used to print the finalweather details in a tablular format
+
+their are some default things in the command list which if present , the print weather details will print them
+
+default things in command list ["tempInC", "pressure", "humidity" , "temp_min" , "temp_max"] 
+- you can change these with list modifications function provided
+    """
+
     # constructor
     def __init__(self):
         self.cityName = None
@@ -191,9 +216,10 @@ class MainWeatherClass(MainClass):
         self.humidityDetail = 0
         self.currentTempInC = -277
 
+
     # function to set the cityName
 
-    def getCityName(self, cityPass):
+    def setCityName(self, cityPass):
         self.cityName = cityPass
 
     # function to add another elements to list to get their info as well
@@ -340,7 +366,7 @@ def executeCommands(command):
                 cityName = None
 
         # passing the city name to the class
-        objMainWeatherClass.getCityName(cityName)
+        objMainWeatherClass.setCityName(cityName)
 
         # checking for additional commands
         if("-f" in commandList or "-F" in commandList):
@@ -830,4 +856,6 @@ def driverForMain():
     main()
 
 if __name__ == "__main__":
-    driverForMain()
+    # driverForMain()
+    obj = MainWeatherClass()
+    print(obj.__doc__)
