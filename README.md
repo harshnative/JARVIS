@@ -30,6 +30,15 @@ Download the executable from the releases section of [Github](https://github.com
 
 Just follow the on screen instructions to install
 
+#### To Update the program - 
+just download the latest release of the jarvis
+
+
+To prevent any important data loss - In the older jarvis - run this command (make sure backup path for jarvis is setted in settings)
+```
+backup jarvis
+```
+
 ***
 ***
 
