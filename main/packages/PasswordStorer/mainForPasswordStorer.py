@@ -11,6 +11,23 @@ import pyperclip
 
 class PasswordStorerClass:
 
+    """
+This class is the main class of the password module
+
+methods included - 
+
+driverFunc()        ->  this is the only method that you need to use this methods
+                        this method accepts 1 argument - onlyAuthenticate Value
+                        which is set to False by default 
+                        
+                        If the value passed is False , the the function is self sufficient
+                        It will ask for input and show output on the inside itself
+                        
+                        If the value is True then it asks for the password 
+                        and if you enter the correct password then it returns the entered password
+                        if the entered password is incorrect then it will repeatedly ask for correct password
+    """
+
     # constructor
     def __init__(self , troubleShootValuePass):
         self.troubleShootValue = troubleShootValuePass
@@ -481,6 +498,8 @@ class PasswordStorerClass:
         # checking whether the user is right or not
         while(1):
             if(self.authenticate()):
+
+                # if the outside inside the password
                 if(self.onlyAuthenticate == True):
                     return self.password
                 break
@@ -520,4 +539,5 @@ class PasswordStorerClass:
 # just for testing purpose
 if __name__ == "__main__":
     obj = PasswordStorerClass()
-    obj.driverFunc()
+    # obj.driverFunc()
+    # print(obj.__doc__)

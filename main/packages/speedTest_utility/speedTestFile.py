@@ -3,6 +3,21 @@ import os
 from packages.loggerPackage.loggerFile import *
 
 class SpeedTestClass:
+    """
+This is the main class of speed test file
+
+methods - 
+1.  runSpeedTestUtility    ->    this the only method that you need to use this class functions as
+                                 this methods automatically calls other methods of the class
+
+                                 this method accepts two arguments -
+                                                                                
+                                 1st inBytes - if the result shown need to be in MegaBytes instead of Megabits
+                                               default value of this is False
+                                                                                
+                                 2nd numberOfTimesToDo - How many times you need to average the result out
+                                                         default value is two
+    """
 
     # contructor for the class
     def __init__(self , troubleShootValuePass):

@@ -2,7 +2,19 @@ import os
 import time
 from packages.loggerPackage.loggerFile import *
 class Setting():
+    """
+This is the main class of the settings module
 
+methods - 
+
+1.  getDictionary()      ->    this method is used to get the dictionary from the txt file
+                               returns False if it cannot generate dictionary
+
+2.  openFile()           ->    used to open the settings file in default txt file viewer
+
+3.  regenerateFile()     ->    used to regenerate the settings file
+                               New things must be added into this function to keep it uptodate
+    """
     # constructor
     def __init__(self , troubleShootValuePass):
         self.myDictionary = { }
