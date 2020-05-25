@@ -145,8 +145,11 @@ class MainClass():
 This class is used to generate dictionary from settings so that it can be used in program
                   
 methods include - getDict()           ->  To generate dictionary - not for outside use
+                
                 - returnDict()        ->  To get the dictionary for use - returns dictionary directly when called
+                
                 - setUserName()       ->  To generate the user name from reading opearting system object - not for outside use
+                
                 - returnUserName()    ->  To get the username - returns user name in string format directly when called 
     """
 
@@ -197,10 +200,15 @@ class MainWeatherClass(MainClass):
 This Class is a child of the MainClass and is used for handling the weather command
 
 methods include - setCityName()          ->    used to set the city name  
+                
                 - addToList()            ->    used to add argument to the command list that will passed to weather module
+                
+                
                 - toDeleteFromList()     ->    used to Delete the passed element from the command list
+               
                 - modifyList()           ->    used to modify the element in command list - both element to modify 
                                                & element to modify with arguments are to be passed
+               
                 - printWeatherDetails()  ->    used to print the finalweather details in a tablular format
 
 their are some default things in the command list which if present , the print weather details will print them
@@ -856,6 +864,4 @@ def driverForMain():
     main()
 
 if __name__ == "__main__":
-    # driverForMain()
-    obj = MainWeatherClass()
-    print(obj.__doc__)
+    driverForMain()

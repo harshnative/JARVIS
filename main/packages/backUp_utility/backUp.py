@@ -5,9 +5,9 @@ import datetime
 from packages.loggerPackage.loggerFile import *
 
 class BackUp():
-    """ startBackUp is the main function of this , only this function is usefull as it can drive can other function of this class itself
+    """ startBackUp is the main function of this , only this function is usefull as it can drive other function of this class itself
         
-            This function excepts three arguments 
+            This function excepts four arguments 
 
             1. commandList - list of command that are passed by the user to perform the actions
                 
@@ -18,9 +18,11 @@ class BackUp():
                     -a and -e and -c    ->  for generating the backup of all the essential things of the current user only
                     -d                  ->  this can be clubbed with above and is used to backup the folders of which the paths are send as list to additionalDirectoryList
 
-            2. pass the list containing the exact paths of the folders of which you want to generate the backup of
+            2. pass the list containing the exact paths of the folders of which you want to generate the backup of in case of -d command 
 
             3. pass the path for the backUp folder location 
+
+            4. to generate log file or not - default Value is True 
             
             at the end of the process a log file will be generated at the desktop"""
 
@@ -244,7 +246,7 @@ class BackUp():
 
 
     # driver function of the class this is what you will be calling
-    def startBackUp(self, commandList , additionalDirectoryList , pathToBackup):
+    def startBackUp(self, commandList , additionalDirectoryList , pathToBackup , toGenerateLogFile = True):
         
         self.getUserName()
         self.setPathToBackup(pathToBackup)
@@ -262,7 +264,8 @@ class BackUp():
         if("-d" in commandList):
             self.forCopyListOfDirectories()
 
-        self.logFileGenerator()
+        if(toGenerateLogFile == True):
+            self.logFileGenerator()
 
         self.cLog.log("startBackUp function runned successfully", "i")
 
