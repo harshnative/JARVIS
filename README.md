@@ -1,18 +1,20 @@
 # JARVIS
-A cool simple personal assistant that can do many things to make your life easier a little bit built in house using python
+Jarvis is a cool command line personal assistant for PC
 
 ***
 ***
 
 ## Discription -
-this is simple personal assistant named after everyones favourite jarvis assistant in the MCU
+Jarvis is simple personal assistant named after everyones favourite jarvis assistant in the MCU
 
 jarvis as of now can perform the following actions :
 
 1. Get you the weather details
 2. backUp your computer or certain folder on a single command
-3. Store your passwords in the encrypted format and lets you see them easily with just one master password and many more features for handling passwords
-4. several different actions like playing game , converting links , coin toss , interest calculate , group generate , convert number systems , find average etc can be performed from one interface
+3. Store your passwords in the encrypted format and lets you see them easily with just one master password
+4. Test your network speed
+5. show you time mainly utc time which you need previously to calculate 
+6. several different actions like playing game , converting links , coin toss , interest calculate , group generate , convert number systems , find average etc can be performed from one interface
 
 scroll down to Usage section to see the examples and commands of performing the above tasks
 
@@ -250,6 +252,7 @@ This project is currently under development - some features are available fully 
 2. backup
 3. password storer
 4. additional programs
+5. speed test
 
 #### Features comming soon -
 1. internet searching 
