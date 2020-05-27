@@ -51,6 +51,18 @@ To run jarvis in cmd window instead of main window - this helps in knowing the r
 
 ***
 
+```
+font size
+```
+To Change the font size
+
+```
+font colour
+```
+To Change the font colour 
+
+***
+
 ### Main features guide - 
 
 #### Password Storer
