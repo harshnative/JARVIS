@@ -747,7 +747,7 @@ def executeCommands(command):
             print("UTC DATE = {}".format(currentDate))
             return True
 
-    
+    # handling simple time command
     if(("time" in commandList) or ("Time" in commandList)):
         newObj = str(datetime.datetime.now())
         currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
@@ -757,7 +757,32 @@ def executeCommands(command):
         print("DATE = {}".format(currentDate))
         return True
 
+    # handling font size command
+    if(("Font" in commandList) or ("font" in commandList)):
+        if(("Size" in commandList) or ("size") in commandList):
+            os.system("cls")
+            print("To change the font size follow these steps : ") 
+            print("\n1. right click on the jarvis logo on top left corner")
+            print("\n2. click on the defaults button")
+            print("\n3. navigate to font panel and change the font size")
+            print("\n4. restart the program by closing it")
+            print("\nRecommended font size is 18")
+            print("\nTo change the font size temporarily - click on properties instead of defaults")
+            return True
 
+    # handling font colour command
+    if(("Font" in commandList) or ("font" in commandList)):
+        if(("colour" in commandList) or ("Colour" in commandList) or ("Color" in commandList) or ("color" in commandList)):
+            os.system("cls")
+            print("To change the font colour follow these steps : ") 
+            print("\n1. right click on the jarvis logo on top left corner")
+            print("\n2. click on the defaults button")
+            print("\n3. navigate to colours panel and make sure screen text is selected")
+            print("\n4. select the colour and restart the program by closing it")
+            print("\nRecommended font colour is green or grey")
+            print("\nTo change the font size temporarily - click on properties instead of defaults")
+            return True
+            
     if(("speed" in commandList) or ("Speed" in commandList)):
         if(("test" in commandList) or ("Test" in commandList)):
             commandListCopy = commandList.copy()
@@ -835,7 +860,7 @@ def main():
         objMainClass.setUserName()
         os.system("cls")
         print(f"welcome {objMainClass.returnUserName()}\n")
-        commandInput = input("enter command : ")
+        commandInput = input("Enter Command : ")
         if(handleGetHelp(commandInput)):
             pass
         else:
