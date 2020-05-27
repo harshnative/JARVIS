@@ -395,7 +395,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                     print("\nEnter Index for deletion (space seperated for multiple) , Enter 0 to delete all : ")
                     indexList = [int(x) for x in input().split()]
 
-                    print("Press enter to confirm delete , Notice - ones deleted you cannot get them back")
+                    print("\nPress enter to confirm delete , Notice - ones deleted you cannot get them back")
                     input()
 
                     for i,j in enumerate(listToDelete):

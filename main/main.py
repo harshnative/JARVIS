@@ -11,6 +11,7 @@ from tabulate import tabulate
 import os
 import datetime
 import shutil
+import ctypes
 from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
 from imports.harshNative_github.txtCompare.txtComparePy import *
 from imports.harshNative_github.hangMan_game.hangmanGame import *
@@ -20,6 +21,7 @@ from packages.settings.jarvisSetting import *
 from packages.weather.getWeather import *
 from packages.backUp_utility.backUp import *
 from packages.speedTest_utility.speedTestFile import *
+ 
 
 # creating global object of class Clogger
 cLog = Clogger()
@@ -29,13 +31,19 @@ troubleShootValue = False
 cLog.setTroubleShoot(troubleShootValue)
 
 # function to restart everything - just call the main again
-
-
 def restart_program():
     os.system("cls")
     cLog.log("program restarting..", "i")
     main()
 
+# function to check if the script is running in administrative mode or not
+# returns True ot Flase
+def isAdmin():
+    try:
+        is_admin = (os.getuid() == 0)
+    except AttributeError:
+        is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
+    return is_admin
 
 # function to check for a substring in a string - returns true or false
 def isSubString(string, subString):
@@ -501,6 +509,21 @@ def executeCommands(command):
             commandListCopy.remove("backup")
         elif("Backup" in commandList):
             commandListCopy.remove("Backup")
+
+        os.system("cls")
+        if(isAdmin()):
+            pass
+        else:
+            print("Please restart the jarvis in the administrative mode and run command again")
+            print("\nAs right now some important files will not be backed up due to permission issues")
+            print("\nIf you still want to continue then type continue below or press enter to exit\n")
+
+            inputForContinueOrNot = input(" : ")
+
+            if(inputForContinueOrNot == "continue"):
+                pass
+            else:
+                restart_program()
 
         # creating object of class backUp
         objBackUp = BackUp(troubleShootValue)
