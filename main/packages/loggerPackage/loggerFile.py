@@ -33,8 +33,8 @@ methods included - setTroubleShoot()    ->    used to set the the log level -
     # constructing important variables
     def __init__(self):
         self.troubleShoot = False
-        self.logFileName = "jarvis.log"
-        self.getLogFileMessage = "Email us this file at jarvismail@gmail.com and we will fix the error as soon as possible"
+        self.logFileName = r"C:\programData\Jarvis\jarvisLogs.log"
+        self.getLogFileMessage = "Email us this file at myjarvispa@gmail.com and we will fix the error as soon as possible"
         self.setLoggerConfig()
 
     def setTroubleShoot(self , boolValuePass):
@@ -43,6 +43,11 @@ methods included - setTroubleShoot()    ->    used to set the the log level -
 
     # function to define basic config of logging module
     def setLoggerConfig(self):
+        
+        # Remove all handlers associated with the root logger object.
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+
         # setting up logging configration
         if(self.troubleShoot == True):
             logging.basicConfig(level=logging.DEBUG , filename = self.logFileName , format='%(asctime)s - %(levelname)s : %(message)s' , datefmt='%d-%b-%y %H:%M:%S')

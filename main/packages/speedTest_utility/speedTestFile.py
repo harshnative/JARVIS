@@ -128,7 +128,10 @@ methods -
                 value = self.getDownloadSpeed()
                 if(value == False):
                     os.system("cls")
-                    print("\nSpeed test Failed , try again , if error persist run troubleshoot command")
+                    if(self.cLog.troubleShoot == False):
+                        print("\nSpeed test failed, Something went wrong, Please Try again, if error persist, run troubleShoot command")
+                    else:
+                        print("\nerror has been logged - continue...")
                     self.cLog.log("download speed test failed in run speed test utility", "i")
                     return False
                 avgDownloadSpeed = avgDownloadSpeed + value
@@ -138,7 +141,10 @@ methods -
                 value = self.getUploadSpeed()
                 if(value == False):
                     os.system("cls")
-                    print("\nSpeed test Failed , try again , if error persist run troubleshoot command")
+                    if(self.cLog.troubleShoot == False):
+                        print("\nSpeed test failed, Something went wrong, Please Try again, if error persist, run troubleShoot command")
+                    else:
+                        print("\nerror has been logged - continue...")
                     self.cLog.log("upload speed test failed in run speed test utility", "i")
                     return False
                 avgUploadSpeed = avgUploadSpeed + value
@@ -148,7 +154,10 @@ methods -
                 value = self.getPing()
                 if(value == False):
                     os.system("cls")
-                    print("\nSpeed test Failed , try again , if error persist run troubleshoot command")
+                    if(self.cLog.troubleShoot == False):
+                        print("\nSpeed test failed, Something went wrong, Please Try again, if error persist, run troubleShoot command")
+                    else:
+                        print("\nerror has been logged - continue...")
                     self.cLog.log("ping test failed in run speed test utility", "i")
                     return False
                 avgPing = avgPing + value

@@ -28,7 +28,7 @@ cLog = Clogger()
 
 # setting TroubleShoot Value
 troubleShootValue = False
-cLog.setTroubleShoot(troubleShootValue)
+
 
 # function to restart everything - just call the main again
 def restart_program():
@@ -84,7 +84,10 @@ def getHelp(passObj):
             os.system("cls")
             cLog.log("error while opening the help file", "e")
             cLog.exception(str(e), "In main.py/getHelp_func-If_Part")
-            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            if(cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
 
     # for displaying specific help by searching for the keyords as substring in line
     else:
@@ -110,7 +113,10 @@ def getHelp(passObj):
             os.system("cls")
             cLog.log("error while opening the help file", "e")
             cLog.exception(str(e), "In main.py/getHelp_func-elsePart")
-            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            if(cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
 
 
 # function for handling the get help
@@ -131,7 +137,10 @@ def handleGetHelp(command):
                 os.system("cls")
                 cLog.log("error while opening the help file", "e")
                 cLog.exception(str(e), "In main.py/handleGetHelp_func")
-                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                if(cLog.troubleShoot == False):
+                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                else:
+                    print("\nerror has been logged - continue...")
             return True
 
         elif(len(commandList) > 1):
@@ -145,6 +154,75 @@ def handleGetHelp(command):
             return True
 
     return False
+
+
+# function for handling troubleshooting
+def troubleShootFunc():
+
+    # setting troubleshoot value to true for logger module
+    global troubleShootValue
+    troubleShootValue = True
+    cLog.setTroubleShoot(troubleShootValue)
+
+    # starting customised main()
+    objMainClass = MainClass()
+    objMainClass.setUserName()
+    os.system("cls")
+
+    # getting user name so that we can output the log file to desktop
+    temp = os.environ  # generates a object with the property called USERNAME containing the info
+    tempUserName = temp["USERNAME"]
+
+    # setting up paths to copy log file to desktop at the end
+    pathToDesktop = "C:/Users/" + str(tempUserName) + "/Desktop" 
+    pathToLog = str(cLog.logFileName)
+
+    while(1):
+        os.system("cls")
+        #main command copied below with some modification
+        print(f"welcome {objMainClass.returnUserName()}\n")
+        print("You are in touble shoot mode : enter exit to exit troubleShootMode\n")
+        commandInput = input("Enter Command in which you faced error and try to repeat the process : ")
+        if(handleGetHelp(commandInput)):
+            pass
+        if(isSubString(commandInput , "troubleshoot") or isSubString(commandInput , "TroubleShoot") or isSubString(commandInput , "troubleShoot") or isSubString(commandInput , "Troubleshoot")):
+            os.system("cls")
+            print("Trouble shoot command is already running ...")
+        if(isSubString(commandInput , "Exit") or isSubString(commandInput , "exit") or isSubString(commandInput , "EXIT")):
+            return False
+
+        else:
+            if(executeCommands(commandInput)):
+                print("\n\n")
+                os.system("pause")
+                os.system("cls")
+                
+                try:
+                    shutil.copy(pathToLog , pathToDesktop)
+                    print("A log file is generated at the desktop")
+                    print("\n" , cLog.getLogFileMessage)
+                    print("\nNOTE : log file only contains diagnos data , NO personal information is stored")
+                except Exception as e:
+                    cLog.log("Could not generate log file at desktop" , "e")
+                    cLog.exception(str(e) ,"In main.py/troubleshootfunc")
+                    print("oops could make log file at desktop \nplease go to ", cLog.logFileName)
+                    print("\n" , cLog.getLogFileMessage)
+                    print("\nNOTE : log file only contains diagnos data , NO personal information is stored")
+                    
+                print("\n\n")
+                os.system("pause")
+                break
+
+            else:
+                os.system("cls")
+                print("oops could not regonise the command , please enter the same command in which you previously faced error")
+
+        print("\n\n")
+        os.system("pause")
+    
+    troubleShootValue = False
+    cLog.setTroubleShoot(troubleShootValue)
+    return True
 
 
 class MainClass():
@@ -434,7 +512,10 @@ def executeCommands(command):
                 shutil.copytree( pathToBackupForJarvis + "/" + "JarvisBackup" , "C:/programData/Jarvis" , dirs_exist_ok=True)
             except Exception as e:
                 print("Cannot restore jarvis properly")
-                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                if(cLog.troubleShoot == False):
+                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                else:
+                    print("\nerror has been logged - continue...")
                 cLog.log("Some exception occured while restoring jarvis" , "e")
                 cLog.exception(str(e) , "In main.py/ececuteCommand_func-in jarvis restore")
                 return True
@@ -492,7 +573,10 @@ def executeCommands(command):
                 shutil.copytree("C:/programData/Jarvis" , pathToBackupForJarvis + "/" + "JarvisBackup" ,  dirs_exist_ok=True)
             except Exception as e:
                 print("Cannot backup jarvis properly")
-                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                if(cLog.troubleShoot == False):
+                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                else:
+                    print("\nerror has been logged - continue...")
                 cLog.log("Some exception occured while backuping up jarvis" , "e")
                 cLog.exception(str(e) , "In main.py/ececuteCommand_func-in jarvis backup")
                 return True
@@ -617,7 +701,10 @@ def executeCommands(command):
                 mainForTxtCompare()
             except Exception:
                 cLog.log("some error occured while comparing txt files", "e")
-                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                if(cLog.troubleShoot == False):
+                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                else:
+                    print("\nerror has been logged - continue...")
             return True
 
 
@@ -651,7 +738,10 @@ def executeCommands(command):
                 cLog.log("external exe file not found", "e")
                 print("The random generator file is missing")
             except Exception as e:
-                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                if(cLog.troubleShoot == False):
+                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                else:
+                    print("\nerror has been logged - continue...")
                 cLog.log("error on generate random command", "e")
                 cLog.exception(str(e), "In generate random command")
             return True
@@ -669,7 +759,10 @@ def executeCommands(command):
                     cLog.log("external exe file not found", "e")
                     print("The number convert file is missing")
                 except Exception as e:
-                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                    if(cLog.troubleShoot == False):
+                        print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                    else:
+                        print("\nerror has been logged - continue...")
                     cLog.log("error on number system command", "e")
                     cLog.exception(str(e), "In number system convertor command")
                 return True
@@ -685,7 +778,10 @@ def executeCommands(command):
             cLog.log("external exe file not found", "e")
             print("The average finder file is missing")
         except Exception as e:
-            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            if(cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
             cLog.log("error on average finder command", "e")
             cLog.exception(str(e), "In average finder command")
         return True
@@ -701,7 +797,10 @@ def executeCommands(command):
                 cLog.log("external exe file not found", "e")
                 print("The coin toss file is missing")
             except Exception as e:
-                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                if(cLog.troubleShoot == False):
+                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                else:
+                    print("\nerror has been logged - continue...")
                 cLog.log("error on coin toss command", "e")
                 cLog.exception(str(e), "In coin toss command")
             return True
@@ -719,7 +818,10 @@ def executeCommands(command):
                 cLog.log("external exe file not found", "e")
                 print("The group generator file is missing")
             except Exception as e:
-                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                if(cLog.troubleShoot == False):
+                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                else:
+                    print("\nerror has been logged - continue...")
                 cLog.log("error on group generate command", "e")
                 cLog.exception(str(e), "In group generate command")
             return True
@@ -737,7 +839,10 @@ def executeCommands(command):
                 cLog.log("external exe file not found", "e")
                 print("The interest calculator file is missing")
             except Exception as e:
-                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                if(cLog.troubleShoot == False):
+                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                else:
+                    print("\nerror has been logged - continue...")
                 cLog.log("error on calc interest command", "e")
                 cLog.exception(str(e), "In calc interest command")
             return True
@@ -805,7 +910,8 @@ def executeCommands(command):
             print("\nRecommended font colour is green or grey")
             print("\nTo change the font size temporarily - click on properties instead of defaults")
             return True
-            
+    
+    # handling speed test command
     if(("speed" in commandList) or ("Speed" in commandList)):
         if(("test" in commandList) or ("Test" in commandList)):
             commandListCopy = commandList.copy()
@@ -859,6 +965,16 @@ def executeCommands(command):
             objSpeedTestClass.runSpeedTestUtility(inBytes , numberOfTime)
             return True     # as all runned successfully
 
+    # handling troubleshoot command
+    if(("troubleshoot" in commandList) or ("TroubleShoot" in commandList) or ("Troubleshoot" in commandList) or ("troubleShoot" in commandList)):
+        status = troubleShootFunc()
+
+        os.system("cls")
+        if(status == True):
+            print("Trouble shooting complete, don't forget to mail us the log file at myjarvispa@gmail.com")
+        else:
+            print("toubleshooting stopped in between")
+        return True
 
     # calling for exit command
     if(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
@@ -878,6 +994,10 @@ def executeCommands(command):
 
 
 def main():
+
+    #setting trouble shoot value
+    cLog.setTroubleShoot(troubleShootValue)
+
     objMainClass = MainClass()
     while(1):
         objMainClass.setUserName()
@@ -903,7 +1023,10 @@ def driverForMain():
         os.makedirs(r"C:\programData\Jarvis", exist_ok=True)
         
     except Exception as e:
-        print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+        if(cLog.troubleShoot == False):
+            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+        else:
+            print("\nerror has been logged - continue...")
         cLog.log("jarvis folder making error", "c")
         cLog.exception(str(e), "In main.py/driverForMain_func")
         os.system("pause")

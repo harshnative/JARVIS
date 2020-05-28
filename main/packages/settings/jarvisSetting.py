@@ -70,7 +70,10 @@ methods -
             os.system("cls")
             self.cLog.log("error while opening the help file" , "e")
             self.cLog.exception(str(e) , "In jarvisSetting.py/makeDictionaryFromTxt_func")
-            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            if(self.cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
             return False
 
 
@@ -111,9 +114,13 @@ methods -
             
         except Exception:
             os.system("cls")
-            print("It seems like Jarvis do not have write permission in this folder")
-            print("try reinstalling the program with administrative premission\n")
-            print("\nPlease Try again, if error persist, run troubleShoot command")
+            
+            if(self.cLog.troubleShoot == False):
+                print("It seems like Jarvis do not have write permission in this folder")
+                print("try reinstalling the program with administrative premission\n")
+                print("\nif error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
             os.system("pause")
             os.system("cls")
             return False
@@ -149,19 +156,24 @@ methods -
                 except Exception:
                     self.cLog.log("File was regenerated but still cannot be opened" , "e")
                     os.system("cls")
-                    print("settings file cannot be opened even after regeneration\n")
-                    print("try reinstalling the program with administrative premission\n")
-                    print("\nPlease Try again, if error persist, run troubleShoot command")
+                    if(self.cLog.troubleShoot == False):
+                        print("settings file cannot be opened even after regeneration\n")
+                        print("try reinstalling the program with administrative premission\n")
+                        print("\nif error persist, run troubleShoot command")
+                    else:
+                        print("\nerror has been logged - continue...")
                     os.system("pause")
                     os.system("cls")
                     return False
                 
             elif(generateStatus == False):
-                print("\nError Occured while generating the settings file\n")
-                print("try reinstalling the program with administrative premission\n")
-                print("if the error remains follow instructions : ")
-                print("step 1 - run command troubleshoot in jarvis , this will generate a log file named as {} on desktop".format(self.cLog.logFileName))
-                print("step 2 - {}\n\n".format(self.cLog.getLogFileMessage))
+
+                if(self.cLog.troubleShoot == False):
+                    print("\nError Occured while generating the settings file\n")
+                    print("try reinstalling the program with administrative premission\n")
+                    print("\n if error persist, run troubleShoot command")
+                else:
+                    print("\nerror has been logged - continue...")
                 os.system("pause")
                 os.system("cls")
                 return False

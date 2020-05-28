@@ -149,7 +149,10 @@ driverFunc()        ->  this is the only method that you need to use this method
             print(tabulate(tabulateList, headers=['Site', 'Password']))
             self.cLog.log("displayAll function runned successfully in main for password" , "i")
         except Exception as e:
-            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            if(self.cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
             self.cLog.log("error while displaying all", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/displayAll")
 
@@ -198,7 +201,10 @@ driverFunc()        ->  this is the only method that you need to use this method
                     print("\nWrong index number entered")
                     self.cLog.log("Wrong index number entered in display search function in main for password" , "e")
                 except Exception:
-                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                    if(self.cLog.troubleShoot == False):
+                        print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                    else:
+                        print("\nerror has been logged - continue...")
                     self.cLog.log("error while displaying search after index number entered", "e")
                     self.cLog.exception(str(e) , "mainForPassword.py/displaySearch")
 
@@ -347,7 +353,10 @@ driverFunc()        ->  this is the only method that you need to use this method
             self.cLog.log("decrypting thing func runned successfully in main for password" , "i")
             return str(stringToReturn)
         except Exception as e:
-            print("\nSomething went wrong while decrypting, Please Try again, if error persist, run troubleShoot command")
+            if(self.cLog.troubleShoot == False):
+                print("\nSomething went wrong while decrypting, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
             os.system("pause")
             self.cLog.log("error while decrypting in main for password", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/decryptingThing")
@@ -504,7 +513,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                     return self.password
                 break
             else:
-                print("wrong password....")
+                print("\nwrong password....\n")
                 os.system("pause")
         
         os.system("cls")

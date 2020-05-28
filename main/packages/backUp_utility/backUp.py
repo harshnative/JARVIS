@@ -53,9 +53,13 @@ class BackUp():
             os.system("cls")
             self.cLog.log("Jarvis could not get the user name form os" , "e")
             self.cLog.exception(str(e) , "In backUp.py/BackUp_Class-getUserName_func")
-            print("ERROR : jarvis could not get userName")
-            print("\nTry reinstalling the program with admistrative permissions\n")
-            print("\nPlease Try again, if error persist, run troubleShoot command")
+            
+            if(self.cLog.troubleShoot == False):
+                print("ERROR : jarvis could not get userName")
+                print("\nTry reinstalling the program with admistrative permissions\n")
+                print("\n if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
             os.system("pause")
 
 
@@ -148,7 +152,10 @@ class BackUp():
             self.cLog.log("could not generate log file" , "e")
             self.cLog.exception(str(e) , "In backUp.py/backUp_class-logFileGenerator_Func")
             print("could not generate the log file")
-            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            if(self.cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
         
                    
 

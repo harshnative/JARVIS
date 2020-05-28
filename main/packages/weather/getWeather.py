@@ -103,7 +103,10 @@ class WeatherData():
                     os.system("cls")
                     self.cLog.log("critical error in extract info function" , "e")
                     self.cLog.exception(str(e) , "In getWeather.py/WeatherData_class-extractInfo_func")
-                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                    if(self.cLog.troubleShoot == False):
+                        print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                    else:
+                        print("\nerror has been logged - continue...")
         return True
     
     # function to convert the json temp which is in kelvin to 'c
@@ -117,7 +120,10 @@ class WeatherData():
             os.system("cls")
             self.cLog.log("error while opening the help file" , "e")
             self.cLog.exception(str(e) , "In getWeather.py/WeatherData_class-convTempToC_func")
-            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            if(self.cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
         self.tempInC = self.tempInK - 273
         return True
     
