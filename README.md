@@ -14,6 +14,7 @@ jarvis as of now can perform the following actions :
 3. Store your passwords in the encrypted format and lets you see them easily with just one master password
 4. Test your network speed
 5. show you time mainly utc time which you need previously to calculate 
+7. trouble shooting and logging functionality (for jarvis itself)
 6. several different actions like playing game , converting links , coin toss , interest calculate , group generate , convert number systems , find average etc can be performed from one interface
 
 scroll down to Usage section to see the examples and commands of performing the above tasks
@@ -24,9 +25,10 @@ As of now this project is under development but the goal list of feature is give
 ***
 
 ## Installation -
+
 Download the executable from the releases section of [Github](https://github.com/harshnative/JARVIS/releases)
 
-###### 100% Virus Free - checked and scanned by top antivirus 
+###### 100% Virus Free - checked and scanned by top antivirus
 
 Just follow the on screen instructions to install
 
@@ -34,7 +36,7 @@ Just follow the on screen instructions to install
 just download the latest release of the jarvis
 
 
-To prevent any important data loss - In the older jarvis - run this command (make sure backup path for jarvis is setted in settings)
+To prevent any important data loss - run this command before backuping up (make sure backup path for jarvis is setted in settings)
 ```
 backup jarvis
 ```
@@ -88,6 +90,18 @@ To Change the font colour
 &nbsp;
 #### Speed Test
 [Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) to know about how to use [Speed Test module](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/speedTest_utility.md) 
+
+***
+
+&nbsp;
+#### Trouble shooting Jarvis
+
+Facing error message while working with jarvis - run this command and a log file will be generated at the desktop - please mail that to us at myjarvispa@gmail.com and will help you as soon as possible
+
+```
+troubleshoot
+```
+To the troubleshooting process of jarvis
 
 ***
 

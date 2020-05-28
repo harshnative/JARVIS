@@ -25,7 +25,6 @@
                         help open # to open the txt file version of help
 
 
-
 5.  update              update
     
     to update the settings - automatically called when the program restarts
@@ -75,41 +74,43 @@
                         speed test 3       -> to avearge out the result 3 times - the defaut value is two
                         speed test -b 3    -> combine commands
 
+12. troubleshooting jarvis          troubleshoot - and then just follow the on screen instructions
+                                                   send the log file at myjarvispa@gmail.com
 
-8.  game                hangman game *opens game*
-
-
-
-9.  txt compare         txt compare *Compare two txt files*
+13.  game                hangman game *opens game*
 
 
 
-10. convert link        google drive *convert link*
+14.  txt compare         txt compare *Compare two txt files*
 
 
 
-11. generate random stuff like strings , numbers etc by using following command - generate random     
+15. convert link        google drive *convert link*
 
 
 
-12. convert numbers into other number system by using following command - number system convertor     or - no sys conv
+16. generate random stuff like strings , numbers etc by using following command - generate random     
 
 
 
-13. find average        average
+17. convert numbers into other number system by using following command - number system convertor     or - no sys conv
+
+
+
+18. find average        average
                         avg
 
 
 
-14. toss coin           coin toss
+19. toss coin           coin toss
 
 
 
-15. generate group      group generate
+20. generate group      group generate
 
 
 
-16. calculate interest by using following command - interest calculator    or - interest calc
+21. calculate interest by using following command - interest calculator    or - interest calc
 
 
 
