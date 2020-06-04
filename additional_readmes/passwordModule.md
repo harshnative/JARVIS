@@ -1,7 +1,7 @@
-# Password module
+# Password Manager
 
 ```password```
-Enter this command in jarvis window to open the module
+Enter this command in jarvis window to open the Manager
 
 If the password module started correctly then for the first you have to set a master password, This will be used to encrypt you passwords while they are stored as storing your passwords unencrypted is not a good idea
 
@@ -12,8 +12,6 @@ If you are visiting after first time, then you will need to enter your master pa
 We use one time pad cipher encryption technology to encrypt the passwords in the Storage, anyone will need to have your master password to decrpyt it.
 
 This is quite strong encryption tech, but still things can be cracked down by using brute force attach by a very powerfull computer, so we do not recommend storing extremely sensitive information into this.
-
-If you want to store very sensitive information into this then install jarvis in a encrypted container like ones generated from the veracrypt or truecrpyt 
 
 
 ## Commands to use in this module
@@ -60,10 +58,10 @@ This is used to change the master password
 ## FAQ - 
 
 ##### Password input is not taking input ? 
-It is recording input but you are nt seeing it as it is the security feature in jarvis while entering passwords. If you missedTyped few things just press backSpace for 1 to 2 sec and start entering the password again
+It is recording input but you are not seeing it as it is the security feature in jarvis while entering passwords to avoid password inputs leakage. If you missedTyped few things just press backSpace for 1 to 2 sec and start entering the password again :)
 
 ##### I am not able to delete or update any thing ?
 Make sure you enter correct index number when asked to them
 
 ##### I have forgotten my master password ?
-We are extremely sorry but you now cannot decrypt the password again, they are lost 
+We are extremely sorry but you now cannot decrypt your passwords again, they are lost 

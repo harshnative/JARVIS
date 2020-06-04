@@ -1,7 +1,7 @@
 # Additional Programs 
 
 #### Generate random stuff
-Want to generate some random stuff whether it be number or strings for encryption hell knows why , well jarvis as got you covered
+Want to generate some random stuff , whether it be number or strings for encryption hell knows why , well jarvis as got you covered
 
 To run this
 ```

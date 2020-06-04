@@ -67,9 +67,9 @@ To Change the font colour
 
 ### Main features guide - 
 
-#### Password Storer
+#### Password Manager
 
-[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/passwordModule.md) to know about how to use [Password Module](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/passwordModule.md)
+[Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/passwordModule.md) to know about how to use [Password Manager](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/passwordModule.md)
 
 ***
 

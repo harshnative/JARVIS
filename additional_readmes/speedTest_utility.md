@@ -1,4 +1,4 @@
-# speed test in Jarvis
+# Speed Test In Jarvis
 
 Jarvis includes a powerfull tool to quickly check your internet speed as well as ping
 
