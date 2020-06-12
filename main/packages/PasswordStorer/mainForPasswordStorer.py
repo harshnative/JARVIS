@@ -138,9 +138,10 @@ driverFunc()        ->  this is the only method that you need to use this method
                 if(row[0] == "!@#$%^&*("):
                         pass
                 else:
+                    tempDecrypt = self.decryptThing(row[0] , self.password)
                     # getting list for tablute module to show data
                     tempList = []
-                    tempList.append(str(row[0]))
+                    tempList.append(str(tempDecrypt))
                     tempList.append(self.decryptThing(str(row[1]) , self.password))
                     tabulateList.append(tempList)
             
@@ -171,11 +172,12 @@ driverFunc()        ->  this is the only method that you need to use this method
                 if(row[0] == "!@#$%^&*("):
                     pass
                 else:
-                    if(self.isSubString(row[0] , searchItem)):
+                    tempDecrypt = self.decryptThing(row[0] , self.password)
+                    if(self.isSubString(tempDecrypt , searchItem)):
                         # generating list for tabulate module
                         tempList = []
                         tempList.append(str(countForTabulate))
-                        tempList.append(str(row[0]))
+                        tempList.append(str(tempDecrypt))
                         tempList.append(self.decryptThing(str(row[1]) , self.password))
                         tabulateList.append(tempList)
 
@@ -289,39 +291,45 @@ driverFunc()        ->  this is the only method that you need to use this method
                     cursorForCounting = self.connectionObj.execute(stringToPass)
                     cursor = self.connectionObj.execute(stringToPass)
                     
-                    # just to create "\n"
-                    print()
-                    countInCursor = 0
-
-                    # for loading animation
-                    for row in cursorForCounting:
-                        countInCursor += 1
+                    countForCursor = 1          
+                    tempList = []
                     
-                    countForCursor = 1
-
-                    
+                    print("\nGetting old database")
                     for row in cursor:
                         # do not want to change master password as it as already been updated
                         if(row[0] == "!@#$%^&*("):
                             pass
                         else:
+                            # getting keys
+                            oldKey = row[0]
+                            # decrypting it
+                            oldKeyD = self.decryptThing(oldKey , self.oldPassword)
+                            # encrypting it
+                            newKey = self.encryptThing(oldKeyD , self.password)
+
                             # getting passwords
-                            old = row[1]
+                            oldPass = row[1]
                             # decryting it 
-                            new = self.decryptThing(old, self.oldPassword)
+                            oldPassD = self.decryptThing(oldPass, self.oldPassword)
                             # encrypting it again with new password
-                            new = self.encryptThing(new, self.password)
-                            key = row[0]
-                            value = new
-                            # updating the values in the DB
-                            self.updateInTable(key , value)
-                        
-                        # for loading animation
-                        print("\rUpdating database : {}/{}".format(countForCursor , countInCursor),end = "")
-                        countForCursor += 1
+                            newPass = self.encryptThing(oldPassD, self.password)
+                       
+                            
+                            # adding to table for latter updation
+                            innerTempList = []
+                            innerTempList.append(newKey)
+                            innerTempList.append(newPass)
+                            tempList.append(innerTempList)
+
+                            # deleting existing values form data base
+                            self.deleteFromTable(oldKey)
                     
-                    print()
-                    print("\nPasswod change process completed")
+                    # adding new values to the data base
+                    print("\nImplementing new database")
+                    for i in tempList:
+                        self.addToTable(i[0] , i[1])
+                    
+                    print("\n\nPassword change process completed")
                     break
 
                 else:
@@ -371,7 +379,8 @@ driverFunc()        ->  this is the only method that you need to use this method
                 os.system("cls")
                 x = input("Enter Website name for future referencing : ") 
                 y = input("Enter the Password : ")
-
+                
+                x = self.encryptThing(x , self.password)
                 y = self.encryptThing(y , self.password)
 
                 self.addToTable(str(x) , str(y))
@@ -393,12 +402,16 @@ driverFunc()        ->  this is the only method that you need to use this method
 
                 os.system("cls")
                 for row in cursor:
-                    if(self.isSubString(row[0] , webDelete)):
-                        print(indexCount , end = " : ")
-                        print("Site - ", row[0])
-                        listToDelete.append(row[0])
-                        indexCount += 1
-                        count += 1
+                    if(row[0] == "!@#$%^&*("):
+                        pass
+                    else:
+                        tempDecrypt = self.decryptThing(row[0] , self.password)
+                        if(self.isSubString(tempDecrypt , webDelete)):
+                            print(indexCount , end = " : ")
+                            print("Site - ", tempDecrypt)
+                            listToDelete.append(row[0])
+                            indexCount += 1
+                            count += 1
                     
                 if(count > 0):
                     print("\nEnter Index for deletion (space seperated for multiple) , Enter 0 to delete all : ")
@@ -407,13 +420,20 @@ driverFunc()        ->  this is the only method that you need to use this method
                     print("\nPress enter to confirm delete , Notice - ones deleted you cannot get them back")
                     input()
 
+                    somethingDeleted = False
+
                     for i,j in enumerate(listToDelete):
                         if(i+1 in indexList):
                             self.deleteFromTable(str(j))
+                            somethingDeleted = True
                         elif(0 in indexList):
                             self.deleteFromTable(str(j))
-
-                    print("\nDeleted successfully :)")
+                            somethingDeleted = True
+                        
+                    if(somethingDeleted == True):
+                        print("\nDeleted successfully :)")
+                    else:
+                        print("\nNothing deleted...")
 
                 else:
                     os.system("cls")
@@ -434,11 +454,15 @@ driverFunc()        ->  this is the only method that you need to use this method
                 indexCount = 1
                 
                 for row in cursor:
-                    if(self.isSubString(row[0] , toUpdate)):
-                        print(indexCount , end = " : ")
-                        print("Site - ", row[0] , end = "    ")
-                        print("Old Password - " , self.decryptThing(row[1] , self.password))
-                        toUpdateList.append(row[0])  
+                    if(row[0] == "!@#$%^&*("):
+                        pass
+                    else:
+                        tempDecrypt = self.decryptThing(row[0] , self.password)
+                        if(self.isSubString(tempDecrypt , toUpdate)):
+                            print(indexCount , end = " : ")
+                            print("Site - ", tempDecrypt , end = "    ")
+                            print("Old Password - " , self.decryptThing(row[1] , self.password))
+                            toUpdateList.append(row[0])  
 
                 indexInput = int(input("\nEnter Index for update : "))
 
