@@ -465,14 +465,20 @@ driverFunc()        ->  this is the only method that you need to use this method
                             toUpdateList.append(row[0])  
 
                 indexInput = int(input("\nEnter Index for update : "))
+                
+                ifUpdatedSomething = False
 
                 for i,j in enumerate(toUpdateList):
                     if(i+1 == indexInput):
                         updated = input("\nEnter the Updated Password : ")
                         updated = self.encryptThing(updated , self.password)
                         self.updateInTable(str(j) , str(updated))
+                        ifUpdatedSomething = True
                 
-                print("\nValue updated successfully")
+                if(ifUpdatedSomething == True):
+                    print("\nValue updated successfully")
+                else:
+                    print("\nUpdated nothing...")
                 self.cLog.log("getDone func runned successfully in main for password" , "i")
                 return True
 
