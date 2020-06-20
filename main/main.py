@@ -4,14 +4,24 @@ print("\nThis may take few minutes for the first time :)")
 
 import time
 import pyperclip
-import logging
 import psutil
 import sys
 from tabulate import tabulate
 import os
+
+# generating jarvis folder
+try:
+    os.makedirs(r"C:\programData\Jarvis", exist_ok=True)
+    print("folder check...")
+except Exception:
+    os.system("cls")
+    print("Critical Error - could not generate jarvis folder in program data - contact developer")
+    os.system("pause")
+
 import datetime
 import shutil
 import ctypes
+import logging
 from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
 from imports.harshNative_github.txtCompare.txtComparePy import *
 from imports.harshNative_github.hangMan_game.hangmanGame import *
@@ -266,8 +276,12 @@ methods include - getDict()           ->  To generate dictionary - not for outsi
         temp = os.environ  # generates a object with the property called USERNAME containing the info
         tempUserName = temp["USERNAME"]
         try:
-            if(self.settingsDict["userName"] == ""):
+            if(self.settingsDict == False):
+                self.settingsDict = {}
                 self.settingsDict["userName"] = tempUserName
+            elif(self.settingsDict["userName"] == ""):
+                self.settingsDict["userName"] = tempUserName
+                
         except KeyError:
             cLog.log("cannot get the username from setting", "i")
             try:
@@ -1018,19 +1032,7 @@ def main():
 
 
 def driverForMain():
-    # generating jarvis folder
-    try:
-        os.makedirs(r"C:\programData\Jarvis", exist_ok=True)
-        
-    except Exception as e:
-        if(cLog.troubleShoot == False):
-            print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
-        else:
-            print("\nerror has been logged - continue...")
-        cLog.log("jarvis folder making error", "c")
-        cLog.exception(str(e), "In main.py/driverForMain_func")
-        os.system("pause")
-        os.system("cls")
+    
     # calling main
     main()
 
