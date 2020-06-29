@@ -8,7 +8,7 @@ Jarvis is a cool command line personal assistant for PC
 
 https://harshnative.github.io/JarvisWebsite
 
-[click here to visit the website for latest updates and documentation](https://harshnative.github.io/JarvisWebsite)
+[click here to visit the website for latest updates and documentation / user guide](https://harshnative.github.io/JarvisWebsite)
 
 
 ***
