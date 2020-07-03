@@ -43,3 +43,7 @@ You have to use _ (underscore) instead of space for city having more than one wo
 
 Open weather probably does not provide weather details of your city. Although more than 2,50,000 city are supported , still their can be some city for which the weather details may not be found. Also make sure you are entering right set of commands
 
+
+### If you are a developer then you will need to get your api key to test the source code and set it in main function in main.py inside main folder of the repository 
+
+To know how to get your own api key from open weather [click here](https://openweathermap.org/appid#:~:text=1.,activated%20and%20ready%20to%20use.)

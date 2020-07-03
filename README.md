@@ -88,6 +88,10 @@ To Change the font colour
 
 [Click Here](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/weatherModule.md) to know about how to use [Weather Module](https://github.com/harshnative/JARVIS/blob/master/additional_readmes/weatherModule.md)
 
+##### If you are a developer then you will need to get your api key to test the source code and set it in main function in main.py inside main folder of the repository 
+
+To know how to get your own api key from open weather [click here](https://openweathermap.org/appid#:~:text=1.,activated%20and%20ready%20to%20use.)
+
 ***
 
 &nbsp;
