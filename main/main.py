@@ -1009,7 +1009,16 @@ def executeCommands(command):
 
 def main():
 
-    #setting trouble shoot value
+    # setting api key's
+
+    # for weather module - get your api key from open weather as pass it here
+    # WeatherData.setApiKey("")
+
+    # checking the api key's
+    if(WeatherData.returnApiKeyStatus() == False):
+        raise NotImplementedError("Set the open weather api")
+
+    # setting trouble shoot value
     cLog.setTroubleShoot(troubleShootValue)
 
     objMainClass = MainClass()

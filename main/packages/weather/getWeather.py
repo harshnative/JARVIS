@@ -7,6 +7,8 @@ from packages.loggerPackage.loggerFile import *
 
 class WeatherData():
 
+    _apiKey = None
+
     # building up constructor to set the defualt value's
     def __init__(self , troubleShootValuePass):
 
@@ -14,7 +16,9 @@ class WeatherData():
         self.cLog = Clogger()
         self.cLog.setTroubleShoot(self.troubleShootValue)
 
-        self._apiKey = "fe82651e607e46db61dba45e39aa7e17"
+        # insert your open weather api key here
+        # if you don't know how to get your api key then readMe.md or google it
+
         self.cityName = "london"
         self.stringKey = "https://api.openweathermap.org/data/2.5/weather?q="
         self.data = None
@@ -29,6 +33,20 @@ class WeatherData():
     # function to set the cityName for which the weather data will be pulled
     def giveCityName(self , cityNamePassed):
         self.cityName = str(cityNamePassed)
+
+
+    # function to set the api key
+    @classmethod
+    def setApiKey(cls , apiKeyPassed):
+        cls._apiKey = apiKeyPassed
+
+    # function to get the api key status
+    @classmethod
+    def returnApiKeyStatus(cls):
+        if(cls._apiKey == None):
+            return False
+        else:
+            return True
 
 
     # function to make the final url which will be used to make request
@@ -147,6 +165,14 @@ class WeatherData():
     # function to do all the above stuff line wise 
     def getWeatherData(self , give_cityName , give_listOfValueToGet):
         """Read the extractInfo() docs to get info on give_listOfValueToGet and the info on the things that are returned in list"""
+
+        # program will terminate if the api key is not setted up
+        if(self.returnApiKeyStatus() == False):
+            os.system("cls")
+            print("API key is not set , please contact developer\n\n")
+            os.system("pause")
+            exit(1)
+
         self.listPassed = give_listOfValueToGet
         self.giveCityName(give_cityName)
         self.makeUrl()
