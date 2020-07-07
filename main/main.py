@@ -5,6 +5,13 @@ print("\nThis may take few minutes for the first time :)")
 isOnWindows = False
 isOnLinux = False
 
+# clear screen function 
+def customClearScreen():
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
+
 # Checking weather the user is on windows or not
 try:
     temp = os.environ
@@ -26,10 +33,7 @@ try:
     os.makedirs(r"C:\programData\Jarvis", exist_ok=True)
     print("folder check...")
 except Exception:
-    if(isOnWindows == True):
-        os.system("cls")
-    else:
-        sp.call('clear',shell=True)
+    customClearScreen()
     print("Critical Error - could not generate jarvis folder in program data - contact developer")
     os.system("pause")
 
@@ -58,14 +62,15 @@ cLog = Clogger()
 troubleShootValue = False
 
 
+
+
 # function to restart everything - just call the main again
 def restart_program():
-    if(isOnWindows == True):
-        os.system("cls")
-    else:
-        sp.call('clear',shell=True)
+
+    customClearScreen()
     cLog.log("program restarting..", "i")
     main()
+
 
 # function to check if the script is running in administrative mode or not
 # returns True ot Flase
@@ -75,6 +80,7 @@ def isAdmin():
     except AttributeError:
         is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
     return is_admin
+
 
 # function to check for a substring in a string - returns true or false
 def isSubString(string, subString):
@@ -100,10 +106,7 @@ def getHelp(passObj):
 
     # for displaying all the help available
     if(passObj == "all"):
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         try:
             with open("txtFiles/help.txt") as fil:
@@ -111,19 +114,13 @@ def getHelp(passObj):
                     print(line)
             cLog.log("if case in get help method runned successfully", "i")
         except FileNotFoundError:
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             cLog.log("help.txt file not found", "e")
             print(
                 "oops , the help file in missing , try reinstalling the program or visit the website for help")
         except Exception as e:
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             cLog.log("error while opening the help file", "e")
             cLog.exception(str(e), "In main.py/getHelp_func-If_Part")
@@ -134,10 +131,7 @@ def getHelp(passObj):
 
     # for displaying specific help by searching for the keyords as substring in line
     else:
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         try:
             count = 0
@@ -152,19 +146,13 @@ def getHelp(passObj):
                         "oops no help found for entered prase , try writting only help for seeing all help available")
             cLog.log("else case in get help method runned successfully", "i")
         except FileNotFoundError:
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             cLog.log("help.txt file not found", "e")
             print(
                 "oops , the help file in missing , try reinstalling the program or visit the website for help")
         except Exception as e:
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             cLog.log("error while opening the help file", "e")
             cLog.exception(str(e), "In main.py/getHelp_func-elsePart")
@@ -184,19 +172,13 @@ def handleGetHelp(command):
                 os.startfile(r"txtFiles\help.txt")
                 cLog.log("help open command runned successfully", "i")
             except FileNotFoundError:
-                if(isOnWindows == True):
-                    os.system("cls")
-                else:
-                    sp.call('clear',shell=True)
+                customClearScreen()
 
                 cLog.log("help.txt file not found", "e")
                 print(
                     "oops the help.txt is missing ,try reinstalling the program or visit website for help")
             except Exception as e:
-                if(isOnWindows == True):
-                    os.system("cls")
-                else:
-                    sp.call('clear',shell=True)
+                customClearScreen()
 
                 cLog.log("error while opening the help file", "e")
                 cLog.exception(str(e), "In main.py/handleGetHelp_func")
@@ -230,10 +212,7 @@ def troubleShootFunc():
     # starting customised main()
     objMainClass = MainClass()
     objMainClass.setUserName()
-    if(isOnWindows == True):
-        os.system("cls")
-    else:
-        sp.call('clear',shell=True)
+    customClearScreen()
 
     # getting user name so that we can output the log file to desktop
     temp = os.environ  # generates a object with the property called USERNAME containing the info
@@ -244,10 +223,7 @@ def troubleShootFunc():
     pathToLog = str(cLog.logFileName)
 
     while(1):
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         #main command copied below with some modification
         print(f"welcome {objMainClass.returnUserName()}\n")
@@ -256,10 +232,7 @@ def troubleShootFunc():
         if(handleGetHelp(commandInput)):
             pass
         if(isSubString(commandInput , "troubleshoot") or isSubString(commandInput , "TroubleShoot") or isSubString(commandInput , "troubleShoot") or isSubString(commandInput , "Troubleshoot")):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             print("Trouble shoot command is already running ...")
         if(isSubString(commandInput , "Exit") or isSubString(commandInput , "exit") or isSubString(commandInput , "EXIT")):
@@ -270,10 +243,7 @@ def troubleShootFunc():
                 print("\n\n")
                 os.system("pause")
 
-                if(isOnWindows == True):
-                    os.system("cls")
-                else:
-                    sp.call('clear',shell=True)
+                customClearScreen()
                 
                 try:
                     shutil.copy(pathToLog , pathToDesktop)
@@ -292,10 +262,7 @@ def troubleShootFunc():
                 break
 
             else:
-                if(isOnWindows == True):
-                    os.system("cls")
-                else:
-                    sp.call('clear',shell=True)
+                customClearScreen()
 
                 print("oops could not regonise the command , please enter the same command in which you previously faced error")
 
@@ -437,10 +404,7 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
             try:
                 self.cityName = self.settingsDict["City"]
             except Exception:
-                if(isOnWindows == True):
-                    os.system("cls")
-                else:
-                    sp.call('clear',shell=True)
+                customClearScreen()
 
                 cLog.log("user as not setted city in setting", "i")
                 print("\nit looks like you have not setted any city in setting , run setting command to open settings\n")
@@ -456,10 +420,7 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
         result = objGetWeatherData.getWeatherData(self.cityName, self.weatherArgumentList)
 
         # showing the result in tabular form
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         print(f"weather details of {self.cityName} are - \n")
         tabulateList = []
@@ -483,10 +444,7 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
                 tempList.append(j)
                 tabulateList.append(tempList)
         if (errorYES):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             print("Error While printing weather details")
             cLog.log("error while getting the wheather details in main.py", "e")
@@ -575,20 +533,14 @@ def executeCommands(command):
         if(("setting" in commandList) or ("settings" in commandList) or ("Setting" in commandList) or ("Settings" in commandList)):
             objSetting = Setting(troubleShootValue)
             objSetting.regenerateFile()
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             print("you have restored the settings successfully")
             cLog.log("restore command runned successfully", "i")
             return True
 
         if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             #getting backup path
             objMainClass = MainClass()
@@ -633,10 +585,7 @@ def executeCommands(command):
     if(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
         objSetting = Setting(troubleShootValue)
         objSetting.openFile()
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         print("the settings file is opened, make sure to save the file run update command in jarvis")
         cLog.log("setting command runned successfully", "i")
@@ -644,10 +593,7 @@ def executeCommands(command):
 
     # function for updating the settings
     if(("update" in commandList) or ("Update" in commandList)):
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         print("settings have been updated , programm will restart now\n\n")
         os.system("pause")
@@ -655,10 +601,7 @@ def executeCommands(command):
 
     # calling for backup command
     if(("backup" in commandList) or ("Backup" in commandList)):
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         # for backupUp jarvis things i.e things in folder program data - jarvis
         if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
@@ -711,10 +654,7 @@ def executeCommands(command):
         elif("Backup" in commandList):
             commandListCopy.remove("Backup")
 
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         if(isAdmin()):
             pass
@@ -743,10 +683,7 @@ def executeCommands(command):
         # checking if -d is in command
         if("-d" in commandList):
             if(dictionaryFromSetting["backUpPath"] == ""):
-                if(isOnWindows == True):
-                    os.system("cls")
-                else:
-                    sp.call('clear',shell=True)
+                customClearScreen()
 
                 print(
                     "it looks like you have not added any folder's to backup in setting file")
@@ -760,10 +697,7 @@ def executeCommands(command):
                     os.mkdir(pathToBackup + "/" + "jarvisBackup")
                     pathToBackup = pathToBackup + "/" + "jarvisBackup"
                 except OSError as e:
-                    if(isOnWindows == True):
-                        os.system("cls")
-                    else:
-                        sp.call('clear',shell=True)
+                    customClearScreen()
 
                     pathToBackup = pathToBackup + "/" + "jarvisBackup"
                     cLog.log("OSError for execute command under backup", "e")
@@ -772,17 +706,11 @@ def executeCommands(command):
                     print("\n\nif the folder already exit - then all the file's will be overRidden")
                     print("\n\npress enter to continue with backup or close the program to stop it")
                     input()
-                    if(isOnWindows == True):
-                        os.system("cls")
-                    else:
-                        sp.call('clear',shell=True)
+                    customClearScreen()
 
             # if backup path is correct then if need to ckeck if the directories are listed in setting's file or not
             if(dictionaryFromSetting["Directories"] == ""):
-                if(isOnWindows == True):
-                    os.system("cls")
-                else:
-                    sp.call('clear',shell=True)
+                customClearScreen()
 
                 print(
                     "it looks like you have not added any folder's to directories in setting file")
@@ -803,20 +731,14 @@ def executeCommands(command):
                     directoriesListEditted.append(i)
 
         # calling the function to start the copy process
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         print("\nBackUp in process - This may take several minutes....")
         print("\nplease do not close the program , otherWise files may get corrupted")
         objBackUp.startBackUp(
             commandListCopy, directoriesListEditted, pathToBackup + "/")
 
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         print("\n\nCopy completed\nlog file is generated at the desktop , their may me some files that may not have been copied due to permission errors :(")
         cLog.log("executeCommand function runned backupCommand successfully", "i")
@@ -825,18 +747,12 @@ def executeCommands(command):
     # calling for hangman game
     if(("hangman" in commandList) or ("Hangman" in commandList)):
         if(("game" in commandList) or ("Game" in commandList)):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             # calling the game function
             boolValue = mainForHangmanGame()
 
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             if(boolValue == True):
                 print("thanks for playing game")
@@ -849,10 +765,7 @@ def executeCommands(command):
     # calling for txt compare
     if(("compare" in commandList) or ("Compare" in commandList)):
         if(("txt" in commandList) or ("Txt" in commandList) or ("TXT" in commandList)):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             print("starting txtCompare program :)\n\n")
             try:
@@ -869,10 +782,7 @@ def executeCommands(command):
     # calling for google drive link
     if(("google" in commandList) or ("Google" in commandList)):
         if(("drive" in commandList) or ("Drive" in commandList)):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             print("Go to the file saved in google drive and click get shareable link\n")
             linkGet = input("Paste the link here : ")
@@ -892,10 +802,7 @@ def executeCommands(command):
     # calling for random generator
     if(("generate" in commandList) or ("Generate" in commandList)):
         if(("random" in commandList) or ("Random" in commandList)):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             try:
                 os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
@@ -917,10 +824,7 @@ def executeCommands(command):
     if(("number" in commandList) or ("Number" in commandList) or ("num" in commandList) or ("Num" in commandList) or ("no" in commandList) or ("No" in commandList) or ("NO" in commandList)):
         if(("convert" in commandList) or ("conv" in commandList) or ("convertor" in commandList) or ("Convert" in commandList) or ("Conv" in commandList) or ("Convertor" in commandList)):
             if(("system" in commandList) or ("sys" in commandList) or ("System" in commandList) or ("Sys" in commandList)):
-                if(isOnWindows == True):
-                    os.system("cls")
-                else:
-                    sp.call('clear',shell=True)
+                customClearScreen()
 
                 try:
                     os.startfile(r"external_exe\harshNative_github\NSC.exe")
@@ -940,10 +844,7 @@ def executeCommands(command):
 
     # calling for average finder
     if(("average" in commandList) or ("Average" in commandList) or ("avg" in commandList) or ("Avg" in commandList) or ("AVG" in commandList)):
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         try:
             os.startfile(r"external_exe\harshNative_github\average_finder.exe")
@@ -963,10 +864,7 @@ def executeCommands(command):
     # calling for coin toss
     if(("Coin" in commandList) or ("coin" in commandList)):
         if(("toss" in commandList) or ("Toss" in commandList)):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             try:
                 os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
@@ -987,10 +885,7 @@ def executeCommands(command):
     # calling for group generator
     if(("group" in commandList) or ("Group" in commandList)):
         if(("generate" in commandList) or ("Generate" in commandList)):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             try:
                 os.startfile(
@@ -1012,10 +907,7 @@ def executeCommands(command):
     # calling for interest calculator
     if(("calculator" in commandList) or ("Calculator" in commandList) or ("calc" in commandList) or ("Calc" in commandList)):
         if(("Interest" in commandList) or ("interest" in commandList)):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             try:
                 os.startfile(
@@ -1042,10 +934,7 @@ def executeCommands(command):
 
     # handling command to run in jarvis in cmd window
     if(("cmd" in commandList) or ("Cmd" in commandList) or ("CMD" in commandList)):
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         print("opening jarvis in command prompt")
         os.startfile(r"jarvis_CMD.bat")
@@ -1061,10 +950,7 @@ def executeCommands(command):
             currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
             currentTime = newObj[11:19] 
 
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             print("UTC TIME = {}".format(currentTime))
             print("UTC DATE = {}".format(currentDate))
@@ -1076,10 +962,7 @@ def executeCommands(command):
         currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
         currentTime = newObj[11:19] 
 
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         print("TIME = {}".format(currentTime))
         print("DATE = {}".format(currentDate))
@@ -1088,10 +971,7 @@ def executeCommands(command):
     # handling font size command
     if(("Font" in commandList) or ("font" in commandList)):
         if(("Size" in commandList) or ("size") in commandList):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             print("To change the font size follow these steps : ") 
             print("\n1. right click on the jarvis logo on top left corner")
@@ -1105,10 +985,7 @@ def executeCommands(command):
     # handling font colour command
     if(("Font" in commandList) or ("font" in commandList)):
         if(("colour" in commandList) or ("Colour" in commandList) or ("Color" in commandList) or ("color" in commandList)):
-            if(isOnWindows == True):
-                os.system("cls")
-            else:
-                sp.call('clear',shell=True)
+            customClearScreen()
 
             print("To change the font colour follow these steps : ") 
             print("\n1. right click on the jarvis logo on top left corner")
@@ -1177,10 +1054,7 @@ def executeCommands(command):
     if(("troubleshoot" in commandList) or ("TroubleShoot" in commandList) or ("Troubleshoot" in commandList) or ("troubleShoot" in commandList)):
         status = troubleShootFunc()
 
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         if(status == True):
             print("Trouble shooting complete, don't forget to mail us the log file at myjarvispa@gmail.com")
@@ -1190,10 +1064,7 @@ def executeCommands(command):
 
     # calling for exit command
     if(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         print("See you soon :) , Exiting the program ", end="", flush=True)
         time.sleep(0.3)
@@ -1202,10 +1073,7 @@ def executeCommands(command):
         print(".", end="", flush=True)
         time.sleep(0.4)
         print(".", end="", flush=True)
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         exit()
 
@@ -1230,10 +1098,7 @@ def main():
     objMainClass = MainClass()
     while(1):
         objMainClass.setUserName()
-        if(isOnWindows == True):
-            os.system("cls")
-        else:
-            sp.call('clear',shell=True)
+        customClearScreen()
 
         print(f"welcome {objMainClass.returnUserName()}\n")
         commandInput = input("Enter Command : ")
@@ -1243,10 +1108,7 @@ def main():
             if(executeCommands(commandInput)):
                 pass
             else:
-                if(isOnWindows == True):
-                    os.system("cls")
-                else:
-                    sp.call('clear',shell=True)
+                customClearScreen()
 
                 print("oops could not regonise the command try typing help for info")
 
