@@ -817,7 +817,7 @@ def executeCommands(command):
             os.system("cls")
         else:
             sp.call('clear',shell=True)
-            
+
         print("\n\nCopy completed\nlog file is generated at the desktop , their may me some files that may not have been copied due to permission errors :(")
         cLog.log("executeCommand function runned backupCommand successfully", "i")
         return True
@@ -825,10 +825,19 @@ def executeCommands(command):
     # calling for hangman game
     if(("hangman" in commandList) or ("Hangman" in commandList)):
         if(("game" in commandList) or ("Game" in commandList)):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             # calling the game function
             boolValue = mainForHangmanGame()
-            os.system("cls")
+
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             if(boolValue == True):
                 print("thanks for playing game")
             else:
@@ -840,7 +849,11 @@ def executeCommands(command):
     # calling for txt compare
     if(("compare" in commandList) or ("Compare" in commandList)):
         if(("txt" in commandList) or ("Txt" in commandList) or ("TXT" in commandList)):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             print("starting txtCompare program :)\n\n")
             try:
                 mainForTxtCompare()
@@ -856,7 +869,11 @@ def executeCommands(command):
     # calling for google drive link
     if(("google" in commandList) or ("Google" in commandList)):
         if(("drive" in commandList) or ("Drive" in commandList)):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             print("Go to the file saved in google drive and click get shareable link\n")
             linkGet = input("Paste the link here : ")
             linkFinal = mainForGoogleDriveLink(linkGet)
@@ -875,7 +892,11 @@ def executeCommands(command):
     # calling for random generator
     if(("generate" in commandList) or ("Generate" in commandList)):
         if(("random" in commandList) or ("Random" in commandList)):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             try:
                 os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
                 print("The file is opened in other window :)")
@@ -896,7 +917,11 @@ def executeCommands(command):
     if(("number" in commandList) or ("Number" in commandList) or ("num" in commandList) or ("Num" in commandList) or ("no" in commandList) or ("No" in commandList) or ("NO" in commandList)):
         if(("convert" in commandList) or ("conv" in commandList) or ("convertor" in commandList) or ("Convert" in commandList) or ("Conv" in commandList) or ("Convertor" in commandList)):
             if(("system" in commandList) or ("sys" in commandList) or ("System" in commandList) or ("Sys" in commandList)):
-                os.system("cls")
+                if(isOnWindows == True):
+                    os.system("cls")
+                else:
+                    sp.call('clear',shell=True)
+
                 try:
                     os.startfile(r"external_exe\harshNative_github\NSC.exe")
                     print("The file is opened in other window :)")
@@ -915,7 +940,11 @@ def executeCommands(command):
 
     # calling for average finder
     if(("average" in commandList) or ("Average" in commandList) or ("avg" in commandList) or ("Avg" in commandList) or ("AVG" in commandList)):
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         try:
             os.startfile(r"external_exe\harshNative_github\average_finder.exe")
             print("The file is opened in other window :)")
@@ -934,7 +963,11 @@ def executeCommands(command):
     # calling for coin toss
     if(("Coin" in commandList) or ("coin" in commandList)):
         if(("toss" in commandList) or ("Toss" in commandList)):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             try:
                 os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
                 print("The file is opened in other window :)")
@@ -954,7 +987,11 @@ def executeCommands(command):
     # calling for group generator
     if(("group" in commandList) or ("Group" in commandList)):
         if(("generate" in commandList) or ("Generate" in commandList)):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             try:
                 os.startfile(
                     r"external_exe\harshNative_github\group_Generator.exe")
@@ -975,7 +1012,11 @@ def executeCommands(command):
     # calling for interest calculator
     if(("calculator" in commandList) or ("Calculator" in commandList) or ("calc" in commandList) or ("Calc" in commandList)):
         if(("Interest" in commandList) or ("interest" in commandList)):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             try:
                 os.startfile(
                     r"external_exe\harshNative_github\interest_Calculator.exe")
@@ -1001,7 +1042,11 @@ def executeCommands(command):
 
     # handling command to run in jarvis in cmd window
     if(("cmd" in commandList) or ("Cmd" in commandList) or ("CMD" in commandList)):
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         print("opening jarvis in command prompt")
         os.startfile(r"jarvis_CMD.bat")
         print("\njarvis opened in command prompt")
@@ -1015,7 +1060,12 @@ def executeCommands(command):
             newObj = str(datetime.datetime.utcnow())
             currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
             currentTime = newObj[11:19] 
-            os.system("cls")
+
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             print("UTC TIME = {}".format(currentTime))
             print("UTC DATE = {}".format(currentDate))
             return True
@@ -1025,7 +1075,12 @@ def executeCommands(command):
         newObj = str(datetime.datetime.now())
         currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
         currentTime = newObj[11:19] 
-        os.system("cls")
+
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         print("TIME = {}".format(currentTime))
         print("DATE = {}".format(currentDate))
         return True
@@ -1033,7 +1088,11 @@ def executeCommands(command):
     # handling font size command
     if(("Font" in commandList) or ("font" in commandList)):
         if(("Size" in commandList) or ("size") in commandList):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             print("To change the font size follow these steps : ") 
             print("\n1. right click on the jarvis logo on top left corner")
             print("\n2. click on the defaults button")
@@ -1046,7 +1105,11 @@ def executeCommands(command):
     # handling font colour command
     if(("Font" in commandList) or ("font" in commandList)):
         if(("colour" in commandList) or ("Colour" in commandList) or ("Color" in commandList) or ("color" in commandList)):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             print("To change the font colour follow these steps : ") 
             print("\n1. right click on the jarvis logo on top left corner")
             print("\n2. click on the defaults button")
@@ -1114,7 +1177,11 @@ def executeCommands(command):
     if(("troubleshoot" in commandList) or ("TroubleShoot" in commandList) or ("Troubleshoot" in commandList) or ("troubleShoot" in commandList)):
         status = troubleShootFunc()
 
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         if(status == True):
             print("Trouble shooting complete, don't forget to mail us the log file at myjarvispa@gmail.com")
         else:
@@ -1123,7 +1190,11 @@ def executeCommands(command):
 
     # calling for exit command
     if(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         print("See you soon :) , Exiting the program ", end="", flush=True)
         time.sleep(0.3)
         print(".", end="", flush=True)
@@ -1131,7 +1202,11 @@ def executeCommands(command):
         print(".", end="", flush=True)
         time.sleep(0.4)
         print(".", end="", flush=True)
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         exit()
 
     # if none of the above command is executed than return false to tell the user that the command entered was incorrect
@@ -1143,7 +1218,7 @@ def main():
     # setting api key's
 
     # for weather module - get your api key from open weather as pass it here
-    WeatherData.setApiKey("fe82651e607e46db61dba45e39aa7e17")
+    WeatherData.setApiKey("")
 
     # checking the api key's
     if(WeatherData.returnApiKeyStatus() == False):
@@ -1155,7 +1230,11 @@ def main():
     objMainClass = MainClass()
     while(1):
         objMainClass.setUserName()
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         print(f"welcome {objMainClass.returnUserName()}\n")
         commandInput = input("Enter Command : ")
         if(handleGetHelp(commandInput)):
@@ -1164,7 +1243,11 @@ def main():
             if(executeCommands(commandInput)):
                 pass
             else:
-                os.system("cls")
+                if(isOnWindows == True):
+                    os.system("cls")
+                else:
+                    sp.call('clear',shell=True)
+
                 print("oops could not regonise the command try typing help for info")
 
         print("\n\n")
