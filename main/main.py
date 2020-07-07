@@ -2,19 +2,34 @@
 print("\nLoading Jarvis.....")
 print("\nThis may take few minutes for the first time :)")
 
+isOnWindows = False
+isOnLinux = False
+
+# Checking weather the user is on windows or not
+try:
+    temp = os.environ
+    tempUserName = temp["USERNAME"]
+    isOnWindows = True
+except Exception:
+    isOnLinux = True
+
 import time
 import pyperclip
 import psutil
 import sys
 from tabulate import tabulate
 import os
+import subprocess as sp
 
 # generating jarvis folder
 try:
     os.makedirs(r"C:\programData\Jarvis", exist_ok=True)
     print("folder check...")
 except Exception:
-    os.system("cls")
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
     print("Critical Error - could not generate jarvis folder in program data - contact developer")
     os.system("pause")
 
@@ -31,6 +46,9 @@ from packages.settings.jarvisSetting import *
 from packages.weather.getWeather import *
 from packages.backUp_utility.backUp import *
 from packages.speedTest_utility.speedTestFile import *
+
+
+
  
 
 # creating global object of class Clogger
@@ -42,7 +60,10 @@ troubleShootValue = False
 
 # function to restart everything - just call the main again
 def restart_program():
-    os.system("cls")
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
     cLog.log("program restarting..", "i")
     main()
 
@@ -79,19 +100,31 @@ def getHelp(passObj):
 
     # for displaying all the help available
     if(passObj == "all"):
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         try:
             with open("txtFiles/help.txt") as fil:
                 for line in fil:
                     print(line)
             cLog.log("if case in get help method runned successfully", "i")
         except FileNotFoundError:
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             cLog.log("help.txt file not found", "e")
             print(
                 "oops , the help file in missing , try reinstalling the program or visit the website for help")
         except Exception as e:
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             cLog.log("error while opening the help file", "e")
             cLog.exception(str(e), "In main.py/getHelp_func-If_Part")
             if(cLog.troubleShoot == False):
@@ -101,7 +134,11 @@ def getHelp(passObj):
 
     # for displaying specific help by searching for the keyords as substring in line
     else:
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         try:
             count = 0
             with open("txtFiles/help.txt") as fil:
@@ -115,12 +152,20 @@ def getHelp(passObj):
                         "oops no help found for entered prase , try writting only help for seeing all help available")
             cLog.log("else case in get help method runned successfully", "i")
         except FileNotFoundError:
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             cLog.log("help.txt file not found", "e")
             print(
                 "oops , the help file in missing , try reinstalling the program or visit the website for help")
         except Exception as e:
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             cLog.log("error while opening the help file", "e")
             cLog.exception(str(e), "In main.py/getHelp_func-elsePart")
             if(cLog.troubleShoot == False):
@@ -139,12 +184,20 @@ def handleGetHelp(command):
                 os.startfile(r"txtFiles\help.txt")
                 cLog.log("help open command runned successfully", "i")
             except FileNotFoundError:
-                os.system("cls")
+                if(isOnWindows == True):
+                    os.system("cls")
+                else:
+                    sp.call('clear',shell=True)
+
                 cLog.log("help.txt file not found", "e")
                 print(
                     "oops the help.txt is missing ,try reinstalling the program or visit website for help")
             except Exception as e:
-                os.system("cls")
+                if(isOnWindows == True):
+                    os.system("cls")
+                else:
+                    sp.call('clear',shell=True)
+
                 cLog.log("error while opening the help file", "e")
                 cLog.exception(str(e), "In main.py/handleGetHelp_func")
                 if(cLog.troubleShoot == False):
@@ -177,7 +230,10 @@ def troubleShootFunc():
     # starting customised main()
     objMainClass = MainClass()
     objMainClass.setUserName()
-    os.system("cls")
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
 
     # getting user name so that we can output the log file to desktop
     temp = os.environ  # generates a object with the property called USERNAME containing the info
@@ -188,7 +244,11 @@ def troubleShootFunc():
     pathToLog = str(cLog.logFileName)
 
     while(1):
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         #main command copied below with some modification
         print(f"welcome {objMainClass.returnUserName()}\n")
         print("You are in touble shoot mode : enter exit to exit troubleShootMode\n")
@@ -196,7 +256,11 @@ def troubleShootFunc():
         if(handleGetHelp(commandInput)):
             pass
         if(isSubString(commandInput , "troubleshoot") or isSubString(commandInput , "TroubleShoot") or isSubString(commandInput , "troubleShoot") or isSubString(commandInput , "Troubleshoot")):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             print("Trouble shoot command is already running ...")
         if(isSubString(commandInput , "Exit") or isSubString(commandInput , "exit") or isSubString(commandInput , "EXIT")):
             return False
@@ -205,7 +269,11 @@ def troubleShootFunc():
             if(executeCommands(commandInput)):
                 print("\n\n")
                 os.system("pause")
-                os.system("cls")
+
+                if(isOnWindows == True):
+                    os.system("cls")
+                else:
+                    sp.call('clear',shell=True)
                 
                 try:
                     shutil.copy(pathToLog , pathToDesktop)
@@ -224,7 +292,11 @@ def troubleShootFunc():
                 break
 
             else:
-                os.system("cls")
+                if(isOnWindows == True):
+                    os.system("cls")
+                else:
+                    sp.call('clear',shell=True)
+
                 print("oops could not regonise the command , please enter the same command in which you previously faced error")
 
         print("\n\n")
@@ -365,7 +437,11 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
             try:
                 self.cityName = self.settingsDict["City"]
             except Exception:
-                os.system("cls")
+                if(isOnWindows == True):
+                    os.system("cls")
+                else:
+                    sp.call('clear',shell=True)
+
                 cLog.log("user as not setted city in setting", "i")
                 print("\nit looks like you have not setted any city in setting , run setting command to open settings\n")
                 os.system("pause")
@@ -380,7 +456,11 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
         result = objGetWeatherData.getWeatherData(self.cityName, self.weatherArgumentList)
 
         # showing the result in tabular form
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         print(f"weather details of {self.cityName} are - \n")
         tabulateList = []
         errorYES = False
@@ -403,7 +483,11 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
                 tempList.append(j)
                 tabulateList.append(tempList)
         if (errorYES):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             print("Error While printing weather details")
             cLog.log("error while getting the wheather details in main.py", "e")
             print("\n\nif the error remains follow instructions : ")
@@ -491,13 +575,21 @@ def executeCommands(command):
         if(("setting" in commandList) or ("settings" in commandList) or ("Setting" in commandList) or ("Settings" in commandList)):
             objSetting = Setting(troubleShootValue)
             objSetting.regenerateFile()
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             print("you have restored the settings successfully")
             cLog.log("restore command runned successfully", "i")
             return True
 
         if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
-            os.system("cls")
+            if(isOnWindows == True):
+                os.system("cls")
+            else:
+                sp.call('clear',shell=True)
+
             #getting backup path
             objMainClass = MainClass()
             dictGet = objMainClass.returnDict()
@@ -541,21 +633,32 @@ def executeCommands(command):
     if(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
         objSetting = Setting(troubleShootValue)
         objSetting.openFile()
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         print("the settings file is opened, make sure to save the file run update command in jarvis")
         cLog.log("setting command runned successfully", "i")
         return True
 
     # function for updating the settings
     if(("update" in commandList) or ("Update" in commandList)):
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         print("settings have been updated , programm will restart now\n\n")
         os.system("pause")
         restart_program()
 
     # calling for backup command
     if(("backup" in commandList) or ("Backup" in commandList)):
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
 
         # for backupUp jarvis things i.e things in folder program data - jarvis
         if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
@@ -608,7 +711,11 @@ def executeCommands(command):
         elif("Backup" in commandList):
             commandListCopy.remove("Backup")
 
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         if(isAdmin()):
             pass
         else:
@@ -636,7 +743,11 @@ def executeCommands(command):
         # checking if -d is in command
         if("-d" in commandList):
             if(dictionaryFromSetting["backUpPath"] == ""):
-                os.system("cls")
+                if(isOnWindows == True):
+                    os.system("cls")
+                else:
+                    sp.call('clear',shell=True)
+
                 print(
                     "it looks like you have not added any folder's to backup in setting file")
                 print(
@@ -649,7 +760,11 @@ def executeCommands(command):
                     os.mkdir(pathToBackup + "/" + "jarvisBackup")
                     pathToBackup = pathToBackup + "/" + "jarvisBackup"
                 except OSError as e:
-                    os.system("cls")
+                    if(isOnWindows == True):
+                        os.system("cls")
+                    else:
+                        sp.call('clear',shell=True)
+
                     pathToBackup = pathToBackup + "/" + "jarvisBackup"
                     cLog.log("OSError for execute command under backup", "e")
                     cLog.exception(str(e), "In main.py/executeCommmand_func_backupCommand")
@@ -657,11 +772,18 @@ def executeCommands(command):
                     print("\n\nif the folder already exit - then all the file's will be overRidden")
                     print("\n\npress enter to continue with backup or close the program to stop it")
                     input()
-                    os.system("cls")
+                    if(isOnWindows == True):
+                        os.system("cls")
+                    else:
+                        sp.call('clear',shell=True)
 
             # if backup path is correct then if need to ckeck if the directories are listed in setting's file or not
             if(dictionaryFromSetting["Directories"] == ""):
-                os.system("cls")
+                if(isOnWindows == True):
+                    os.system("cls")
+                else:
+                    sp.call('clear',shell=True)
+
                 print(
                     "it looks like you have not added any folder's to directories in setting file")
                 print(
@@ -681,12 +803,21 @@ def executeCommands(command):
                     directoriesListEditted.append(i)
 
         # calling the function to start the copy process
-        os.system("cls")
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+
         print("\nBackUp in process - This may take several minutes....")
         print("\nplease do not close the program , otherWise files may get corrupted")
         objBackUp.startBackUp(
             commandListCopy, directoriesListEditted, pathToBackup + "/")
-        os.system("cls")
+
+        if(isOnWindows == True):
+            os.system("cls")
+        else:
+            sp.call('clear',shell=True)
+            
         print("\n\nCopy completed\nlog file is generated at the desktop , their may me some files that may not have been copied due to permission errors :(")
         cLog.log("executeCommand function runned backupCommand successfully", "i")
         return True
@@ -1012,7 +1143,7 @@ def main():
     # setting api key's
 
     # for weather module - get your api key from open weather as pass it here
-    # WeatherData.setApiKey("")
+    WeatherData.setApiKey("fe82651e607e46db61dba45e39aa7e17")
 
     # checking the api key's
     if(WeatherData.returnApiKeyStatus() == False):
