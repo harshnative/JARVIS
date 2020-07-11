@@ -5,3 +5,6 @@ import stdiomask
 def hash():
     password = stdiomask.getpass("Password :")
     return password
+
+if __name__ == '__main__':
+	print(hash())
