@@ -3,7 +3,29 @@ import json
 import logging
 import os
 from packages.loggerPackage.loggerFile import *
+import subprocess as sp
 """ this is using the open weather api """
+
+isOnWindows = False
+isOnLinux = False
+
+# Checking weather the user is on windows or not
+try:
+    temp = os.environ
+    tempUserName = temp["USERNAME"]
+    isOnWindows = True
+except Exception:
+    isOnLinux = True
+
+
+# clear screen function 
+def customClearScreen():
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
+
+
 
 class WeatherData():
 
@@ -118,7 +140,7 @@ class WeatherData():
                     self.cLog.log("key error in extractInfo function - self.jsonData[main][str(i)]" , "i")
                     self.resultList.append(None)
                 except Exception as e:
-                    os.system("cls")
+                    customClearScreen()
                     self.cLog.log("critical error in extract info function" , "e")
                     self.cLog.exception(str(e) , "In getWeather.py/WeatherData_class-extractInfo_func")
                     if(self.cLog.troubleShoot == False):
@@ -135,7 +157,7 @@ class WeatherData():
             self.tempInK = None
             return False
         except Exception as e:
-            os.system("cls")
+            customClearScreen()
             self.cLog.log("error while opening the help file" , "e")
             self.cLog.exception(str(e) , "In getWeather.py/WeatherData_class-convTempToC_func")
             if(self.cLog.troubleShoot == False):
@@ -168,9 +190,9 @@ class WeatherData():
 
         # program will terminate if the api key is not setted up
         if(self.returnApiKeyStatus() == False):
-            os.system("cls")
+            customClearScreen()
             print("API key is not set , please contact developer\n\n")
-            os.system("pause")
+            input("press enter to continue...")
             exit(1)
 
         self.listPassed = give_listOfValueToGet

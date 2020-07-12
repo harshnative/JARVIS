@@ -5,13 +5,6 @@ print("\nThis may take few minutes for the first time :)")
 isOnWindows = False
 isOnLinux = False
 
-# clear screen function 
-def customClearScreen():
-    if(isOnWindows == True):
-        os.system("cls")
-    else:
-        sp.call('clear',shell=True)
-
 # Checking weather the user is on windows or not
 try:
     temp = os.environ
@@ -20,13 +13,21 @@ try:
 except Exception:
     isOnLinux = True
 
+import subprocess as sp
+# clear screen function 
+def customClearScreen():
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
+
+
 import time
 import pyperclip
 import psutil
 import sys
 from tabulate import tabulate
 import os
-import subprocess as sp
 import getpass as getUserName
 
 # generating jarvis folder
