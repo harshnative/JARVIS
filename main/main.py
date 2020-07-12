@@ -35,7 +35,7 @@ try:
 except Exception:
     customClearScreen()
     print("Critical Error - could not generate jarvis folder in program data - contact developer")
-    os.system("pause")
+    input("press enter to continue...")
 
 import datetime
 import shutil
@@ -241,7 +241,7 @@ def troubleShootFunc():
         else:
             if(executeCommands(commandInput)):
                 print("\n\n")
-                os.system("pause")
+                input("press enter to continue...")
 
                 customClearScreen()
                 
@@ -258,7 +258,7 @@ def troubleShootFunc():
                     print("\nNOTE : log file only contains diagnos data , NO personal information is stored")
                     
                 print("\n\n")
-                os.system("pause")
+                input("press enter to continue...")
                 break
 
             else:
@@ -267,7 +267,7 @@ def troubleShootFunc():
                 print("oops could not regonise the command , please enter the same command in which you previously faced error")
 
         print("\n\n")
-        os.system("pause")
+        input("press enter to continue...")
     
     troubleShootValue = False
     cLog.setTroubleShoot(troubleShootValue)
@@ -408,7 +408,7 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
 
                 cLog.log("user as not setted city in setting", "i")
                 print("\nit looks like you have not setted any city in setting , run setting command to open settings\n")
-                os.system("pause")
+                input("press enter to continue...")
 
                 # this is a critical error , so calling main again to restart the program
                 main()
@@ -596,7 +596,7 @@ def executeCommands(command):
         customClearScreen()
 
         print("settings have been updated , programm will restart now\n\n")
-        os.system("pause")
+        input("press enter to continue...")
         restart_program()
 
     # calling for backup command
@@ -1113,7 +1113,7 @@ def main():
                 print("oops could not regonise the command try typing help for info")
 
         print("\n\n")
-        os.system("pause")
+        input("press enter to continue...")
 
 
 def driverForMain():
