@@ -9,6 +9,31 @@ import time
 import pyperclip
 
 
+
+import subprocess as sp
+
+isOnWindows = False
+isOnLinux = False
+
+# Checking weather the user is on windows or not
+try:
+    temp = os.environ
+    tempUserName = temp["USERNAME"]
+    isOnWindows = True
+except Exception:
+    isOnLinux = True
+
+
+# clear screen function 
+def customClearScreen():
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
+
+
+
+
 class PasswordStorerClass:
 
     """
@@ -146,7 +171,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                     tabulateList.append(tempList)
             
             # showing the data 
-            os.system("cls")
+            customClearScreen()
             print(tabulate(tabulateList, headers=['Site', 'Password']))
             self.cLog.log("displayAll function runned successfully in main for password" , "i")
         except Exception as e:
@@ -186,7 +211,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                         countForTabulate += 1
             
             # showing the data
-            os.system("cls")
+            customClearScreen()
             if(countForTabulate <= 1):
                 print("\nno password found related to search term")
             
@@ -221,7 +246,7 @@ driverFunc()        ->  this is the only method that you need to use this method
         try:
             # infinite loop for if the password does not match while entering
             while(1):
-                os.system("cls")
+                customClearScreen()
                 passwordInput1 = str(getpass("Enter  New  Master Password : "))
                 passwordInput2 = str(getpass("Enter Master Password again : "))
 
@@ -238,7 +263,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                 # if the password does not match , continue the loop
                 else:
                     print("\nPassword did not match\n")
-                    os.system("pause")
+                    input("press enter to continue...")
             self.cLog.log("setPass func runned successfully in main for password" , "i")
         except Exception as e:
             self.cLog.log("error while setting password in main for password", "e")
@@ -250,7 +275,7 @@ driverFunc()        ->  this is the only method that you need to use this method
     # returns bool value
     def authenticate(self):
         try:
-            os.system("cls")
+            customClearScreen()
             passwordInput = str(getpass("Enter Master Password : "))
 
             # generating query for sqlite3 obj to execute
@@ -334,7 +359,7 @@ driverFunc()        ->  this is the only method that you need to use this method
 
                 else:
                     print("Wrong password...")
-                    os.system("pause")
+                    input("press enter to continue...")
             self.cLog.log("change password function runned successfully in main for password" , "i")
         except Exception as e:
             self.cLog.log("error while changing password in main for password", "e")
@@ -349,7 +374,7 @@ driverFunc()        ->  this is the only method that you need to use this method
             return str(stringToReturn)
         except Exception as e:
             print("\nSomething went wrong while encrypting, Please Try again, if error persist, run troubleShoot command")
-            os.system("pause")
+            input("press enter to continue...")
             self.cLog.log("error while encrypting thing in main for password", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/encryptThing")
 
@@ -365,7 +390,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                 print("\nSomething went wrong while decrypting, Please Try again, if error persist, run troubleShoot command")
             else:
                 print("\nerror has been logged - continue...")
-            os.system("pause")
+            input("press enter to continue...")
             self.cLog.log("error while decrypting in main for password", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/decryptingThing")
 
@@ -376,7 +401,7 @@ driverFunc()        ->  this is the only method that you need to use this method
         try:
             # for adding things to DB
             if("-a" in commandList):
-                os.system("cls")
+                customClearScreen()
                 x = input("Enter Website name for future referencing : ") 
                 y = input("Enter the Password : ")
                 
@@ -390,7 +415,7 @@ driverFunc()        ->  this is the only method that you need to use this method
 
             # for deleting things
             elif("-d" in commandList):
-                os.system("cls")
+                customClearScreen()
                 webDelete = input("Enter the Website name for deletion : ")
                 # generating query for sqlite3 obj to execute
                 stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
@@ -400,7 +425,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                 indexCount = 1
                 count = 0
 
-                os.system("cls")
+                customClearScreen()
                 for row in cursor:
                     if(row[0] == "!@#$%^&*("):
                         pass
@@ -436,14 +461,14 @@ driverFunc()        ->  this is the only method that you need to use this method
                         print("\nNothing deleted...")
 
                 else:
-                    os.system("cls")
+                    customClearScreen()
                     print("No website found........")
                 
                 return True
         
             # for updating things
             elif("-u" in commandList):
-                os.system("cls")
+                customClearScreen()
                 # generating query for sqlite3 obj to execute
                 stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
                 cursor = self.connectionObj.execute(stringToPass)
@@ -490,7 +515,7 @@ driverFunc()        ->  this is the only method that you need to use this method
 
             # displaying things in the DB according to search query
             elif("-s" in commandList):
-                os.system("cls")
+                customClearScreen()
                 searchItem = input("Enter the website name to display Password : ")
                 self.displaySearch(searchItem)
                 self.cLog.log("getDone func runned successfully in main for password" , "i")
@@ -531,7 +556,7 @@ driverFunc()        ->  this is the only method that you need to use this method
         if(count == 0):
             self.setPass()
             print("\n\n")
-            os.system("pause")
+            input("press enter to continue...")
 
         # checking whether the user is right or not
         while(1):
@@ -543,9 +568,9 @@ driverFunc()        ->  this is the only method that you need to use this method
                 break
             else:
                 print("\nwrong password....\n")
-                os.system("pause")
+                input("press enter to continue...")
         
-        os.system("cls")
+        customClearScreen()
 
         # starting module
         while(1):
@@ -566,12 +591,12 @@ driverFunc()        ->  this is the only method that you need to use this method
                 if(self.getDone(commandList)):
                     pass
                 else:
-                    os.system("cls")
+                    customClearScreen()
                     print("Sorry , cannot recognise the command :(\n")
             
             print("\n\n")
-            os.system("pause")
-            os.system("cls")
+            input("press enter to continue...")
+            customClearScreen()
 
 
 # just for testing purpose
