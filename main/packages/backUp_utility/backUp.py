@@ -3,6 +3,30 @@ import shutil
 import distutils.dir_util
 import datetime
 from packages.loggerPackage.loggerFile import *
+import getpass as getUserName
+
+import subprocess as sp
+
+isOnWindows = False
+isOnLinux = False
+
+# Checking weather the user is on windows or not
+try:
+    temp = os.environ
+    tempUserName = temp["USERNAME"]
+    isOnWindows = True
+except Exception:
+    isOnLinux = True
+
+
+# clear screen function 
+def customClearScreen():
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
+
+
 
 class BackUp():
     """ startBackUp is the main function of this , only this function is usefull as it can drive other function of this class itself
@@ -47,10 +71,9 @@ class BackUp():
     # function to get the userName of the current user
     def getUserName(self):
         try:
-            temp = os.environ # generates a object with the property called USERNAME containing the info
-            self.userName = temp["USERNAME"]
+            self.userName = getUserName.getuser()
         except Exception as e:
-            os.system("cls")
+            customClearScreen()
             self.cLog.log("Jarvis could not get the user name form os" , "e")
             self.cLog.exception(str(e) , "In backUp.py/BackUp_Class-getUserName_func")
             
@@ -60,7 +83,7 @@ class BackUp():
                 print("\n if error persist, run troubleShoot command")
             else:
                 print("\nerror has been logged - continue...")
-            os.system("pause")
+            input("press enter to continue...")
 
 
     # function for copying the all stuff inside the c:/user
