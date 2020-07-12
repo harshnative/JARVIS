@@ -1,6 +1,42 @@
 import os
 import time
 from packages.loggerPackage.loggerFile import *
+
+
+
+import subprocess as sp
+
+isOnWindows = False
+isOnLinux = False
+
+# Checking weather the user is on windows or not
+try:
+    temp = os.environ
+    tempUserName = temp["USERNAME"]
+    isOnWindows = True
+except Exception:
+    isOnLinux = True
+
+
+# clear screen function 
+def customClearScreen():
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
+
+
+# start file function for diff operating systems
+import sys
+
+def open_file(filename):
+    if sys.platform == "win32":
+        os.startfile(filename)
+    else:
+        opener ="open" if sys.platform == "darwin" else "xdg-open"
+        sp.call([opener, filename])
+
+
 class Setting():
     """
 This is the main class of the settings module
@@ -62,12 +98,12 @@ methods -
             return True
 
         except FileNotFoundError:
-            os.system("cls")
+            customClearScreen()
             print("settings file cannot be found , try restarting or reinstalling the program , or go to website for help")
             return False
 
         except Exception as e:
-            os.system("cls")
+            customClearScreen()
             self.cLog.log("error while opening the help file" , "e")
             self.cLog.exception(str(e) , "In jarvisSetting.py/makeDictionaryFromTxt_func")
             if(self.cLog.troubleShoot == False):
@@ -113,7 +149,7 @@ methods -
             return True
             
         except Exception:
-            os.system("cls")
+            customClearScreen()
             
             if(self.cLog.troubleShoot == False):
                 print("It seems like Jarvis do not have write permission in this folder")
@@ -121,18 +157,18 @@ methods -
                 print("\nif error persist, run troubleShoot command")
             else:
                 print("\nerror has been logged - continue...")
-            os.system("pause")
-            os.system("cls")
+            input("press enter to continue...")
+            customClearScreen()
             return False
 
 
     # funnction to open the settings file in default txt viewer
     def openFile(self):
         try:
-            os.startfile(r"C:\programData\Jarvis\settings.txt")
+            open_file(r"C:\programData\Jarvis\settings.txt")
             return True
         except FileNotFoundError:
-            os.system("cls")
+            customClearScreen()
             self.cLog.log("error opening settings file as it was not present" , "e")
             print("Generating Settings File")
             generateStatus = self.regenerateFile()
@@ -147,23 +183,23 @@ methods -
                 self.cLog.log("Previous error may be solved becuase the settings file was generated successfully" , "i")
                 
                 try:
-                    os.startfile(r"C:\programData\Jarvis\settings.txt")
+                    open_file(r"C:\programData\Jarvis\settings.txt")
                     print("\nsettings file was opened\n\n")
                     time.sleep(2)
-                    os.system("pause")
-                    os.system("cls")
+                    input("press enter to continue...")
+                    customClearScreen()
                     return True
                 except Exception:
                     self.cLog.log("File was regenerated but still cannot be opened" , "e")
-                    os.system("cls")
+                    customClearScreen()
                     if(self.cLog.troubleShoot == False):
                         print("settings file cannot be opened even after regeneration\n")
                         print("try reinstalling the program with administrative premission\n")
                         print("\nif error persist, run troubleShoot command")
                     else:
                         print("\nerror has been logged - continue...")
-                    os.system("pause")
-                    os.system("cls")
+                    input("press enter to continue...")
+                    customClearScreen()
                     return False
                 
             elif(generateStatus == False):
@@ -174,8 +210,8 @@ methods -
                     print("\n if error persist, run troubleShoot command")
                 else:
                     print("\nerror has been logged - continue...")
-                os.system("pause")
-                os.system("cls")
+                input("press enter to continue...")
+                customClearScreen()
                 return False
             
 # driver code - only for testing purpose
