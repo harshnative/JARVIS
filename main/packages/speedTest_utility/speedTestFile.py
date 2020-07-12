@@ -2,6 +2,31 @@ import speedtest
 import os
 from packages.loggerPackage.loggerFile import *
 
+
+import subprocess as sp
+
+isOnWindows = False
+isOnLinux = False
+
+# Checking weather the user is on windows or not
+try:
+    temp = os.environ
+    tempUserName = temp["USERNAME"]
+    isOnWindows = True
+except Exception:
+    isOnLinux = True
+
+
+# clear screen function 
+def customClearScreen():
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
+
+
+
+
 class SpeedTestClass:
     """
 This is the main class of speed test file
@@ -96,7 +121,7 @@ methods -
 
     # main function of the class to handle all the internal process and output result
     def runSpeedTestUtility(self , inBytes = False , numberOfTimesToDo = 2):
-        os.system("cls")
+        customClearScreen()
         print("running speed test - this may take some time")
         
         # checking internet connection status
@@ -117,7 +142,7 @@ methods -
 
             # running loop for doing number of test as pass or by default 2 times
             for i in range(numberOfTimesToDo):
-                os.system("cls")
+                customClearScreen()
 
                 # printing message
                 print("running speed test - this may take some time")
@@ -127,7 +152,7 @@ methods -
                 print("\nchecking Download Speed...")
                 value = self.getDownloadSpeed()
                 if(value == False):
-                    os.system("cls")
+                    customClearScreen()
                     if(self.cLog.troubleShoot == False):
                         print("\nSpeed test failed, Something went wrong, Please Try again, if error persist, run troubleShoot command")
                     else:
@@ -140,7 +165,7 @@ methods -
                 print("checking Upload Speed...")
                 value = self.getUploadSpeed()
                 if(value == False):
-                    os.system("cls")
+                    customClearScreen()
                     if(self.cLog.troubleShoot == False):
                         print("\nSpeed test failed, Something went wrong, Please Try again, if error persist, run troubleShoot command")
                     else:
@@ -153,7 +178,7 @@ methods -
                 print("checking Ping...")
                 value = self.getPing()
                 if(value == False):
-                    os.system("cls")
+                    customClearScreen()
                     if(self.cLog.troubleShoot == False):
                         print("\nSpeed test failed, Something went wrong, Please Try again, if error persist, run troubleShoot command")
                     else:
@@ -170,7 +195,7 @@ methods -
             avgDownloadSpeed = self.convToMb(avgDownloadSpeed)
             avgUploadSpeed = self.convToMb(avgUploadSpeed)
 
-            os.system("cls")
+            customClearScreen()
             if(inBytes == False):
                 print("Download speed    =    {} Mb/s".format(avgDownloadSpeed))
                 print("upload speed      =    {} Mb/s".format(avgUploadSpeed))
