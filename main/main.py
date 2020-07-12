@@ -27,6 +27,7 @@ import sys
 from tabulate import tabulate
 import os
 import subprocess as sp
+import getpass as getUserName
 
 # generating jarvis folder
 try:
@@ -215,8 +216,7 @@ def troubleShootFunc():
     customClearScreen()
 
     # getting user name so that we can output the log file to desktop
-    temp = os.environ  # generates a object with the property called USERNAME containing the info
-    tempUserName = temp["USERNAME"]
+    tempUserName = getUserName.getuser()
 
     # setting up paths to copy log file to desktop at the end
     pathToDesktop = "C:/Users/" + str(tempUserName) + "/Desktop" 
@@ -312,8 +312,7 @@ methods include - getDict()           ->  To generate dictionary - not for outsi
             return None
 
     def setUserName(self):
-        temp = os.environ  # generates a object with the property called USERNAME containing the info
-        tempUserName = temp["USERNAME"]
+        tempUserName = getUserName.getuser()
         try:
             if(self.settingsDict == False):
                 self.settingsDict = {}
