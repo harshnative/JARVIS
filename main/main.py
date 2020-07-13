@@ -485,8 +485,19 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
 
 # function to execute the passed command by analysing it
 def executeCommands(command):
+
+    # statement to run commands passed for cmd in windows
+    if(command[:2] == "cmd" or "CMD" or "Cmd"):
+            newCommand = str(command[4:])
+            customClearScreen()
+            os.system(newCommand)
+            return True
+
+
     # spliting with " " to form a command list
     commandList = command.split()
+
+
     # checking for weather commands
     if(("weather" in commandList) or ("Weather" in commandList)):
 
@@ -932,17 +943,18 @@ def executeCommands(command):
         objPasswordStorerClass.driverFunc()
         return True
 
-    # handling command to run in jarvis in cmd window
-    if(("cmd" in commandList) or ("Cmd" in commandList) or ("CMD" in commandList)):
-        customClearScreen()
-
-        print("opening jarvis in command prompt")
-        os.startfile(r"jarvis_CMD.bat")
-        print("\njarvis opened in command prompt")
-        print("\nExisting this instance of jarvis")
-        time.sleep(1)
-        exit()
+    # handling cmd commands
+    if(("start" in commandList) or ("Start" in commandList)):
+        if(("cmd" in commandList) or ("Cmd" in commandList) or ("CMD" in commandList)):
+            customClearScreen()
+            print("opening jarvis in command prompt")
+            os.startfile(r"jarvis_CMD.bat")
+            print("\njarvis opened in command prompt")
+            print("\nExisting this instance of jarvis")
+            time.sleep(1)
+            exit()
     
+
     # handling utc time and date
     if(("utc" in commandList) or ("UTC" in commandList) or ("Utc" in commandList)):
         if(("time" in commandList) or ("Time" in commandList)):
@@ -1102,6 +1114,7 @@ def main():
 
         print(f"welcome {objMainClass.returnUserName()}\n")
         commandInput = input("Enter Command : ")
+                  
         if(handleGetHelp(commandInput)):
             pass
         else:
