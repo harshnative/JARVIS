@@ -487,11 +487,11 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
 def executeCommands(command):
 
     # statement to run commands passed for cmd in windows
-    if(command[:2] == "cmd" or "CMD" or "Cmd"):
-            newCommand = str(command[4:])
-            customClearScreen()
-            os.system(newCommand)
-            return True
+    if(command[:3] == ("cmd" or "CMD" or "Cmd")):
+        newCommand = str(command[4:])
+        customClearScreen()
+        os.system(newCommand)
+        return True
 
 
     # spliting with " " to form a command list
