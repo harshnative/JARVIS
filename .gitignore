@@ -8,6 +8,8 @@ myVirtualEnv/
 
 .vscode/
 
+tests/
+
 temp/
 
 __pycache__/
