@@ -1,6 +1,5 @@
 # showing loading jarvis message just before everything loads up as some times while opening the program for first time, antivirus may scan all the included dlls when importing them into code and it takes time
-print("\nLoading Jarvis.....")
-print("\nThis may take few minutes for the first time :)")
+print("\nLoading Jarvis, please wait.....")
 
 isOnWindows = False
 isOnLinux = False
@@ -33,7 +32,6 @@ import getpass as getUserName
 # generating jarvis folder
 try:
     os.makedirs(r"C:\programData\Jarvis", exist_ok=True)
-    print("folder check...")
 except Exception:
     customClearScreen()
     print("Critical Error - could not generate jarvis folder in program data - contact developer")
@@ -43,6 +41,13 @@ import datetime
 import shutil
 import ctypes
 import logging
+from easyFileShare import FS
+from os import path
+import sys
+import tkfilebrowser    # requires pywin32 package
+
+
+# importing submodules and stuff
 from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
 from imports.harshNative_github.txtCompare.txtComparePy import *
 from imports.harshNative_github.hangMan_game.hangmanGame import *
@@ -274,6 +279,15 @@ def troubleShootFunc():
     cLog.setTroubleShoot(troubleShootValue)
     return True
 
+# function to handle file sharing using easyFileShare - module 
+def handleFileShare(folderPass , portNumber = 8000):
+    obj = FS.FileShareClass()
+    obj.start_fileShare(str(folderPass) , int(portNumber))
+
+#function to get the folder path of folder selected from the file explorer
+def get_folderPath_fromFileExplorer():
+    folder_selected = tkfilebrowser.askopendirname(title = "Select a folder to share")
+    return folder_selected
 
 class MainClass():
 
@@ -953,7 +967,39 @@ def executeCommands(command):
             print("\nExisting this instance of jarvis")
             time.sleep(1)
             exit()
-    
+        if(("file" in commandList) or ("File" in commandList) or ("fileshare" in commandList) or ("fileShare" in commandList)):
+            
+            folderShare = ""
+
+            if(isOnWindows == True):
+                customClearScreen()
+                print("select the folder from the pop window to share")
+                folderShare = get_folderPath_fromFileExplorer()
+
+                print("\n\n")
+                input("press enter to continue...")
+
+            elif(isOnLinux == True):
+                customClearScreen()
+
+                while(1):
+                    folderShare = input("Enter the folder path to share : ")
+
+                    if(path.exists(str(folderShare)) == True):
+                        break
+
+                    elif(folderShare == "0"):
+                        return True
+
+                    else:
+                        customClearScreen()
+                        print("system could find the entered path, please try again or enter 0 to quit")
+                        print("\n\n")
+                        input("press enter to continue ...")
+                
+            handleFileShare(folderShare , 8000)
+
+
 
     # handling utc time and date
     if(("utc" in commandList) or ("UTC" in commandList) or ("Utc" in commandList)):
