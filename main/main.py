@@ -3,6 +3,7 @@ print("\nLoading Jarvis, please wait.....")
 
 isOnWindows = False
 isOnLinux = False
+import os
 
 # Checking weather the user is on windows or not
 try:
@@ -26,7 +27,6 @@ import pyperclip
 import psutil
 import sys
 from tabulate import tabulate
-import os
 import getpass as getUserName
 
 # generating jarvis folder
@@ -284,10 +284,29 @@ def handleFileShare(folderPass , portNumber = 8000):
     obj = FS.FileShareClass()
     obj.start_fileShare(str(folderPass) , int(portNumber))
 
-#function to get the folder path of folder selected from the file explorer
+# function to get the folder path of folder selected from the file explorer
 def get_folderPath_fromFileExplorer():
     folder_selected = tkfilebrowser.askopendirname(title = "Select a folder to share")
     return folder_selected
+
+
+# function to compare two strings ignoring case changes
+def isSubStringsNoCase(string , subString):
+    string = string.upper()
+    subString = subString.upper()
+
+    subStringList = subString.split()
+
+    for i in subStringList:
+        i = i.strip()
+        if(isSubString(string , i)):
+            pass
+        else:
+            return False
+
+    return True
+
+
 
 class MainClass():
 
@@ -508,15 +527,12 @@ def executeCommands(command):
         return True
 
 
-    # spliting with " " to form a command list
-    commandList = command.split()
-
-
     # checking for weather commands
-    if(("weather" in commandList) or ("Weather" in commandList)):
+    elif(isSubStringsNoCase(command , "weather")):
 
         # creating object of main weather class
         objMainWeatherClass = MainWeatherClass()
+        commandList = command.split()
 
         # looping through command list to get the cityname if present
         for com in commandList:
@@ -553,9 +569,9 @@ def executeCommands(command):
         return True
 
     # for restoring the defualt setting
-    if(("restore" in commandList) or ("Restore" in commandList)):
+    elif(isSubStringsNoCase(command , "restore")):
 
-        if(("setting" in commandList) or ("settings" in commandList) or ("Setting" in commandList) or ("Settings" in commandList)):
+        if(isSubStringsNoCase(command , "setting")):
             objSetting = Setting(troubleShootValue)
             objSetting.regenerateFile()
             customClearScreen()
@@ -564,7 +580,7 @@ def executeCommands(command):
             cLog.log("restore command runned successfully", "i")
             return True
 
-        if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
+        if(isSubStringsNoCase(command , "jarvis")):
             customClearScreen()
 
             #getting backup path
@@ -607,7 +623,7 @@ def executeCommands(command):
             return True
 
     # for changing teh setting - this function opens the settings.txt in the defualt txt viewer of the system
-    if(("Setting" in commandList) or ("setting" in commandList) or ("Settings" in commandList) or ("settings" in commandList)):
+    elif(isSubStringsNoCase(command , "open setting")):
         objSetting = Setting(troubleShootValue)
         objSetting.openFile()
         customClearScreen()
@@ -617,7 +633,7 @@ def executeCommands(command):
         return True
 
     # function for updating the settings
-    if(("update" in commandList) or ("Update" in commandList)):
+    elif(isSubStringsNoCase(command , "update")):
         customClearScreen()
 
         print("settings have been updated , programm will restart now\n\n")
@@ -625,11 +641,11 @@ def executeCommands(command):
         restart_program()
 
     # calling for backup command
-    if(("backup" in commandList) or ("Backup" in commandList)):
+    elif(isSubStringsNoCase(command , "backup")):
         customClearScreen()
 
         # for backupUp jarvis things i.e things in folder program data - jarvis
-        if(("jarvis" in commandList) or ("Jarvis" in commandList) or ("JARVIS" in commandList)):
+        if(isSubStringsNoCase(command , "jarvis")):
             objMainClass = MainClass()
             dictGet = objMainClass.returnDict()
 
@@ -673,6 +689,7 @@ def executeCommands(command):
 
         # excecuting backup module functionalities
         # creating a copy of backup command without the backup keyword so that we can pass it to the startBackup function of the class backUp
+        commandList = command.split()
         commandListCopy = commandList.copy()
         if("backup" in commandList):
             commandListCopy.remove("backup")
@@ -704,34 +721,36 @@ def executeCommands(command):
         # creating some required assets
         directoriesListEditted = []
         dictionaryFromSetting = objSetting.getDictionary()
+        pathToBackup = ""
+
+        if(dictionaryFromSetting["backUpPath"] == ""):
+            customClearScreen()
+
+            print(
+                "it looks like you have not added any folder's to backup in setting file")
+            print(
+                "\n\ntype change settings in the command to open the file and then run update command")
+            print("\n\ntype help settings for additional help")
+            return True
+        else:
+            pathToBackup = str(dictionaryFromSetting["backUpPath"])
+            try:
+                os.mkdir(pathToBackup + "/" + "jarvisBackup")
+                pathToBackup = pathToBackup + "/" + "jarvisBackup"
+            except OSError as e:
+                customClearScreen()
+
+                pathToBackup = pathToBackup + "/" + "jarvisBackup"
+                cLog.log("OSError for execute command under backup", "e")
+                cLog.exception(str(e), "In main.py/executeCommmand_func_backupCommand")
+                print("folder in path to backup in settings already exit or may be the path is not found")
+                print("\n\nif the folder already exit - then all the file's will be overRidden")
+                print("\n\npress enter to continue with backup or close the program to stop it")
+                input()
+                customClearScreen()
 
         # checking if -d is in command
         if("-d" in commandList):
-            if(dictionaryFromSetting["backUpPath"] == ""):
-                customClearScreen()
-
-                print(
-                    "it looks like you have not added any folder's to backup in setting file")
-                print(
-                    "\n\ntype change settings in the command to open the file and then run update command")
-                print("\n\ntype help settings for additional help")
-                return True
-            else:
-                pathToBackup = str(dictionaryFromSetting["backUpPath"])
-                try:
-                    os.mkdir(pathToBackup + "/" + "jarvisBackup")
-                    pathToBackup = pathToBackup + "/" + "jarvisBackup"
-                except OSError as e:
-                    customClearScreen()
-
-                    pathToBackup = pathToBackup + "/" + "jarvisBackup"
-                    cLog.log("OSError for execute command under backup", "e")
-                    cLog.exception(str(e), "In main.py/executeCommmand_func_backupCommand")
-                    print("folder in path to backup in settings already exit or may be the path is not found")
-                    print("\n\nif the folder already exit - then all the file's will be overRidden")
-                    print("\n\npress enter to continue with backup or close the program to stop it")
-                    input()
-                    customClearScreen()
 
             # if backup path is correct then if need to ckeck if the directories are listed in setting's file or not
             if(dictionaryFromSetting["Directories"] == ""):
@@ -770,105 +789,100 @@ def executeCommands(command):
         return True
 
     # calling for hangman game
-    if(("hangman" in commandList) or ("Hangman" in commandList)):
-        if(("game" in commandList) or ("Game" in commandList)):
-            customClearScreen()
+    elif(isSubStringsNoCase(command , "hangman game")):
+        customClearScreen()
 
-            # calling the game function
-            boolValue = mainForHangmanGame()
+        # calling the game function
+        boolValue = mainForHangmanGame()
 
-            customClearScreen()
+        customClearScreen()
 
-            if(boolValue == True):
-                print("thanks for playing game")
-            else:
-                print("some error ocurred :( , try reinstalling the program")
-                cLog.log("some error occured in hangman game", "e")
-            return True
+        if(boolValue == True):
+            print("thanks for playing game")
+        else:
+            print("some error ocurred :( , try reinstalling the program")
+            cLog.log("some error occured in hangman game", "e")
+        return True
 
 
     # calling for txt compare
-    if(("compare" in commandList) or ("Compare" in commandList)):
-        if(("txt" in commandList) or ("Txt" in commandList) or ("TXT" in commandList)):
-            customClearScreen()
+    elif(isSubStringsNoCase(command , "compare txt")):
+        customClearScreen()
 
-            print("starting txtCompare program :)\n\n")
-            try:
-                mainForTxtCompare()
-            except Exception:
-                cLog.log("some error occured while comparing txt files", "e")
-                if(cLog.troubleShoot == False):
-                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
-                else:
-                    print("\nerror has been logged - continue...")
-            return True
+        print("starting txtCompare program :)\n\n")
+        try:
+            mainForTxtCompare()
+        except Exception:
+            cLog.log("some error occured while comparing txt files", "e")
+            if(cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
+        return True
 
 
     # calling for google drive link
-    if(("google" in commandList) or ("Google" in commandList)):
-        if(("drive" in commandList) or ("Drive" in commandList)):
-            customClearScreen()
+    elif(isSubStringsNoCase(command , "google drive") or isSubStringsNoCase(command , "link convert")):
+        customClearScreen()
 
-            print("Go to the file saved in google drive and click get shareable link\n")
-            linkGet = input("Paste the link here : ")
-            linkFinal = mainForGoogleDriveLink(linkGet)
-            if(linkFinal == False):
-                print("\n\nThe link is in valid :(")
-                cLog.log(
-                    "google drive command runned succesfully , but the link was invalid", "i")
-                return True
-            else:
-                pyperclip.copy(str(linkFinal))
-                pyperclip.paste()
-                print("\n\nThe link is {} and is been copied to clipboard :)".format(linkFinal))
-                cLog.log("google drive command runned succesfully", "i")
-                return True
+        print("Go to the file saved in google drive and click get shareable link\n")
+        linkGet = input("Paste the link here : ")
+        linkFinal = mainForGoogleDriveLink(linkGet)
+        if(linkFinal == False):
+            print("\n\nThe link is in valid :(")
+            cLog.log(
+                "google drive command runned succesfully , but the link was invalid", "i")
+            return True
+        else:
+            pyperclip.copy(str(linkFinal))
+            pyperclip.paste()
+            print("\n\nThe link is {} and is been copied to clipboard :)".format(linkFinal))
+            cLog.log("google drive command runned succesfully", "i")
+            return True
+            
 
     # calling for random generator
-    if(("generate" in commandList) or ("Generate" in commandList)):
-        if(("random" in commandList) or ("Random" in commandList)):
-            customClearScreen()
+    elif(isSubStringsNoCase(command , "generate random")):
+        customClearScreen()
 
-            try:
-                os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
-                print("The file is opened in other window :)")
-            except FileNotFoundError:
-                cLog.log("external exe file not found", "e")
-                print("The random generator file is missing")
-            except Exception as e:
-                if(cLog.troubleShoot == False):
-                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
-                else:
-                    print("\nerror has been logged - continue...")
-                cLog.log("error on generate random command", "e")
-                cLog.exception(str(e), "In generate random command")
-            return True
+        try:
+            os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
+            print("The file is opened in other window :)")
+        except FileNotFoundError:
+            cLog.log("external exe file not found", "e")
+            print("The random generator file is missing")
+        except Exception as e:
+            if(cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
+            cLog.log("error on generate random command", "e")
+            cLog.exception(str(e), "In generate random command")
+        return True
 
 
     # calling for number system convertor
-    if(("number" in commandList) or ("Number" in commandList) or ("num" in commandList) or ("Num" in commandList) or ("no" in commandList) or ("No" in commandList) or ("NO" in commandList)):
-        if(("convert" in commandList) or ("conv" in commandList) or ("convertor" in commandList) or ("Convert" in commandList) or ("Conv" in commandList) or ("Convertor" in commandList)):
-            if(("system" in commandList) or ("sys" in commandList) or ("System" in commandList) or ("Sys" in commandList)):
-                customClearScreen()
+    elif((isSubStringsNoCase(command , "num") or isSubStringsNoCase(command , "no")) and (isSubStringsNoCase(command , "conv")) and (isSubStringsNoCase(command , "sys"))):
+        customClearScreen()
 
-                try:
-                    os.startfile(r"external_exe\harshNative_github\NSC.exe")
-                    print("The file is opened in other window :)")
-                except FileNotFoundError:
-                    cLog.log("external exe file not found", "e")
-                    print("The number convert file is missing")
-                except Exception as e:
-                    if(cLog.troubleShoot == False):
-                        print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
-                    else:
-                        print("\nerror has been logged - continue...")
-                    cLog.log("error on number system command", "e")
-                    cLog.exception(str(e), "In number system convertor command")
-                return True
+        try:
+            os.startfile(r"external_exe\harshNative_github\NSC.exe")
+            print("The file is opened in other window :)")
+        except FileNotFoundError:
+            cLog.log("external exe file not found", "e")
+            print("The number convert file is missing")
+        except Exception as e:
+            if(cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
+            cLog.log("error on number system command", "e")
+            cLog.exception(str(e), "In number system convertor command")
+        return True
 
 
     # calling for average finder
-    if(("average" in commandList) or ("Average" in commandList) or ("avg" in commandList) or ("Avg" in commandList) or ("AVG" in commandList)):
+    elif(isSubStringsNoCase(command , "average") or isSubStringsNoCase(command , "avg")):
         customClearScreen()
 
         try:
@@ -887,135 +901,131 @@ def executeCommands(command):
         return True
 
     # calling for coin toss
-    if(("Coin" in commandList) or ("coin" in commandList)):
-        if(("toss" in commandList) or ("Toss" in commandList)):
-            customClearScreen()
+    elif(isSubStringsNoCase(command , "coin toss")):
+        customClearScreen()
 
-            try:
-                os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
-                print("The file is opened in other window :)")
-            except FileNotFoundError:
-                cLog.log("external exe file not found", "e")
-                print("The coin toss file is missing")
-            except Exception as e:
-                if(cLog.troubleShoot == False):
-                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
-                else:
-                    print("\nerror has been logged - continue...")
-                cLog.log("error on coin toss command", "e")
-                cLog.exception(str(e), "In coin toss command")
-            return True
+        try:
+            os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
+            print("The file is opened in other window :)")
+        except FileNotFoundError:
+            cLog.log("external exe file not found", "e")
+            print("The coin toss file is missing")
+        except Exception as e:
+            if(cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
+            cLog.log("error on coin toss command", "e")
+            cLog.exception(str(e), "In coin toss command")
+        return True
 
 
     # calling for group generator
-    if(("group" in commandList) or ("Group" in commandList)):
-        if(("generate" in commandList) or ("Generate" in commandList)):
-            customClearScreen()
+    elif(isSubStringsNoCase(command , "generate group")):
+        customClearScreen()
 
-            try:
-                os.startfile(
-                    r"external_exe\harshNative_github\group_Generator.exe")
-                print("The file is opened in other window :)")
-            except FileNotFoundError:
-                cLog.log("external exe file not found", "e")
-                print("The group generator file is missing")
-            except Exception as e:
-                if(cLog.troubleShoot == False):
-                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
-                else:
-                    print("\nerror has been logged - continue...")
-                cLog.log("error on group generate command", "e")
-                cLog.exception(str(e), "In group generate command")
-            return True
+        try:
+            os.startfile(
+                r"external_exe\harshNative_github\group_Generator.exe")
+            print("The file is opened in other window :)")
+        except FileNotFoundError:
+            cLog.log("external exe file not found", "e")
+            print("The group generator file is missing")
+        except Exception as e:
+            if(cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
+            cLog.log("error on group generate command", "e")
+            cLog.exception(str(e), "In group generate command")
+        return True
 
 
     # calling for interest calculator
-    if(("calculator" in commandList) or ("Calculator" in commandList) or ("calc" in commandList) or ("Calc" in commandList)):
-        if(("Interest" in commandList) or ("interest" in commandList)):
-            customClearScreen()
+    elif(isSubStringsNoCase(command , "calc int")):
+        customClearScreen()
 
-            try:
-                os.startfile(
-                    r"external_exe\harshNative_github\interest_Calculator.exe")
-                print("The file is opened in other window :)")
-            except FileNotFoundError:
-                cLog.log("external exe file not found", "e")
-                print("The interest calculator file is missing")
-            except Exception as e:
-                if(cLog.troubleShoot == False):
-                    print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
-                else:
-                    print("\nerror has been logged - continue...")
-                cLog.log("error on calc interest command", "e")
-                cLog.exception(str(e), "In calc interest command")
-            return True
+        try:
+            os.startfile(
+                r"external_exe\harshNative_github\interest_Calculator.exe")
+            print("The file is opened in other window :)")
+        except FileNotFoundError:
+            cLog.log("external exe file not found", "e")
+            print("The interest calculator file is missing")
+        except Exception as e:
+            if(cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
+            cLog.log("error on calc interest command", "e")
+            cLog.exception(str(e), "In calc interest command")
+        return True
  
 
     # calling for password manager
-    if(("Password" in commandList) or ("password" in commandList) or ("pass" in commandList) or ("Pass" in commandList)):
+    elif(isSubStringsNoCase(command , "password")):
         objPasswordStorerClass = PasswordStorerClass(troubleShootValue)
         objPasswordStorerClass.driverFunc()
         return True
 
     # handling cmd commands
-    if(("start" in commandList) or ("Start" in commandList)):
-        if(("cmd" in commandList) or ("Cmd" in commandList) or ("CMD" in commandList)):
-            customClearScreen()
-            print("opening jarvis in command prompt")
-            os.startfile(r"jarvis_CMD.bat")
-            print("\njarvis opened in command prompt")
-            print("\nExisting this instance of jarvis")
-            time.sleep(1)
-            exit()
-        if(("file" in commandList) or ("File" in commandList) or ("fileshare" in commandList) or ("fileShare" in commandList)):
+    elif(isSubStringsNoCase(command , "start cmd")):
+        customClearScreen()
+        print("opening jarvis in command prompt")
+        os.startfile(r"jarvis_CMD.bat")
+        print("\njarvis opened in command prompt")
+        print("\nExisting this instance of jarvis")
+        time.sleep(1)
+        exit()
+
+    elif(isSubStringsNoCase(command , "start file")):
             
-            folderShare = ""
+        folderShare = ""
 
-            if(isOnWindows == True):
-                customClearScreen()
-                print("select the folder from the pop window to share")
-                folderShare = get_folderPath_fromFileExplorer()
+        if(isOnWindows == True):
+            customClearScreen()
+            print("select the folder from the pop window to share")
+            folderShare = get_folderPath_fromFileExplorer()
 
-                print("\n\n")
-                input("press enter to continue...")
+            print("\n\n")
+            input("press enter to continue...")
 
-            elif(isOnLinux == True):
-                customClearScreen()
+        elif(isOnLinux == True):
+            customClearScreen()
 
-                while(1):
-                    folderShare = input("Enter the folder path to share : ")
+            while(1):
+                folderShare = input("Enter the folder path to share : ")
 
-                    if(path.exists(str(folderShare)) == True):
-                        break
+                if(path.exists(str(folderShare)) == True):
+                    break
 
-                    elif(folderShare == "0"):
-                        return True
+                elif(folderShare == "0"):
+                    return True
 
-                    else:
-                        customClearScreen()
-                        print("system could find the entered path, please try again or enter 0 to quit")
-                        print("\n\n")
-                        input("press enter to continue ...")
-                
-            handleFileShare(folderShare , 8000)
+                else:
+                    customClearScreen()
+                    print("system could find the entered path, please try again or enter 0 to quit")
+                    print("\n\n")
+                    input("press enter to continue ...")
+            
+        handleFileShare(folderShare , 8000)
 
 
 
     # handling utc time and date
-    if(("utc" in commandList) or ("UTC" in commandList) or ("Utc" in commandList)):
-        if(("time" in commandList) or ("Time" in commandList)):
-            newObj = str(datetime.datetime.utcnow())
-            currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
-            currentTime = newObj[11:19] 
+    elif(isSubStringsNoCase(command , "utc time")):
+        newObj = str(datetime.datetime.utcnow())
+        currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
+        currentTime = newObj[11:19] 
 
-            customClearScreen()
+        customClearScreen()
 
-            print("UTC TIME = {}".format(currentTime))
-            print("UTC DATE = {}".format(currentDate))
-            return True
+        print("UTC TIME = {}".format(currentTime))
+        print("UTC DATE = {}".format(currentDate))
+        return True
 
     # handling simple time command
-    if(("time" in commandList) or ("Time" in commandList)):
+    elif(isSubStringsNoCase(command , "time")):
         newObj = str(datetime.datetime.now())
         currentDate = newObj[8:10] + "/" + newObj[5:7] + "/" + newObj[:4]
         currentTime = newObj[11:19] 
@@ -1027,89 +1037,87 @@ def executeCommands(command):
         return True
 
     # handling font size command
-    if(("Font" in commandList) or ("font" in commandList)):
-        if(("Size" in commandList) or ("size") in commandList):
-            customClearScreen()
+    elif(isSubStringsNoCase(command , "font size")):
+        customClearScreen()
 
-            print("To change the font size follow these steps : ") 
-            print("\n1. right click on the jarvis logo on top left corner")
-            print("\n2. click on the defaults button")
-            print("\n3. navigate to font panel and change the font size")
-            print("\n4. restart the program by closing it")
-            print("\nRecommended font size is 18")
-            print("\nTo change the font size temporarily - click on properties instead of defaults")
-            return True
+        print("To change the font size follow these steps : ") 
+        print("\n1. right click on the jarvis logo on top left corner")
+        print("\n2. click on the defaults button")
+        print("\n3. navigate to font panel and change the font size")
+        print("\n4. restart the program by closing it")
+        print("\nRecommended font size is 18")
+        print("\nTo change the font size temporarily - click on properties instead of defaults")
+        return True
 
     # handling font colour command
-    if(("Font" in commandList) or ("font" in commandList)):
-        if(("colour" in commandList) or ("Colour" in commandList) or ("Color" in commandList) or ("color" in commandList)):
-            customClearScreen()
+    elif(isSubStringsNoCase(command , "font col")):
+        customClearScreen()
 
-            print("To change the font colour follow these steps : ") 
-            print("\n1. right click on the jarvis logo on top left corner")
-            print("\n2. click on the defaults button")
-            print("\n3. navigate to colours panel and make sure screen text is selected")
-            print("\n4. select the colour and restart the program by closing it")
-            print("\nRecommended font colour is green or grey")
-            print("\nTo change the font size temporarily - click on properties instead of defaults")
-            return True
+        print("To change the font colour follow these steps : ") 
+        print("\n1. right click on the jarvis logo on top left corner")
+        print("\n2. click on the defaults button")
+        print("\n3. navigate to colours panel and make sure screen text is selected")
+        print("\n4. select the colour and restart the program by closing it")
+        print("\nRecommended font colour is green or grey")
+        print("\nTo change the font size temporarily - click on properties instead of defaults")
+        return True
     
     # handling speed test command
-    if(("speed" in commandList) or ("Speed" in commandList)):
-        if(("test" in commandList) or ("Test" in commandList)):
-            commandListCopy = commandList.copy()
+    elif(isSubStringsNoCase(command , "speed test")):
+        commandList = command.split()
+        commandListCopy = commandList.copy()
 
-            # removing speed and test word from the command list
+        # removing speed and test word from the command list
+        try:
+            commandListCopy.remove("speed")
+        except Exception:
             try:
-                commandListCopy.remove("speed")
-            except Exception:
-                try:
-                    commandListCopy.remove("Speed")
-                except Exception as e:
-                    print("Failed to run speed test")
-                    cLog.log("could not delete speed from command list copy in speed test command in executecommand in main.py" , "e")
-                    cLog.exception(str(e) , "in main.py/executeCommand_function - running command speed test")
-                    return True
-            
+                commandListCopy.remove("Speed")
+            except Exception as e:
+                print("Failed to run speed test")
+                cLog.log("could not delete speed from command list copy in speed test command in executecommand in main.py" , "e")
+                cLog.exception(str(e) , "in main.py/executeCommand_function - running command speed test")
+                return True
+        
+        try:
+            commandListCopy.remove("test")
+        except Exception:
             try:
-                commandListCopy.remove("test")
+                commandListCopy.remove("Test")
+            except Exception as e:
+                print("Failed to run speed test")
+                cLog.log("could not delete test from command list copy in speed test command in executecommand in main.py" , "e")
+                cLog.exception(str(e) , "in main.py/executeCommand_function - running command speed test")
+                return True
+        
+        # for getting result in bytes - default value is NO
+        inBytes = False
+        
+        # number of time the result should average out - default value of module is also 2
+        numberOfTime = 2
+        
+        # checking if user wants result in bytes 
+        for i in commandListCopy:
+            if("-b" in commandListCopy):
+                inBytes = True
+            try:
+                numberOfTime = int(i)
+
+                # if the number of time is greator than 5 then it will take very long time to process to making it again default
+                if(numberOfTime >= 5):
+                    numberOfTime = 2
             except Exception:
-                try:
-                    commandListCopy.remove("Test")
-                except Exception as e:
-                    print("Failed to run speed test")
-                    cLog.log("could not delete test from command list copy in speed test command in executecommand in main.py" , "e")
-                    cLog.exception(str(e) , "in main.py/executeCommand_function - running command speed test")
-                    return True
-            
-            # for getting result in bytes - default value is NO
-            inBytes = False
-            
-            # number of time the result should average out - default value of module is also 2
-            numberOfTime = 2
-            
-            # checking if user wants result in bytes 
-            for i in commandListCopy:
-                if("-b" in commandListCopy):
-                    inBytes = True
-                try:
-                    numberOfTime = int(i)
+                pass
 
-                    # if the number of time is greator than 5 then it will take very long time to process to making it again default
-                    if(numberOfTime >= 5):
-                        numberOfTime = 2
-                except Exception:
-                    pass
+        # creating object of class in module speed test utility 
+        objSpeedTestClass = SpeedTestClass(troubleShootValue)
 
-            # creating object of class in module speed test utility 
-            objSpeedTestClass = SpeedTestClass(troubleShootValue)
-
-            # calling method of class for execution
-            objSpeedTestClass.runSpeedTestUtility(inBytes , numberOfTime)
-            return True     # as all runned successfully
+        # calling method of class for execution
+        objSpeedTestClass.runSpeedTestUtility(inBytes , numberOfTime)
+        return True     # as all runned successfully
 
     # handling troubleshoot command
-    if(("troubleshoot" in commandList) or ("TroubleShoot" in commandList) or ("Troubleshoot" in commandList) or ("troubleShoot" in commandList)):
+    elif(isSubStringsNoCase(command , "trouble")):
         status = troubleShootFunc()
 
         customClearScreen()
@@ -1121,7 +1129,7 @@ def executeCommands(command):
         return True
 
     # calling for exit command
-    if(("exit" in commandList) or ("EXIT" in commandList) or ("Exit" in commandList)):
+    elif(isSubStringsNoCase(command , "exit")):
         customClearScreen()
 
         print("See you soon :) , Exiting the program ", end="", flush=True)
