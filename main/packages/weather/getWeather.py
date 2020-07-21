@@ -62,6 +62,11 @@ class WeatherData():
     def setApiKey(cls , apiKeyPassed):
         cls._apiKey = apiKeyPassed
 
+    # function to set the api key
+    @classmethod
+    def getApiKey(cls):
+        return cls._apiKey
+
     # function to get the api key status
     @classmethod
     def returnApiKeyStatus(cls):

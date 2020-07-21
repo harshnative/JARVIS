@@ -533,6 +533,12 @@ def executeCommands(command):
     # checking for weather commands
     elif(isSubStringsNoCase(command , "weather")):
 
+        # checking weather api key status
+        if((WeatherData.getApiKey() == "") or (WeatherData.returnApiKeyStatus() == False)):
+            customClearScreen()
+            print("weather api key is either empty or not setted")
+            return True
+
         # creating object of main weather class
         objMainWeatherClass = MainWeatherClass()
         commandList = command.split()
@@ -995,6 +1001,13 @@ def executeCommands(command):
                 portNumberForFileShare = int(i)
             except Exception:
                 pass
+
+        if(999 < portNumberForFileShare < 10000):
+            pass
+        else:
+            customClearScreen()
+            print("port number must be 4 digit integer , default port number is 5000")
+            return True
         
         customClearScreen()
         print("port number setted successfully as {}".format(portNumberForFileShare))
@@ -1031,8 +1044,11 @@ def executeCommands(command):
                     print("system could find the entered path, please try again or enter 0 to quit")
                     print("\n\n")
                     input("press enter to continue ...")
-            
-        handleFileShare(folderShare , portNumberForFileShare)
+        try:
+            handleFileShare(folderShare , portNumberForFileShare)
+        except Exception as e:
+            cLog.log("error on handle file share function in main.py", "e")
+            cLog.exception(str(e), "In handleFileShare function main.py")
 
         return True
 
