@@ -1,11 +1,11 @@
 import sqlite3
 from tabulate import tabulate
 import os
-from getpass import getpass
 import onetimepad
 from packages.loggerPackage.loggerFile import *
 import sys
 import time
+import stdiomask
 import pyperclip
 
 
@@ -31,6 +31,10 @@ def customClearScreen():
     else:
         sp.call('clear',shell=True)
 
+
+def hashPasswordInput(message):
+    password = stdiomask.getpass(message)
+    return password
 
 
 
@@ -247,8 +251,8 @@ driverFunc()        ->  this is the only method that you need to use this method
             # infinite loop for if the password does not match while entering
             while(1):
                 customClearScreen()
-                passwordInput1 = str(getpass("Enter  New  Master Password : "))
-                passwordInput2 = str(getpass("Enter Master Password again : "))
+                passwordInput1 = str(hashPasswordInput("Enter  New  Master Password : "))
+                passwordInput2 = str(hashPasswordInput("Enter Master Password again : "))
 
                 # checking if the password are same or not to avoid miss entering of password
                 if(passwordInput1 == passwordInput2):
@@ -276,7 +280,7 @@ driverFunc()        ->  this is the only method that you need to use this method
     def authenticate(self):
         try:
             customClearScreen()
-            passwordInput = str(getpass("Enter Master Password : "))
+            passwordInput = str(hashPasswordInput("Enter Master Password : "))
 
             # generating query for sqlite3 obj to execute
             stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB

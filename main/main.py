@@ -5,6 +5,9 @@ isOnWindows = False
 isOnLinux = False
 import os
 
+#setting port number for file share 
+portNumberForFileShare = 5000
+
 # Checking weather the user is on windows or not
 try:
     temp = os.environ
@@ -972,11 +975,32 @@ def executeCommands(command):
     elif(isSubStringsNoCase(command , "start cmd")):
         customClearScreen()
         print("opening jarvis in command prompt")
-        os.startfile(r"jarvis_CMD.bat")
+        try:
+            os.startfile(r"jarvis_CMD.bat")
+        except FileNotFoundError:
+            customClearScreen()
+            print("cmd bat file not found, please try reinstalling the software or contact developer")
+            
         print("\njarvis opened in command prompt")
         print("\nExisting this instance of jarvis")
         time.sleep(1)
         exit()
+
+    elif(isSubStringsNoCase(command , "set port file")):
+        commandList = command.split()
+        global portNumberForFileShare
+
+        for i in commandList:
+            try:
+                portNumberForFileShare = int(i)
+            except Exception:
+                pass
+        
+        customClearScreen()
+        print("port number setted successfully as {}".format(portNumberForFileShare))
+        
+        return True
+
 
     elif(isSubStringsNoCase(command , "start file")):
             
@@ -1008,7 +1032,9 @@ def executeCommands(command):
                     print("\n\n")
                     input("press enter to continue ...")
             
-        handleFileShare(folderShare , 8000)
+        handleFileShare(folderShare , portNumberForFileShare)
+
+        return True
 
 
 
