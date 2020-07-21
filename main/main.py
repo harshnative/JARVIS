@@ -1,6 +1,11 @@
 # showing loading jarvis message just before everything loads up as some times while opening the program for first time, antivirus may scan all the included dlls when importing them into code and it takes time
 print("\nLoading Jarvis, please wait.....")
 
+
+# setting TroubleShoot Value
+troubleShootValue = True
+
+
 isOnWindows = False
 isOnLinux = False
 import os
@@ -60,18 +65,10 @@ from packages.settings.jarvisSetting import *
 from packages.weather.getWeather import *
 from packages.backUp_utility.backUp import *
 from packages.speedTest_utility.speedTestFile import *
-
-
-
  
 
 # creating global object of class Clogger
 cLog = Clogger()
-
-# setting TroubleShoot Value
-troubleShootValue = False
-
-
 
 
 # function to restart everything - just call the main again
@@ -969,6 +966,23 @@ def executeCommands(command):
             cLog.log("error on calc interest command", "e")
             cLog.exception(str(e), "In calc interest command")
         return True
+
+    
+    # function to start the jarvis in updated code base - only for developer
+    elif(isSubStringsNoCase(command , "start new ins")):
+        customClearScreen()
+        if(troubleShootValue == False):
+            return False
+        else:
+            if(isOnWindows):
+                os.system("python main/main.py")
+                exit()
+
+            elif(isOnLinux):
+                os.system("python3 main/main.py")
+                exit()
+                
+            return False
  
 
     # calling for password manager
@@ -1231,4 +1245,10 @@ def driverForMain():
     main()
 
 if __name__ == "__main__":
+    # checking if in developer mode
+
+    if(troubleShootValue):
+        print("\nIn dev mode\n")
+        time.sleep(0.5)
+
     driverForMain()
