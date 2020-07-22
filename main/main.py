@@ -553,18 +553,22 @@ def executeCommands(command):
                     break
             
             os.system("git add .")
-            os.system("pause")
+            print("added to repo")
+            time.sleep(0.5)
             customClearScreen()
 
             stringToPass = "git commit -m " + message + '"'
-            print(stringToPass)
             os.system(stringToPass)
-            input()
+            print("commited to repo")
+            time.sleep(0.5)
+            customClearScreen()
+
+            print("pushing to repo, make sure you are connected to internet ...\n\n")
+            os.system("git push")
+            time.sleep(0.5)   
+            customClearScreen()
             
-            customClearScreen()
-            os.system("git push")   
-            customClearScreen()
-            print("added , commited , pushed (^_^)")
+            print("process completed (^_^)")
 
         return True
 
