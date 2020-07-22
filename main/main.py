@@ -522,6 +522,7 @@ def executeCommands(command):
 
     # statement to run commands passed for cmd in windows
     if(command[:3] == ("cmd" or "CMD" or "Cmd")):
+        customClearScreen()
         newCommand = str(command[4:])
         customClearScreen()
         os.system(newCommand)
@@ -529,6 +530,22 @@ def executeCommands(command):
 
     # statement to run commands passed for cmd in windows
     elif(isSubStringsNoCase(command , "git")):
+        customClearScreen()
+
+        message = ""
+        count = 0
+
+        for i in command:
+
+            if(i == '"'):
+                count += 1
+
+            if(count == 1):
+                message = message + i
+            
+            if(count == 2):
+                break
+
         # commandListCopy = command.split()
 
         # commandList= []
@@ -536,21 +553,13 @@ def executeCommands(command):
         # for i in commandListCopy:
         #     new = i.lower()
         #     commandList.append(new)
+
+        if((isSubStringsNoCase(command , "log")) and not(isSubStringsNoCase(command , message))):
+            print("Gnerating logs ... , press q to quit\n\n")
+            os.system("git log --graph --oneline --all --decorate")
+
             
-        if(isSubStringsNoCase(command , "all")):
-            count = 0
-            message = ""
-
-            for i in command:
-
-                if(i == '"'):
-                    count += 1
-
-                if(count == 1):
-                    message = message + i
-                
-                if(count == 2):
-                    break
+        elif(isSubStringsNoCase(command , "all")):
             
             os.system("git add .")
             print("added to repo")
@@ -567,7 +576,7 @@ def executeCommands(command):
             os.system("git push")
             time.sleep(0.5)   
             customClearScreen()
-            
+
             print("process completed (^_^)")
 
         return True
