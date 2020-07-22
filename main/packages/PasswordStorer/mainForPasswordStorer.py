@@ -327,12 +327,13 @@ driverFunc()        ->  this is the only method that you need to use this method
                     if(passwordFromDataBase == passwordInput):
                         self.password = passwordInput
                         self.oldPassword = passwordInput
+                        self.cLog.log("authenticate function runned successfully in main for password" , "i")
                         return True
             
             else:
+                self.cLog.log("authenticate function runned successfully in main for password" , "i")
                 return False
 
-            self.cLog.log("authenticate function runned successfully in main for password" , "i")
 
         except Exception as e:
             self.cLog.log("error while authenticating", "e")

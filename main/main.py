@@ -526,6 +526,14 @@ def executeCommands(command):
         os.system(newCommand)
         return True
 
+    # hello command handling
+    elif(isSubStringsNoCase(command , "hello jarvis")):
+        customClearScreen()
+        print("Hello sir, What can i do for you. You can ask for help also (^_^)")
+        command = input("\nEnter Command : ")
+        executeCommands(command)
+        return True
+    
 
     # checking for weather commands
     elif(isSubStringsNoCase(command , "weather")):
@@ -1244,7 +1252,7 @@ def driverForMain():
     # calling main
     main()
 
-    
+
 
 if __name__ == "__main__":
     # checking if in developer mode
