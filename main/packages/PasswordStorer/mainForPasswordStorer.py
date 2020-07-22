@@ -70,6 +70,33 @@ driverFunc()        ->  this is the only method that you need to use this method
         self.onlyAuthenticate = None
     
 
+    def checkPass(self , string):
+        lowerCase = ['a','s','d','f','g','h','j','k','l','z','x',
+                    'c','v','b','n','m','q','w','e','r','t','y','u'
+                    ,'i','o','p']
+        upperCase = []
+        for i in lowerCase:
+            upperCase.append(i.upper())
+        spChar = ['~','!','@','$','%','^','&','*','(',')','_','-','=',
+                '`','/','+','/','<','>','[',']','{','}','.',':',';',
+                '|','#']
+        nums = ['1','2','3','4','5','6','7','8','9','0']
+        count = [0,0,0,0] #lowercase,uppercase,specialtype,numbers
+        for p in string:
+            if (p in lowerCase) and (count[0]==0) and len(string)>=8:
+                count[0]=1
+            if (p in upperCase) and (count[1]==0) and len(string)>=8:
+                count[1]=1
+            if (p in spChar) and (count[2]==0) and len(string)>=8:
+                count[2]=1
+            if (p in nums) and (count[3]==0)  and len(string)>=8:
+                count[3]=1
+                
+        type_num = 0
+        for i in count:
+            type_num+=i
+        return type_num
+
     # function to find whether a word is present in string or not
     def isSubString(self , string , subString):
         try:
@@ -256,6 +283,14 @@ driverFunc()        ->  this is the only method that you need to use this method
 
                 # checking if the password are same or not to avoid miss entering of password
                 if(passwordInput1 == passwordInput2):
+                    
+                    if(self.checkPass(passwordInput1) < 2):
+                        print("please use combination of characters, numbers and special characters as your password")
+                        print("\nalso password length must be more than 8 digits")
+                        print("\neasy password's are easy to crack and unsecure")
+                        input("\n\nPress enter to continue : ")
+                        continue
+
                     passwordInput1 = self.encryptThing(passwordInput1 , passwordInput2)
 
                     # adding password to data base and class variable

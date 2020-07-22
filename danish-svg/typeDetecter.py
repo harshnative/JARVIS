@@ -19,6 +19,7 @@ def type_counter(string):
             count[2]=1
         if (p in nums) and (count[3]==0)  and len(string)>=8:
             count[3]=1
+            
     type_num = 0
     for i in count:
         type_num+=i

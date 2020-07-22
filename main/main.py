@@ -1244,6 +1244,8 @@ def driverForMain():
     # calling main
     main()
 
+    
+
 if __name__ == "__main__":
     # checking if in developer mode
 
