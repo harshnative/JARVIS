@@ -221,7 +221,9 @@ if __name__ == "__main__":
         os.system("cls")
         main(word)
 
-        print("\n\nenter zero below to quit...")
+        print("\n\nenter zero below to play again ...")
         x = input()
         if(x == "0"):
+            pass
+        else:
             exit()
