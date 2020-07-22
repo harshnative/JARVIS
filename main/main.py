@@ -9,6 +9,7 @@ troubleShootValue = True
 isOnWindows = False
 isOnLinux = False
 import os
+from typing import Counter
 
 #setting port number for file share 
 portNumberForFileShare = 5000
@@ -524,6 +525,47 @@ def executeCommands(command):
         newCommand = str(command[4:])
         customClearScreen()
         os.system(newCommand)
+        return True
+
+    # statement to run commands passed for cmd in windows
+    elif(isSubStringsNoCase(command , "git")):
+        # commandListCopy = command.split()
+
+        # commandList= []
+
+        # for i in commandListCopy:
+        #     new = i.lower()
+        #     commandList.append(new)
+            
+        if(isSubStringsNoCase(command , "all")):
+            count = 0
+            message = ""
+
+            for i in command:
+
+                if(i == '"'):
+                    count += 1
+
+                if(count == 1):
+                    message = message + i
+                
+                if(count == 2):
+                    break
+            
+            os.system("git add .")
+            os.system("pause")
+            customClearScreen()
+
+            stringToPass = "git commit -m " + message + '"'
+            print(stringToPass)
+            os.system(stringToPass)
+            input()
+            
+            customClearScreen()
+            os.system("git push")   
+            customClearScreen()
+            print("added , commited , pushed (^_^)")
+
         return True
 
     # hello command handling
