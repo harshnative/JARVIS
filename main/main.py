@@ -847,9 +847,12 @@ def executeCommands(command):
         customClearScreen()
 
         print("\nBackUp in process - This may take several minutes....")
-        print("\nplease do not close the program , otherWise files may get corrupted")
+        print("\nplease do not close the program , otherWise files may get corrupted\n")
         objBackUp.startBackUp(
             commandListCopy, directoriesListEditted, pathToBackup + "/")
+
+        # objBackUp.startBackUp()
+
 
         customClearScreen()
 
@@ -1063,6 +1066,7 @@ def executeCommands(command):
         except FileNotFoundError:
             customClearScreen()
             print("cmd bat file not found, please try reinstalling the software or contact developer")
+            return True
             
         print("\njarvis opened in command prompt")
         print("\nExisting this instance of jarvis")

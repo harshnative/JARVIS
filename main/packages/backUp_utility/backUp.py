@@ -1,9 +1,12 @@
 import os
+import time
+
 import shutil
-import distutils.dir_util
 import datetime
 from packages.loggerPackage.loggerFile import *
 import getpass as getUserName
+import stat
+
 
 import subprocess as sp
 
@@ -25,6 +28,7 @@ def customClearScreen():
         os.system("cls")
     else:
         sp.call('clear',shell=True)
+
 
 
 
@@ -56,11 +60,67 @@ class BackUp():
         self.troubleShootValue = troubleShootValuePass
         self.cLog = Clogger()
         self.cLog.setTroubleShoot(self.troubleShootValue)
-        self.loggerObj = loggerObj
         self.userName = None
         self.pathToBackup = None
         self.exceptionList = []
         self.listOfDirectories = []
+        self.countCopy = 1
+
+    def getListOfFiles_forCustomCopy(self , dirName):
+        # create a list of file and sub directories 
+        # names in the given directory 
+        listOfFile = os.listdir(dirName)
+        allFiles = list()
+        # Iterate over all the entries
+        for entry in listOfFile:
+            # Create full path
+            fullPath = os.path.join(dirName, entry)
+            # If entry is a directory then get the list of files in this directory 
+            if os.path.isdir(fullPath):
+                allFiles = allFiles + self.getListOfFiles_forCustomCopy(fullPath)
+            else:
+                allFiles.append(fullPath)
+                    
+        return allFiles
+
+
+    def customCopytree(self , src, dst, symlinks = False, ignore = None):
+        print("\rfiles left to copy = {}".format(self.countCopy) , end = "")
+        time.sleep(0.8)
+        self.countCopy += -1 
+
+        if not os.path.exists(dst):
+            os.makedirs(dst)
+        shutil.copystat(src, dst)
+        lst = os.listdir(src)
+        if ignore:
+            excl = ignore(src, lst)
+            lst = [x for x in lst if x not in excl]
+        for item in lst:
+            s = os.path.join(src, item)
+            d = os.path.join(dst, item)
+            if symlinks and os.path.islink(s):
+                if os.path.lexists(d):
+                    os.remove(d)
+                os.symlink(os.readlink(s), d)
+                try:
+                    st = os.lstat(s)
+                    mode = stat.S_IMODE(st.st_mode)
+                    os.lchmod(d, mode)
+                except:
+                    pass # lchmod not available
+            elif os.path.isdir(s):
+                self.customCopytree(s, d, symlinks, ignore)
+            else:
+                shutil.copy2(s, d)   
+
+    def implementCustomCopy(self , src , dst):
+        print("\n")
+        dirList = self.getListOfFiles_forCustomCopy(src)
+        self.countCopy = len(dirList)
+        self.customCopytree(src, dst)
+        print("\n")
+
 
 
     # function to set the path of backup location 
@@ -91,7 +151,7 @@ class BackUp():
         self.exceptionList.clear()
         path = "C:/Users"
         try:
-            shutil.copytree(path , self.pathToBackup , dirs_exist_ok=True)
+            self.implementCustomCopy(path , self.pathToBackup)
         except Exception as e:
             self.exceptionList.append(str(e))
         self.cLog.log("for Command_A function runned successfully" ,"i")
@@ -140,7 +200,7 @@ class BackUp():
             
             # making the copy
             try:
-                shutil.copytree(i , self.pathToBackup + "/" + i[9:], dirs_exist_ok=True)
+                self.implementCustomCopy(i ,  self.pathToBackup + "/" + i[9:])
             except Exception as e:
                 self.exceptionList.append(str(e))     
             count += 1
@@ -199,7 +259,7 @@ class BackUp():
         
         # copying
         try:
-            shutil.copytree(path , self.pathToBackup + "/" + self.userName + "/" , dirs_exist_ok=True)
+            self.implementCustomCopy(path , self.pathToBackup + "/" + self.userName + "/" )
         except Exception as e:
             self.exceptionList.append(str(e))
         
@@ -227,14 +287,14 @@ class BackUp():
             # making sure that the path to backup exsist
             try:
                 os.makedirs(self.pathToBackup + "/" + i[9:], exist_ok = True)
-            except OSError:
+            except OSError as e:
                 self.cLog.log("folder might be present for backUp_class-forCommand_A_C_E_func" , "e")
                 self.cLog.exception(str(e) , "In backUp.py/backUp_class-forCommand_A_C_E_func")
             
             
             # making the copy
             try:
-                shutil.copytree(i , self.pathToBackup + "/" + i[9:], dirs_exist_ok=True)
+                self.implementCustomCopy(i , self.pathToBackup + "/" + i[9:])
             except Exception as e:
                 self.exceptionList.append(str(e))     
             count += 1
@@ -244,6 +304,7 @@ class BackUp():
 
     # function to get the list of additional directories
     def getListOfDirectories(self , listPassed):
+        status = None
         for i in listPassed:
             if(os.path.isdir(i)):
                 self.listOfDirectories.append(i)
@@ -264,15 +325,16 @@ class BackUp():
 
             try:
                 os.makedirs(self.pathToBackup + "/additionalFiles/" + string, exist_ok = True)
-            except OSError:
+            except OSError as e:
                 self.cLog.log("folder might be present for backUp_class-forCopyListOfDirectories_func" , "e")
                 self.cLog.exception(str(e) , "In backUp.py/backUp_class-forCopyListOfDirectories_func")
             
             # making the copy
             try:
-                shutil.copytree(i ,self.pathToBackup + "/additionalFiles/" + string , dirs_exist_ok=True)
+                self.implementCustomCopy(i , self.pathToBackup + "/additionalFiles/" + string)
             except Exception as e:
                 self.exceptionList.append(str(e))
+
 
 
     # driver function of the class this is what you will be calling
@@ -303,5 +365,8 @@ class BackUp():
 # driver code for testing purpose only
 if __name__ == "__main__":
     obj = BackUp()
-    commandList = ["-d"]
-    obj.startBackUp(commandList , ["C:/Users/harsh/Desktop/kurskuzart"] , "C:/Users/harsh/desktop/jarvisBackup/")
+    dst = "C:/users/harsh/desktop/backup/"
+    src = 'C:/users/harsh/desktop/hello'
+    obj.customCopytree(src , dst)
+
+    
