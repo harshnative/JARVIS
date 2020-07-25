@@ -544,7 +544,7 @@ def executeCommands(command):
 
         for i in command:
 
-            if(i == '"'):
+            if(i == '\"'):
                 count += 1
 
             if(count == 1):
@@ -561,9 +561,10 @@ def executeCommands(command):
         #     new = i.lower()
         #     commandList.append(new)
 
-        if((isSubStringsNoCase(command , "log")) and not(isSubStringsNoCase(command , message))):
-            print("Gnerating logs ... , press q to quit\n\n")
-            os.system("git log --graph --oneline --all --decorate")
+        if(not(isSubStringsNoCase(command , message))):
+            if((isSubStringsNoCase(command , "log"))):
+                print("Generating logs ... , press q to quit\n\n")
+                os.system("git log --graph --oneline --all --decorate")
 
             
         elif(isSubStringsNoCase(command , "all")):
