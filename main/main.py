@@ -685,7 +685,7 @@ def executeCommands(command):
             #running restore
             print("running restore , please wait...")
             try:
-                shutil.copytree( pathToBackupForJarvis + "/" + "JarvisBackup" , folderPathWindows_simpleSlash , dirs_exist_ok=True)
+                shutil.copytree(pathToBackupForJarvis + "/" + "JarvisBackup" , folderPathWindows_simpleSlash , dirs_exist_ok=True)
             except Exception as e:
                 print("Cannot restore jarvis properly")
                 if(cLog.troubleShoot == False):
@@ -806,7 +806,7 @@ def executeCommands(command):
             print(
                 "it looks like you have not added any folder's to backup in setting file")
             print(
-                "\n\ntype change settings in the command to open the file and then run update command")
+                "\n\ntype open settings in the command to open the file and then run update command")
             print("\n\ntype help settings for additional help")
             return True
         else:
@@ -836,7 +836,7 @@ def executeCommands(command):
                 print(
                     "it looks like you have not added any folder's to directories in setting file")
                 print(
-                    "\n\ntype change settings in the command to open the file and then run update command")
+                    "\n\ntype open settings in the command to open the file and then run update command")
                 print("\n\ntype help settings for additional help")
                 cLog.log(
                     "no folder added to directory error in execute command function in backup command", "e")
@@ -926,8 +926,11 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
-            print("The file is opened in other window :)")
+            if(isOnWindows):
+                os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
+                print("The file is opened in other window :)")
+            else:
+                print("only for windows users :(")
         except FileNotFoundError:
             cLog.log("external exe file not found", "e")
             print("The random generator file is missing")
@@ -946,8 +949,11 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            os.startfile(r"external_exe\harshNative_github\NSC.exe")
-            print("The file is opened in other window :)")
+            if(isOnWindows):
+                os.startfile(r"external_exe\harshNative_github\NSC.exe")
+                print("The file is opened in other window :)")
+            else:
+                print("only for windows users :(")
         except FileNotFoundError:
             cLog.log("external exe file not found", "e")
             print("The number convert file is missing")
@@ -966,8 +972,11 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            os.startfile(r"external_exe\harshNative_github\average_finder.exe")
-            print("The file is opened in other window :)")
+            if(isOnWindows):
+                os.startfile(r"external_exe\harshNative_github\average_finder.exe")
+                print("The file is opened in other window :)")
+            else:
+                print("only for windows users :(")
         except FileNotFoundError:
             cLog.log("external exe file not found", "e")
             print("The average finder file is missing")
@@ -985,8 +994,11 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
-            print("The file is opened in other window :)")
+            if(isOnWindows):
+                os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
+                print("The file is opened in other window :)")
+            else:
+                print("only for windows users :(")
         except FileNotFoundError:
             cLog.log("external exe file not found", "e")
             print("The coin toss file is missing")
@@ -1005,9 +1017,11 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            os.startfile(
-                r"external_exe\harshNative_github\group_Generator.exe")
-            print("The file is opened in other window :)")
+            if(isOnWindows):
+                os.startfile(r"external_exe\harshNative_github\group_Generator.exe")
+                print("The file is opened in other window :)")
+            else:
+                print("only for windows users :(")
         except FileNotFoundError:
             cLog.log("external exe file not found", "e")
             print("The group generator file is missing")
@@ -1026,9 +1040,11 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            os.startfile(
-                r"external_exe\harshNative_github\interest_Calculator.exe")
-            print("The file is opened in other window :)")
+            if(isOnWindows):
+                os.startfile(r"external_exe\harshNative_github\interest_Calculator.exe")
+                print("The file is opened in other window :)")
+            else:
+                print("only for windows users :(")
         except FileNotFoundError:
             cLog.log("external exe file not found", "e")
             print("The interest calculator file is missing")
@@ -1170,6 +1186,10 @@ def executeCommands(command):
     # handling font size command
     elif(isSubStringsNoCase(command , "font size")):
         customClearScreen()
+        if(isOnLinux):
+            print("Only for windows users :(")
+            return True
+            
 
         print("To change the font size follow these steps : ") 
         print("\n1. right click on the jarvis logo on top left corner")
@@ -1183,6 +1203,9 @@ def executeCommands(command):
     # handling font colour command
     elif(isSubStringsNoCase(command , "font col")):
         customClearScreen()
+        if(isOnLinux):
+            print("Only for windows users :(")
+            return True
 
         print("To change the font colour follow these steps : ") 
         print("\n1. right click on the jarvis logo on top left corner")

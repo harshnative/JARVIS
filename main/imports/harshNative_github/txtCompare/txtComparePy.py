@@ -5,10 +5,29 @@ from docx.shared import Inches
 from docx.shared import RGBColor
 import os
 
+isOnWindows = False
+isOnLinux = False
+
+# Checking weather the user is on windows or not
+try:
+    temp = os.environ
+    tempUserName = temp["USERNAME"]
+    isOnWindows = True
+except Exception:
+    isOnLinux = True
+    
+import subprocess as sp
+
+def customClearScreen():
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
+
 
 # function for opening the txt file 1
 def pathToTxtFile1():
-    os.system("cls")
+    customClearScreen()
 
     # as in some case , the draged file does not have "" at the end
     path1 = input("drag and drop the first file here and press enter after that - ")
@@ -32,7 +51,7 @@ def pathToTxtFile1():
 
 # function for opening the txt file 1
 def pathToTxtFile2():
-    os.system("cls")
+    customClearScreen()
 
     # as in some case , the draged file does not have "" at the end
     path2 = input("drag and drop the second file here and press enter after that - ")
@@ -77,7 +96,7 @@ def readingFile(path1 , path2 , mode):
     for i in fil:
         countfil += 1
     
-    os.system("cls")
+    customClearScreen()
 
     print("calculating the length of file 2 : ")
     
@@ -99,7 +118,7 @@ def readingFile(path1 , path2 , mode):
     fil.close()
     fil1.close()
 
-    os.system("cls")
+    customClearScreen()
 
     print("starting to compare : ")
 
@@ -203,7 +222,7 @@ def readingFile(path1 , path2 , mode):
     fil.close()
     fil1.close()
 
-    os.system("cls")
+    customClearScreen()
 
     print("outputting extra lines founded : ")
 
@@ -256,7 +275,7 @@ def mainForTxtCompare():
     print("press enter to continue - ")
     input()
 
-    os.system("cls")
+    customClearScreen()
 
     print("0. caseSensitive (hello and HELLO will be different")
     print("1. notCaseSensitive (hello and HELLO will be same")
@@ -268,7 +287,7 @@ def mainForTxtCompare():
     
     percentageMatched = readingFile(path1 , path2 , mode)
 
-    os.system("cls")
+    customClearScreen()
 
     print("files compared successfully :)")
     print("\n\nfiles matched - {} %".format(percentageMatched))

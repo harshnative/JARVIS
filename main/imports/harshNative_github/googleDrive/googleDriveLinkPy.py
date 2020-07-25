@@ -1,3 +1,24 @@
+isOnWindows = False
+isOnLinux = False
+import os
+
+# Checking weather the user is on windows or not
+try:
+    temp = os.environ
+    tempUserName = temp["USERNAME"]
+    isOnWindows = True
+except Exception:
+    isOnLinux = True
+    
+import subprocess as sp
+
+def customClearScreen():
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
+
+
 def mainForGoogleDriveLink(stringPassed):
 
     inputString = stringPassed

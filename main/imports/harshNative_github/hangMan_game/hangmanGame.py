@@ -1,6 +1,25 @@
 import os
 import random
 
+isOnWindows = False
+isOnLinux = False
+
+# Checking weather the user is on windows or not
+try:
+    temp = os.environ
+    tempUserName = temp["USERNAME"]
+    isOnWindows = True
+except Exception:
+    isOnLinux = True
+    
+import subprocess as sp
+
+def customClearScreen():
+    if(isOnWindows == True):
+        os.system("cls")
+    else:
+        sp.call('clear',shell=True)
+
 #class for handling the tasks when a user guess a wrong letter
 class failure:
     
@@ -141,7 +160,7 @@ def subMainForHangmanGame(word):
             print("\n\nwrong input try again......")
             x = input("enter the letter - ")
 
-        os.system("cls")
+        customClearScreen()
         if(objGame.isLetterInWord(x)):
             print("\n\nyoo the letter is in the word")
             objGame.changeWordCopy(x)
@@ -152,7 +171,7 @@ def subMainForHangmanGame(word):
         print("updated word is {}".format(objGame.showWordCopy()))
         print("\n\npress enter to continue")
         input()
-        os.system("cls")
+        customClearScreen()
         if(objGame.isWordGuessed()):
             print("yoo you guessed the word the word was {}".format(objGame.word))
             return 0
@@ -163,7 +182,7 @@ def subMainForHangmanGame(word):
 # function that will be called from the jarvis
 def mainForHangmanGame():
     while(1):
-        os.system("cls")
+        customClearScreen()
         print("which level do you want to play - ")
         print("1. easy")
         print("2. medium")
@@ -172,7 +191,7 @@ def mainForHangmanGame():
         try:    
             level = int(input("enter your preference here : "))
         except ValueError:
-            os.system("cls")
+            customClearScreen()
             print("oops wrong input try again")
             input()
             continue
@@ -181,7 +200,7 @@ def mainForHangmanGame():
         if(1 < level < 4):
             pass
         else:
-            os.system("cls")
+            customClearScreen()
             print("oops wrong input try again")
             input()
             continue
@@ -199,7 +218,7 @@ def mainForHangmanGame():
         if(word == False):
             return False
 
-        os.system("cls")
+        customClearScreen()
         subMainForHangmanGame(word)
 
         print("\n\nenter zero below to play again ...")
