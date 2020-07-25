@@ -3,10 +3,13 @@ from tabulate import tabulate
 import os
 import onetimepad
 from packages.loggerPackage.loggerFile import *
-import sys
-import time
 import stdiomask
 import pyperclip
+
+
+folderPathWindows = r"C:\programData\Jarvis"
+folderPathLinux = r"~/.config/Jarvis"
+folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
 
 
 
@@ -68,6 +71,10 @@ driverFunc()        ->  this is the only method that you need to use this method
         self.password = None
         self.oldPassword = None
         self.onlyAuthenticate = None
+        if(isOnWindows):
+            self.toDataBasePath = folderPathWindows_simpleSlash
+        elif(isOnLinux):
+            self.toDataBasePath = folderPathLinux
     
 
     def checkPass(self , string):
@@ -120,7 +127,7 @@ driverFunc()        ->  this is the only method that you need to use this method
     # function to connect to the dataBase file
     def connectToDB(self):
         try:
-            self.connectionObj = sqlite3.connect("C:/programData/Jarvis/" + self.dataBaseFileName)
+            self.connectionObj = sqlite3.connect(self.toDataBasePath + "/" + self.dataBaseFileName)
             self.cLog.log("connected to database" , "i")
         except Exception as e:
             self.cLog.log("cannot connect to dataBase in main for password" , "e")
