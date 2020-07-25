@@ -4,6 +4,11 @@ from packages.loggerPackage.loggerFile import *
 
 
 
+folderPathWindows = r"C:\programData\Jarvis"
+folderPathLinux = r"~/.config/Jarvis"
+folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
+
+
 import subprocess as sp
 
 isOnWindows = False
@@ -30,11 +35,12 @@ def customClearScreen():
 import sys
 
 def open_file(filename):
-    if sys.platform == "win32":
+    try:
         os.startfile(filename)
-    else:
+    except Exception:
         opener ="open" if sys.platform == "darwin" else "xdg-open"
         sp.call([opener, filename])
+        
 
 
 class Setting():
@@ -57,6 +63,9 @@ methods -
         self.troubleShootValue = troubleShootValuePass
         self.cLog = Clogger()
         self.cLog.setTroubleShoot(self.troubleShootValue)
+        if(isOnWindows):
+            self.pathToSetting = folderPathWindows + r"\settings.txt"
+            self.pathToSetting = folderPathLinux + r"/settings.txt"
 
 
     # method for making dictionary by reading the txt file
@@ -64,7 +73,7 @@ methods -
 
         try:
             # opening the txt file
-            with open(r"C:\programData\Jarvis\settings.txt" , "r+") as fil:
+            with open(self.pathToSetting , "r+") as fil:
 
                 # reading line by line
                 for line in fil:
@@ -126,7 +135,7 @@ methods -
     # function to regenerate the deleted settings file
     def regenerateFile(self):
         try:
-            fil = open("C:/programData/Jarvis/settings.txt" , "w+")
+            fil = open(self.pathToSetting  , "w+")
             fil.write("# Your defualt city\n")
             fil.write("City = london\n\n")
 
@@ -165,7 +174,7 @@ methods -
     # funnction to open the settings file in default txt viewer
     def openFile(self):
         try:
-            open_file(r"C:\programData\Jarvis\settings.txt")
+            open_file(self.pathToSetting)
             return True
         except FileNotFoundError:
             customClearScreen()
@@ -183,7 +192,7 @@ methods -
                 self.cLog.log("Previous error may be solved becuase the settings file was generated successfully" , "i")
                 
                 try:
-                    open_file(r"C:\programData\Jarvis\settings.txt")
+                    open_file(self.pathToSetting)
                     print("\nsettings file was opened\n\n")
                     time.sleep(2)
                     input("press enter to continue...")
