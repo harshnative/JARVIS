@@ -21,7 +21,8 @@ try:
 except Exception:
     isOnLinux = True
 
-pathForLinux = "/home/" + str(getUserName.getuser())
+pathForLinux1 = "/home/" + str(getUserName.getuser())
+pathForLinux2 = "~"
 
 
 # clear screen function 
@@ -162,11 +163,20 @@ class BackUp():
     # for linux
     def forLinux(self):
         self.exceptionList.clear()
-        path = pathForLinux
+
+        print("\nbackuping up home folder\n")
+        path = pathForLinux1
         try:
             self.implementCustomCopy(path , self.pathToBackup)
         except Exception as e:
             self.exceptionList.append(str(e))
+
+        print("\nbackuping up root folder\n")
+        path = pathForLinux2
+        try:
+            self.implementCustomCopy(path , self.pathToBackup)
+        except Exception as e:
+            self.exceptionList.append(str(e))    
         self.cLog.log("for linux function runned successfully" ,"i")
 
 
