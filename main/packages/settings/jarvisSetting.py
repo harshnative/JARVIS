@@ -40,7 +40,6 @@ def open_file(filename):
     except Exception:
         opener ="open" if sys.platform == "darwin" else "xdg-open"
         sp.call([opener, filename])
-        
 
 
 class Setting():
@@ -64,7 +63,8 @@ methods -
         self.cLog = Clogger()
         self.cLog.setTroubleShoot(self.troubleShootValue)
         if(isOnWindows):
-            self.pathToSetting = folderPathWindows + r"\settings.txt"
+            self.pathToSetting = folderPathWindows_simpleSlash + r"\settings.txt"
+        else:
             self.pathToSetting = folderPathLinux + r"/settings.txt"
 
 

@@ -1,5 +1,4 @@
 import logging
-from main.main import customClearScreen
 
 folderPathWindows = r"C:\programData\Jarvis"
 folderPathLinux = r"~/.config/Jarvis"
