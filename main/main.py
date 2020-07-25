@@ -9,7 +9,6 @@ troubleShootValue = True
 isOnWindows = False
 isOnLinux = False
 import os
-from typing import Counter
 
 #setting port number for file share 
 portNumberForFileShare = 5000
@@ -33,14 +32,20 @@ def customClearScreen():
 
 import time
 import pyperclip
-import psutil
-import sys
 from tabulate import tabulate
 import getpass as getUserName
 
+folderPathWindows = r"C:\programData\Jarvis"
+folderPathLinux = r"~/.config/Jarvis"
+folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
+
 # generating jarvis folder
 try:
-    os.makedirs(r"C:\programData\Jarvis", exist_ok=True)
+    if(isOnWindows):
+        os.makedirs(folderPathWindows , exist_ok=True)
+    else:
+        os.makedirs(folderPathLinux , exist_ok=True)
+
 except Exception:
     customClearScreen()
     print("Critical Error - could not generate jarvis folder in program data - contact developer")
@@ -49,10 +54,8 @@ except Exception:
 import datetime
 import shutil
 import ctypes
-import logging
 from easyFileShare import FS
 from os import path
-import sys
 import tkfilebrowser    # requires pywin32 package
 
 
@@ -224,9 +227,13 @@ def troubleShootFunc():
 
     # getting user name so that we can output the log file to desktop
     tempUserName = getUserName.getuser()
-
+    pathToDesktop = ""
     # setting up paths to copy log file to desktop at the end
-    pathToDesktop = "C:/Users/" + str(tempUserName) + "/Desktop" 
+    if(isOnWindows):
+        pathToDesktop = "C:/Users/" + str(tempUserName) + "/Desktop"
+    elif(isOnLinux):
+        pathToDesktop =  os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop') 
+
     pathToLog = str(cLog.logFileName)
 
     while(1):
@@ -677,7 +684,7 @@ def executeCommands(command):
             #running restore
             print("running restore , please wait...")
             try:
-                shutil.copytree( pathToBackupForJarvis + "/" + "JarvisBackup" , "C:/programData/Jarvis" , dirs_exist_ok=True)
+                shutil.copytree( pathToBackupForJarvis + "/" + "JarvisBackup" , folderPathWindows_simpleSlash , dirs_exist_ok=True)
             except Exception as e:
                 print("Cannot restore jarvis properly")
                 if(cLog.troubleShoot == False):
@@ -740,7 +747,7 @@ def executeCommands(command):
             print("backing up jarvis , please wait...")
             # running backup
             try:
-                shutil.copytree("C:/programData/Jarvis" , pathToBackupForJarvis + "/" + "JarvisBackup" ,  dirs_exist_ok=True)
+                shutil.copytree(folderPathWindows_simpleSlash , pathToBackupForJarvis + "/" + "JarvisBackup" ,  dirs_exist_ok=True)
             except Exception as e:
                 print("Cannot backup jarvis properly")
                 if(cLog.troubleShoot == False):

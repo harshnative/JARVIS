@@ -21,6 +21,8 @@ try:
 except Exception:
     isOnLinux = True
 
+pathForLinux = "/home/" + str(getUserName.getuser())
+
 
 # clear screen function 
 def customClearScreen():
@@ -155,6 +157,17 @@ class BackUp():
         except Exception as e:
             self.exceptionList.append(str(e))
         self.cLog.log("for Command_A function runned successfully" ,"i")
+
+
+    # for linux
+    def forLinux(self):
+        self.exceptionList.clear()
+        path = pathForLinux
+        try:
+            self.implementCustomCopy(path , self.pathToBackup)
+        except Exception as e:
+            self.exceptionList.append(str(e))
+        self.cLog.log("for linux function runned successfully" ,"i")
 
 
     # function for copying the essentials of all the users inside "C:/"
@@ -344,19 +357,22 @@ class BackUp():
         self.setPathToBackup(pathToBackup)
         self.getListOfDirectories(additionalDirectoryList)
 
-        if(("-a" in commandList) and ("-c" in commandList) and ("-e" in commandList)):
-           self.forCommand_A_C_E()
-        elif(("-a" in commandList) and ("-c" in commandList) and ("-e" not in commandList)):
-            self.forCommand_A_C()
-        elif(("-a" in commandList) and ("-c" not in commandList) and ("-e" in commandList)): 
-            self.forCommand_A_E()
-        elif(("-a" in commandList) and ("-c" not in commandList) and ("-e" not in commandList)):
-            self.forCommand_A()
+        if(isOnWindows):
+            if(("-a" in commandList) and ("-c" in commandList) and ("-e" in commandList)):
+                self.forCommand_A_C_E()
+            elif(("-a" in commandList) and ("-c" in commandList) and ("-e" not in commandList)):
+                self.forCommand_A_C()
+            elif(("-a" in commandList) and ("-c" not in commandList) and ("-e" in commandList)): 
+                self.forCommand_A_E()
+            elif(("-a" in commandList) and ("-c" not in commandList) and ("-e" not in commandList)):
+                self.forCommand_A()
+        elif(isOnLinux):
+            self.forLinux()
         
         if("-d" in commandList):
             self.forCopyListOfDirectories()
 
-        if(toGenerateLogFile == True):
+        if(toGenerateLogFile):
             self.logFileGenerator()
 
         self.cLog.log("startBackUp function runned successfully", "i")
