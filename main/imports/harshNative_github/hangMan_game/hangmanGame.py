@@ -85,6 +85,28 @@ def returnEasyWord():
 
 
 # func for returning a random word from the file
+def returnCityCountryWord():
+    myList = []
+    try:
+        with open("txtFiles/cityCountryWord.txt" , "r") as fil:
+            myList = fil.readlines()
+    except FileNotFoundError:
+        print("catalogue file is missing")
+        print("\n\ngame will quit now :(")
+        input()
+        return False
+    
+    lowerLimit = 0
+    upperLimit = len(myList) - 1
+
+    randomNumber = random.randint(lowerLimit , upperLimit)
+
+    return myList[randomNumber]
+
+
+
+
+# func for returning a random word from the file
 def returnWord(): 
     myList = []
     try:
@@ -145,6 +167,7 @@ def mainForHangmanGame():
         print("which level do you want to play - ")
         print("1. easy")
         print("2. medium")
+        print("3. City / Country names")
 
         try:    
             level = int(input("enter your preference here : "))
@@ -155,21 +178,22 @@ def mainForHangmanGame():
             continue
             
 
-        if(level == 1):
-            pass 
-        elif(level == 2):
+        if(1 < level < 4):
             pass
         else:
             os.system("cls")
             print("oops wrong input try again")
             input()
             continue
-
+        
+        word = ""
 
         if(level == 1):
             word = returnEasyWord()
-        else:
+        if(level == 2):
             word = returnWord()
+        if(level == 3):
+            word == returnCityCountryWord()
 
         # if the txt files for words is not found
         if(word == False):
@@ -178,52 +202,54 @@ def mainForHangmanGame():
         os.system("cls")
         subMainForHangmanGame(word)
 
-        print("\n\nenter zero below to quit...")
-        x = input()
-        if(x == "0"):
-            return True
-    
-
-# below code is for testing purpose only
-# if main for repeadely playing the game and major inputs 
-if __name__ == "__main__":
-    while(1):
-        os.system("cls")
-        print("which level do you want to play - ")
-        print("1. easy")
-        print("2. medium")
-
-        try:    
-            level = int(input("enter your preference here : "))
-        except ValueError:
-            os.system("cls")
-            print("oops wrong input try again")
-            input()
-            continue
-            
-
-        if(level == 1):
-            pass 
-        elif(level == 2):
-            pass
-        else:
-            os.system("cls")
-            print("oops wrong input try again")
-            input()
-            continue
-
-
-        if(level == 1):
-            word = returnEasyWord()
-        else:
-            word = returnWord()
-
-        os.system("cls")
-        main(word)
-
         print("\n\nenter zero below to play again ...")
         x = input()
         if(x == "0"):
             pass
         else:
-            exit()
+            return True
+    
+
+# below code is for testing purpose only
+# if main for repeadely playing the game and major inputs 
+# if __name__ == "__main__":
+#     while(1):
+#         os.system("cls")
+#         print("which level do you want to play - ")
+#         print("1. easy")
+#         print("2. medium")
+
+#         try:    
+#             level = int(input("enter your preference here : "))
+#         except ValueError:
+#             os.system("cls")
+#             print("oops wrong input try again")
+#             input()
+#             continue
+            
+
+#         if(level == 1):
+#             pass 
+#         elif(level == 2):
+#             pass
+#         else:
+#             os.system("cls")
+#             print("oops wrong input try again")
+#             input()
+#             continue
+
+
+#         if(level == 1):
+#             word = returnEasyWord()
+#         else:
+#             word = returnWord()
+
+#         os.system("cls")
+#         main(word)
+
+#         print("\n\nenter zero below to play again ...")
+#         x = input()
+#         if(x == "0"):
+#             pass
+#         else:
+#             exit()
