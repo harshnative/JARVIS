@@ -1,4 +1,23 @@
 import logging
+from main.main import customClearScreen
+
+folderPathWindows = r"C:\programData\Jarvis"
+folderPathLinux = r"~/.config/Jarvis"
+folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
+
+isOnWindows = False
+isOnLinux = False
+
+import os
+
+# Checking weather the user is on windows or not
+try:
+    temp = os.environ
+    tempUserName = temp["USERNAME"]
+    isOnWindows = True
+except Exception:
+    isOnLinux = True
+
 
 # custom logger class
 class Clogger:
@@ -33,7 +52,14 @@ methods included - setTroubleShoot()    ->    used to set the the log level -
     # constructing important variables
     def __init__(self):
         self.troubleShoot = False
-        self.logFileName = r"C:\programData\Jarvis\jarvisLogs.log"
+        try:
+            if(isOnWindows):
+                self.logFileName = r"C:\programData\Jarvis\jarvisLogs.log"
+            elif(isOnLinux):
+                self.logFileName = folderPathLinux + "/jarvisLogs.log"
+        except Exception as e:
+            print("\nfailed to generate log file in windows = {} , linux = {} , exception = {}\n".format(isOnWindows , isOnLinux , e))
+
         self.getLogFileMessage = "Email us this file at myjarvispa@gmail.com and we will fix the error as soon as possible"
         self.setLoggerConfig()
 
