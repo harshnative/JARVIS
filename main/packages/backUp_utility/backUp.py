@@ -89,7 +89,6 @@ class BackUp():
 
     def customCopytree(self , src, dst, symlinks = False, ignore = None):
         print("\rfiles left to copy = {}".format(self.countCopy) , end = "")
-        time.sleep(0.8)
         self.countCopy += -1 
 
         if not os.path.exists(dst):
