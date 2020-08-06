@@ -646,10 +646,11 @@ def executeCommands(command):
         return False
 
     # hello command handling
-    elif(isSubStringsNoCase(command , "hello jarvis")):
+    elif(isSubStringsNoCase(command , "hello")):
         customClearScreen()
         print("Hello sir, What can i do for you. You can ask for help also (^_^)")
-        command = customInput("\nEnter Command : ")
+        print("\n")
+        command = customInput("Enter Command : ")
         executeCommands(command)
         return True
     
