@@ -18,6 +18,18 @@ except Exception:
     isOnLinux = True
 
 
+
+from easyTypeWriter import typeWriter
+
+# creating objects of typewriter module
+typeWriterObj = typeWriter.EasyInput()
+
+# setting paths required for typeWriterObj
+typeWriterObj.setEnterAudioPath("sounds/ding3.wav")
+typeWriterObj.setKeyboardAudioPath("sounds/keysound30.wav")
+
+
+
 # clear screen function 
 def customClearScreen():
     if(isOnWindows == True):
@@ -32,8 +44,8 @@ class WeatherData():
     _apiKey = None
 
     # building up constructor to set the defualt value's
-    def __init__(self , troubleShootValuePass):
-
+    def __init__(self , troubleShootValuePass , makeKeyboardSound):
+        self.makeKeyboardSound = makeKeyboardSound
         self.troubleShootValue = troubleShootValuePass
         self.cLog = Clogger()
         self.cLog.setTroubleShoot(self.troubleShootValue)
@@ -51,6 +63,12 @@ class WeatherData():
         self.tempInC = 0
         self.tempInF = 0
 
+    # typeWriter input function
+    def customInput(self , messagePrompt = ""):
+        toMakeTypingSound = self.makeKeyboardSound
+
+        x = typeWriterObj.takeInput(toMakeTypingSound , messagePrompt)
+        return str(x)
 
     # function to set the cityName for which the weather data will be pulled
     def giveCityName(self , cityNamePassed):
@@ -197,7 +215,7 @@ class WeatherData():
         if(self.returnApiKeyStatus() == False):
             customClearScreen()
             print("API key is not set , please contact developer\n\n")
-            input("press enter to continue...")
+            self.customInput("press enter to continue...")
             exit(1)
 
         self.listPassed = give_listOfValueToGet

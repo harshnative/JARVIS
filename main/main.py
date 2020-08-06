@@ -78,7 +78,7 @@ try:
 except Exception:
     customClearScreen()
     print("Critical Error - could not generate jarvis folder in program data - contact developer")
-    input("press enter to continue...")
+    customInput("press enter to continue...")
 
 import datetime
 import shutil
@@ -285,7 +285,7 @@ def troubleShootFunc():
         #main command copied below with some modification
         print(f"welcome {objMainClass.returnUserName()}\n")
         print("You are in touble shoot mode : enter exit to exit troubleShootMode\n")
-        commandInput = input("Enter Command in which you faced error and try to repeat the process : ")
+        commandInput = customInput("Enter Command in which you faced error and try to repeat the process : ")
         if(handleGetHelp(commandInput)):
             pass
         if(isSubString(commandInput , "troubleshoot") or isSubString(commandInput , "TroubleShoot") or isSubString(commandInput , "troubleShoot") or isSubString(commandInput , "Troubleshoot")):
@@ -298,7 +298,7 @@ def troubleShootFunc():
         else:
             if(executeCommands(commandInput)):
                 print("\n\n")
-                input("press enter to continue...")
+                customInput("press enter to continue...")
 
                 customClearScreen()
                 
@@ -315,7 +315,7 @@ def troubleShootFunc():
                     print("\nNOTE : log file only contains diagnos data , NO personal information is stored")
                     
                 print("\n\n")
-                input("press enter to continue...")
+                customInput("press enter to continue...")
                 break
 
             else:
@@ -324,7 +324,7 @@ def troubleShootFunc():
                 print("oops could not regonise the command , please enter the same command in which you previously faced error")
 
         print("\n\n")
-        input("press enter to continue...")
+        customInput("press enter to continue...")
     
     troubleShootValue = False
     cLog.setTroubleShoot(troubleShootValue)
@@ -387,7 +387,7 @@ methods include - getDict()           ->  To generate dictionary - not for outsi
 
     # function to get the Dictionary from the settings module
     def getDict(self):
-        objSetting = Setting(troubleShootValue)
+        objSetting = Setting(troubleShootValue ,toMakeTypingSound)
         self.settingsDict = objSetting.getDictionary()
         if(self.settingsDict == False):
             cLog.log("Their was some error in the settings module so we cannot retreive the dictionary", "e")
@@ -499,13 +499,13 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
 
                 cLog.log("user as not setted city in setting", "i")
                 print("\nit looks like you have not setted any city in setting , run setting command to open settings\n")
-                input("press enter to continue...")
+                customInput("press enter to continue...")
 
                 # this is a critical error , so calling main again to restart the program
                 main()
 
         # making a object of weather data class
-        objGetWeatherData = WeatherData(troubleShootValue)
+        objGetWeatherData = WeatherData(troubleShootValue , toMakeTypingSound)
 
         # getting the result
         result = objGetWeatherData.getWeatherData(self.cityName, self.weatherArgumentList)
@@ -587,6 +587,7 @@ def executeCommands(command):
 
     # statement to run commands passed for cmd in windows
     elif(isSubStringsNoCase(command , "git")):
+        print("in git")
         customClearScreen()
 
         message = ""
@@ -603,9 +604,12 @@ def executeCommands(command):
             if(count == 2):
                 break
 
+        print(not(isSubStringsNoCase(message , "log")))
+        print(isSubStringsNoCase(command , "all"))
+        input()
 
-        if(not(isSubStringsNoCase(message , "log"))):
-            if((isSubStringsNoCase(command , "log"))):
+        if((isSubStringsNoCase(command , "log"))):
+            if(not(isSubStringsNoCase(message , "log"))):
                 print("Generating logs ... , press q to quit , or press ENTER to see more\n\n")
                 os.system("git log --graph --oneline --all --decorate")
                 return True
@@ -638,7 +642,7 @@ def executeCommands(command):
     elif(isSubStringsNoCase(command , "hello jarvis")):
         customClearScreen()
         print("Hello sir, What can i do for you. You can ask for help also (^_^)")
-        command = input("\nEnter Command : ")
+        command = customInput("\nEnter Command : ")
         executeCommands(command)
         return True
     
@@ -694,7 +698,7 @@ def executeCommands(command):
     elif(isSubStringsNoCase(command , "restore")):
 
         if(isSubStringsNoCase(command , "setting")):
-            objSetting = Setting(troubleShootValue)
+            objSetting = Setting(troubleShootValue , toMakeTypingSound)
             objSetting.regenerateFile()
             customClearScreen()
 
@@ -746,7 +750,7 @@ def executeCommands(command):
 
     # for changing teh setting - this function opens the settings.txt in the defualt txt viewer of the system
     elif(isSubStringsNoCase(command , "open setting")):
-        objSetting = Setting(troubleShootValue)
+        objSetting = Setting(troubleShootValue , toMakeTypingSound)
         objSetting.openFile()
         customClearScreen()
 
@@ -759,7 +763,7 @@ def executeCommands(command):
         customClearScreen()
 
         print("settings have been updated , programm will restart now\n\n")
-        input("press enter to continue...")
+        customInput("press enter to continue...")
         restart_program()
 
     # calling for backup command
@@ -827,7 +831,7 @@ def executeCommands(command):
             print("\nAs right now some important files will not be backed up due to permission issues")
             print("\nIf you still want to continue then type continue below or press enter to exit\n")
 
-            inputForContinueOrNot = input(" : ")
+            inputForContinueOrNot = customInput(" : ")
 
             if(inputForContinueOrNot == "continue"):
                 pass
@@ -838,7 +842,7 @@ def executeCommands(command):
         objBackUp = BackUp(troubleShootValue , toMakeTypingSound)
 
         # creating object of class setting
-        objSetting = Setting(troubleShootValue)
+        objSetting = Setting(troubleShootValue , toMakeTypingSound)
 
         # creating some required assets
         directoriesListEditted = []
@@ -868,7 +872,7 @@ def executeCommands(command):
                 print("folder in path to backup in settings already exit or may be the path is not found")
                 print("\n\nif the folder already exit - then all the file's will be overRidden")
                 print("\n\npress enter to continue with backup or close the program to stop it")
-                input()
+                customInput()
                 customClearScreen()
 
         # checking if -d is in command
@@ -951,7 +955,7 @@ def executeCommands(command):
         customClearScreen()
 
         print("Go to the file saved in google drive and click get shareable link\n")
-        linkGet = input("Paste the link here : ")
+        linkGet = customInput("Paste the link here : ")
         linkFinal = mainForGoogleDriveLink(linkGet)
         if(linkFinal == False):
             print("\n\nThe link is in valid :(")
@@ -1175,13 +1179,13 @@ def executeCommands(command):
             folderShare = get_folderPath_fromFileExplorer()
 
             print("\n\n")
-            input("press enter to continue...")
+            customInput("press enter to continue...")
 
         elif(isOnLinux == True):
             customClearScreen()
 
             while(1):
-                folderShare = input("Enter the folder path to share : ")
+                folderShare = customInput("Enter the folder path to share : ")
 
                 if(path.exists(str(folderShare)) == True):
                     break
@@ -1193,7 +1197,7 @@ def executeCommands(command):
                     customClearScreen()
                     print("system could find the entered path, please try again or enter 0 to quit")
                     print("\n\n")
-                    input("press enter to continue ...")
+                    customInput("press enter to continue ...")
         try:
             handleFileShare(folderShare , portNumberForFileShare)
         except Exception as e:
@@ -1391,7 +1395,7 @@ def main():
                 print("oops could not regonise the command try typing help for info")
 
         print("\n\n")
-        input("press enter to continue...")
+        customInput("press enter to continue...")
 
 
 def driverForMain():
