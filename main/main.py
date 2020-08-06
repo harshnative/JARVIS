@@ -604,9 +604,6 @@ def executeCommands(command):
             if(count == 2):
                 break
 
-        print(not(isSubStringsNoCase(message , "log")))
-        print(isSubStringsNoCase(command , "all"))
-        input()
 
         if((isSubStringsNoCase(command , "log"))):
             if(not(isSubStringsNoCase(message , "log"))):
@@ -615,7 +612,7 @@ def executeCommands(command):
                 return True
 
             
-        elif(isSubStringsNoCase(command , "all")):
+        if(isSubStringsNoCase(command , "all")):
             
             os.system("git add .")
             print("added to repo")
