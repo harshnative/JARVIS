@@ -1,5 +1,5 @@
 # showing loading jarvis message just before everything loads up as some times while opening the program for first time, antivirus may scan all the included dlls when importing them into code and it takes time
-print("\nLoading Jarvis, please wait.....")
+print("\nStarting Program...")
 
 
 # setting TroubleShoot Value
@@ -9,6 +9,7 @@ troubleShootValue = True
 isOnWindows = False
 isOnLinux = False
 import os
+from typing import Counter
 
 #setting port number for file share 
 portNumberForFileShare = 5000
@@ -31,6 +32,26 @@ def customClearScreen():
 
 
 import time
+from threading import Thread
+
+runLoadingAnimation = True
+
+class LoadingAnimation(Thread):
+    # function name should be run 
+
+    def run(self):
+        global runLoadingAnimation 
+        customClearScreen()
+        string = ""
+        while(runLoadingAnimation):
+            string = string + "."
+            time.sleep(0.5)
+            print("\rloading Jarvis , please wait " , string , sep = "" , end = "")
+
+lAnimation = LoadingAnimation()
+lAnimation.start()
+    
+
 import pyperclip
 from tabulate import tabulate
 import getpass as getUserName
@@ -305,14 +326,21 @@ def isSubStringsNoCase(string , subString):
 
     subStringList = subString.split()
 
+    count1 = 0
+    count2 = 0
+
     for i in subStringList:
         i = i.strip()
+        count1 += 1
         if(isSubString(string , i)):
-            pass
+            count2 += 1
         else:
             return False
 
-    return True
+    if((count1 == count2) and count1 > 0):
+        return True
+    else:
+        return False
 
 
 
@@ -553,17 +581,10 @@ def executeCommands(command):
             if(count == 2):
                 break
 
-        # commandListCopy = command.split()
 
-        # commandList= []
-
-        # for i in commandListCopy:
-        #     new = i.lower()
-        #     commandList.append(new)
-
-        if(not(isSubStringsNoCase(command , message))):
+        if(not(isSubStringsNoCase(message , "log"))):
             if((isSubStringsNoCase(command , "log"))):
-                print("Generating logs ... , press q to quit\n\n")
+                print("Generating logs ... , press q to quit , or press ENTER to see more\n\n")
                 os.system("git log --graph --oneline --all --decorate")
 
             
@@ -1342,10 +1363,16 @@ def driverForMain():
     # calling main
     main()
 
+def changeRunLoadingAnimation():
+    global runLoadingAnimation 
+    runLoadingAnimation = False
 
 
 if __name__ == "__main__":
     # checking if in developer mode
+
+    changeRunLoadingAnimation()
+    lAnimation.join() 
 
     if(troubleShootValue):
         print("\nIn dev mode\n")
