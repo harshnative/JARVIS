@@ -62,6 +62,7 @@ lAnimation.start()
 import pyperclip
 from tabulate import tabulate
 import getpass as getUserName
+from playsound import playsound
 
 # default paths for program data 
 folderPathWindows = r"C:\programData\Jarvis"
@@ -255,6 +256,9 @@ def handleGetHelp(command):
     return False
 
 
+
+
+
 # function for handling troubleshooting
 def troubleShootFunc():
 
@@ -422,6 +426,12 @@ methods include - getDict()           ->  To generate dictionary - not for outsi
 
     def returnUserName(self):
         return self.settingsDict["userName"]
+
+
+class startingSound(Thread):
+
+    def run(self):
+        playsound("sounds/jarvisIntro.mp3")
 
 
 class MainWeatherClass(MainClass):
@@ -1412,6 +1422,13 @@ if __name__ == "__main__":
     # stoping the loading animation
     changeRunLoadingAnimation()
     lAnimation.join() 
+
+    startingSoundObj = startingSound()
+    objMainClass = MainClass()
+
+    dictFromMainClass = objMainClass.returnDict()
+    if(dictFromMainClass["makeStartSound"] == "true"):
+        startingSoundObj.start()
 
     # checking if in developer mode
     if(troubleShootValue):
