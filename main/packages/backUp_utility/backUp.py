@@ -32,6 +32,14 @@ def customClearScreen():
     else:
         sp.call('clear',shell=True)
 
+from easyTypeWriter import typeWriter
+
+# creating objects of typewriter module
+typeWriterObj = typeWriter.EasyInput()
+
+# setting paths required for typeWriterObj
+typeWriterObj.setEnterAudioPath("sounds/ding3.wav")
+typeWriterObj.setKeyboardAudioPath("sounds/keysound30.wav")
 
 
 
@@ -59,7 +67,8 @@ class BackUp():
 
 
     # constructor function
-    def __init__(self , troubleShootValuePass):
+    def __init__(self , troubleShootValuePass , makeKeyboardSound):
+        self.makeKeyboardSound = makeKeyboardSound
         self.troubleShootValue = troubleShootValuePass
         self.cLog = Clogger()
         self.cLog.setTroubleShoot(self.troubleShootValue)
@@ -68,6 +77,13 @@ class BackUp():
         self.exceptionList = []
         self.listOfDirectories = []
         self.countCopy = 1
+
+    # typeWriter input function
+    def customInput(self , messagePrompt = ""):
+        toMakeTypingSound = self.makeKeyboardSound
+
+        x = typeWriterObj.takeInput(toMakeTypingSound , messagePrompt)
+        return str(x)
 
     def getListOfFiles_forCustomCopy(self , dirName):
         # create a list of file and sub directories 
@@ -145,7 +161,7 @@ class BackUp():
                 print("\n if error persist, run troubleShoot command")
             else:
                 print("\nerror has been logged - continue...")
-            input("press enter to continue...")
+            self.customInput("press enter to continue...")
 
 
     # function for copying the all stuff inside the c:/user

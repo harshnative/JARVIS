@@ -41,6 +41,17 @@ def hashPasswordInput(message):
 
 
 
+from easyTypeWriter import typeWriter
+
+# creating objects of typewriter module
+typeWriterObj = typeWriter.EasyInput()
+
+# setting paths required for typeWriterObj
+typeWriterObj.setEnterAudioPath("sounds/ding3.wav")
+typeWriterObj.setKeyboardAudioPath("sounds/keysound30.wav")
+
+
+
 class PasswordStorerClass:
 
     """
@@ -61,7 +72,8 @@ driverFunc()        ->  this is the only method that you need to use this method
     """
 
     # constructor
-    def __init__(self , troubleShootValuePass):
+    def __init__(self , troubleShootValuePass , makeKeyboardSound):
+        self.makeKeyboardSound = makeKeyboardSound
         self.troubleShootValue = troubleShootValuePass
         self.cLog = Clogger()
         self.cLog.setTroubleShoot(self.troubleShootValue)
@@ -75,6 +87,16 @@ driverFunc()        ->  this is the only method that you need to use this method
             self.toDataBasePath = folderPathWindows_simpleSlash
         elif(isOnLinux):
             self.toDataBasePath = folderPathLinux
+
+    
+    # typeWriter input function
+    def customInput(self , messagePrompt = ""):
+        toMakeTypingSound = self.makeKeyboardSound
+            
+        x = typeWriterObj.takeInput(toMakeTypingSound , messagePrompt)
+        return str(x)
+        
+        
     
 
     def checkPass(self , string):
@@ -256,7 +278,7 @@ driverFunc()        ->  this is the only method that you need to use this method
             else:
                 print(tabulate(tabulateList, headers=['Index' , 'Site' , 'Password']))
 
-                indexOfToCopy = input("\n\nEnter the index number of site to copy its password : ")
+                indexOfToCopy = self.customInput("\n\nEnter the index number of site to copy its password : ")
                 try:
                     toCopy = dictToHelpInCopying[indexOfToCopy]
                     pyperclip.copy(str(toCopy))
@@ -295,7 +317,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                         print("please use combination of characters, numbers and special characters as your password")
                         print("\nalso password length must be more than 8 digits")
                         print("\neasy password's are easy to crack and unsecure")
-                        input("\n\nPress enter to continue : ")
+                        self.customInput("\n\nPress enter to continue : ")
                         continue
 
                     passwordInput1 = self.encryptThing(passwordInput1 , passwordInput2)
@@ -309,7 +331,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                 # if the password does not match , continue the loop
                 else:
                     print("\nPassword did not match\n")
-                    input("press enter to continue...")
+                    self.customInput("press enter to continue...")
             self.cLog.log("setPass func runned successfully in main for password" , "i")
         except Exception as e:
             self.cLog.log("error while setting password in main for password", "e")
@@ -406,7 +428,7 @@ driverFunc()        ->  this is the only method that you need to use this method
 
                 else:
                     print("Wrong password...")
-                    input("press enter to continue...")
+                    self.customInput("press enter to continue...")
             self.cLog.log("change password function runned successfully in main for password" , "i")
         except Exception as e:
             self.cLog.log("error while changing password in main for password", "e")
@@ -421,7 +443,7 @@ driverFunc()        ->  this is the only method that you need to use this method
             return str(stringToReturn)
         except Exception as e:
             print("\nSomething went wrong while encrypting, Please Try again, if error persist, run troubleShoot command")
-            input("press enter to continue...")
+            self.customInput("press enter to continue...")
             self.cLog.log("error while encrypting thing in main for password", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/encryptThing")
 
@@ -437,7 +459,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                 print("\nSomething went wrong while decrypting, Please Try again, if error persist, run troubleShoot command")
             else:
                 print("\nerror has been logged - continue...")
-            input("press enter to continue...")
+            self.customInput("press enter to continue...")
             self.cLog.log("error while decrypting in main for password", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/decryptingThing")
 
@@ -449,8 +471,8 @@ driverFunc()        ->  this is the only method that you need to use this method
             # for adding things to DB
             if("-a" in commandList):
                 customClearScreen()
-                x = input("Enter Website name for future referencing : ") 
-                y = input("Enter the Password : ")
+                x = self.customInput("Enter Website name for future referencing : ") 
+                y = self.customInput("Enter the Password : ")
                 
                 x = self.encryptThing(x , self.password)
                 y = self.encryptThing(y , self.password)
@@ -463,7 +485,7 @@ driverFunc()        ->  this is the only method that you need to use this method
             # for deleting things
             elif("-d" in commandList):
                 customClearScreen()
-                webDelete = input("Enter the Website name for deletion : ")
+                webDelete = self.customInput("Enter the Website name for deletion : ")
                 # generating query for sqlite3 obj to execute
                 stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
                 cursor = self.connectionObj.execute(stringToPass)
@@ -487,10 +509,10 @@ driverFunc()        ->  this is the only method that you need to use this method
                     
                 if(count > 0):
                     print("\nEnter Index for deletion (space seperated for multiple) , Enter 0 to delete all : ")
-                    indexList = [int(x) for x in input().split()]
+                    indexList = [int(x) for x in self.customInput().split()]
 
                     print("\nPress enter to confirm delete , Notice - ones deleted you cannot get them back")
-                    input()
+                    self.customInput()
 
                     somethingDeleted = False
 
@@ -520,7 +542,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                 stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
                 cursor = self.connectionObj.execute(stringToPass)
                 
-                toUpdate = input("Enter the website name to update : ")
+                toUpdate = self.customInput("Enter the website name to update : ")
                 toUpdateList = []
 
                 indexCount = 1
@@ -536,13 +558,13 @@ driverFunc()        ->  this is the only method that you need to use this method
                             print("Old Password - " , self.decryptThing(row[1] , self.password))
                             toUpdateList.append(row[0])  
 
-                indexInput = int(input("\nEnter Index for update : "))
+                indexInput = int(self.customInput("\nEnter Index for update : "))
                 
                 ifUpdatedSomething = False
 
                 for i,j in enumerate(toUpdateList):
                     if(i+1 == indexInput):
-                        updated = input("\nEnter the Updated Password : ")
+                        updated = self.customInput("\nEnter the Updated Password : ")
                         updated = self.encryptThing(updated , self.password)
                         self.updateInTable(str(j) , str(updated))
                         ifUpdatedSomething = True
@@ -563,7 +585,7 @@ driverFunc()        ->  this is the only method that you need to use this method
             # displaying things in the DB according to search query
             elif("-s" in commandList):
                 customClearScreen()
-                searchItem = input("Enter the website name to display Password : ")
+                searchItem = self.customInput("Enter the website name to display Password : ")
                 self.displaySearch(searchItem)
                 self.cLog.log("getDone func runned successfully in main for password" , "i")
                 return True
@@ -603,7 +625,7 @@ driverFunc()        ->  this is the only method that you need to use this method
         if(count == 0):
             self.setPass()
             print("\n\n")
-            input("press enter to continue...")
+            self.customInput("press enter to continue...")
 
         # checking whether the user is right or not
         while(1):
@@ -615,14 +637,14 @@ driverFunc()        ->  this is the only method that you need to use this method
                 break
             else:
                 print("\nwrong password....\n")
-                input("press enter to continue...")
+                self.customInput("press enter to continue...")
         
         customClearScreen()
 
         # starting module
         while(1):
             # taking command
-            stringOfCommandInput = input("Enter Command For Password Manager in JARVIS : ")
+            stringOfCommandInput = self.customInput("Enter Command For Password Manager in JARVIS : ")
             
             # generating commandList from input
             try:
@@ -642,7 +664,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                     print("Sorry , cannot recognise the command :(\n")
             
             print("\n\n")
-            input("press enter to continue...")
+            self.customInput("press enter to continue...")
             customClearScreen()
 
 

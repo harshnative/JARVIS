@@ -1,18 +1,17 @@
 # showing loading jarvis message just before everything loads up as some times while opening the program for first time, antivirus may scan all the included dlls when importing them into code and it takes time
 print("\nStarting Program...")
 
+# global variable for making sound while typing
+toMakeTypingSound = False
 
 # setting TroubleShoot Value
 troubleShootValue = True
 
-
+# initialising the global variable to False so that it can be changed if the operating system is supported
 isOnWindows = False
 isOnLinux = False
-import os
-from typing import Counter
 
-#setting port number for file share 
-portNumberForFileShare = 5000
+import os
 
 # Checking weather the user is on windows or not
 try:
@@ -22,7 +21,12 @@ try:
 except Exception:
     isOnLinux = True
 
+
+#setting default port number for file share 
+portNumberForFileShare = 5000
+
 import subprocess as sp
+
 # clear screen function 
 def customClearScreen():
     if(isOnWindows == True):
@@ -34,10 +38,12 @@ def customClearScreen():
 import time
 from threading import Thread
 
+# global variable for running loading animation is set to true 
 runLoadingAnimation = True
 
+
+# loading animation thread
 class LoadingAnimation(Thread):
-    # function name should be run 
 
     def run(self):
         global runLoadingAnimation 
@@ -48,6 +54,7 @@ class LoadingAnimation(Thread):
             time.sleep(0.5)
             print("\rloading Jarvis , please wait " , string , sep = "" , end = "")
 
+# loading animation thread started 
 lAnimation = LoadingAnimation()
 lAnimation.start()
     
@@ -56,6 +63,7 @@ import pyperclip
 from tabulate import tabulate
 import getpass as getUserName
 
+# default paths for program data 
 folderPathWindows = r"C:\programData\Jarvis"
 folderPathLinux = r"~/.config/Jarvis"
 folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
@@ -78,7 +86,21 @@ import ctypes
 from easyFileShare import FS
 from os import path
 import tkfilebrowser    # requires pywin32 package
+from easyTypeWriter import typeWriter
 
+# creating objects of typewriter module
+typeWriterObj = typeWriter.EasyInput()
+
+# setting paths required for typeWriterObj
+typeWriterObj.setEnterAudioPath("sounds/ding3.wav")
+typeWriterObj.setKeyboardAudioPath("sounds/keysound30.wav")
+
+# typeWriter input function
+def customInput(messagePrompt = ""):
+    global toMakeTypingSound
+
+    x = typeWriterObj.takeInput(toMakeTypingSound , messagePrompt)
+    return str(x)
 
 # importing submodules and stuff
 from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
@@ -586,6 +608,7 @@ def executeCommands(command):
             if((isSubStringsNoCase(command , "log"))):
                 print("Generating logs ... , press q to quit , or press ENTER to see more\n\n")
                 os.system("git log --graph --oneline --all --decorate")
+                return True
 
             
         elif(isSubStringsNoCase(command , "all")):
@@ -607,8 +630,9 @@ def executeCommands(command):
             customClearScreen()
 
             print("process completed (^_^)")
+            return True
 
-        return True
+        return False
 
     # hello command handling
     elif(isSubStringsNoCase(command , "hello jarvis")):
@@ -811,7 +835,7 @@ def executeCommands(command):
                 restart_program()
 
         # creating object of class backUp
-        objBackUp = BackUp(troubleShootValue)
+        objBackUp = BackUp(troubleShootValue , toMakeTypingSound)
 
         # creating object of class setting
         objSetting = Setting(troubleShootValue)
@@ -1098,7 +1122,7 @@ def executeCommands(command):
 
     # calling for password manager
     elif(isSubStringsNoCase(command , "password")):
-        objPasswordStorerClass = PasswordStorerClass(troubleShootValue)
+        objPasswordStorerClass = PasswordStorerClass(troubleShootValue , toMakeTypingSound)
         objPasswordStorerClass.driverFunc()
         return True
 
@@ -1337,12 +1361,24 @@ def main():
     cLog.setTroubleShoot(troubleShootValue)
 
     objMainClass = MainClass()
+
+    global toMakeTypingSound
+
+    dictFromMainClass = objMainClass.returnDict()
+
+    try:
+        if(dictFromMainClass["makeKeyBoardSound"] == "true"):
+            toMakeTypingSound = True
+    except Exception as e:
+        cLog.log("error on getting value of makeKeyBoardSound from dictionary in main function in main.py", "e")
+        cLog.exception(str(e), "In getting value of makeKeyBoardSound from dictionary in main function main.py")
+
     while(1):
         objMainClass.setUserName()
         customClearScreen()
 
         print(f"welcome {objMainClass.returnUserName()}\n")
-        commandInput = input("Enter Command : ")
+        commandInput = customInput("Enter Command : ")
                   
         if(handleGetHelp(commandInput)):
             pass
@@ -1359,21 +1395,24 @@ def main():
 
 
 def driverForMain():
-    
+
     # calling main
     main()
 
+
+# this function sets the global runLoadingAnimation variable to False so that the while loop in thread stops and it indicates the jarvis is fully loaded now
 def changeRunLoadingAnimation():
     global runLoadingAnimation 
     runLoadingAnimation = False
 
 
 if __name__ == "__main__":
-    # checking if in developer mode
-
+    
+    # stoping the loading animation
     changeRunLoadingAnimation()
     lAnimation.join() 
 
+    # checking if in developer mode
     if(troubleShootValue):
         print("\nIn dev mode\n")
         time.sleep(0.5)
