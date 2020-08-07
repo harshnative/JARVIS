@@ -104,7 +104,9 @@ class BackUp():
 
 
     def customCopytree(self , src, dst, symlinks = False, ignore = None):
-        print("\rfiles left to copy = {}".format(self.countCopy) , end = "")
+        customClearScreen()
+        print("Currently Copying - \n\n{}\n\nto\n\n{}".format(src , dst))
+        print("\n\nfiles left to copy = {}".format(self.countCopy))
         self.countCopy += -1 
 
         if not os.path.exists(dst):
@@ -130,7 +132,11 @@ class BackUp():
             elif os.path.isdir(s):
                 self.customCopytree(s, d, symlinks, ignore)
             else:
-                shutil.copy2(s, d)   
+                try:
+                    shutil.copy2(s, d)  
+                except Exception as e:
+                    self.exceptionList.append(str(e)) 
+
 
     def implementCustomCopy(self , src , dst):
         print("\n")
@@ -359,17 +365,22 @@ class BackUp():
 
         for i in self.listOfDirectories:
 
-            string = i[:1] + i[2:]
-
             try:
-                os.makedirs(self.pathToBackup + "/additionalFiles/" + string, exist_ok = True)
+                if(self.pathToBackup[-1] == "/"):   
+                    os.makedirs(self.pathToBackup + "additionalFiles/", exist_ok = True)
+                else:
+                    os.makedirs(self.pathToBackup + "/additionalFiles/", exist_ok = True)
             except OSError as e:
                 self.cLog.log("folder might be present for backUp_class-forCopyListOfDirectories_func" , "e")
                 self.cLog.exception(str(e) , "In backUp.py/backUp_class-forCopyListOfDirectories_func")
             
             # making the copy
             try:
-                self.implementCustomCopy(i , self.pathToBackup + "/additionalFiles/" + string)
+                if(self.pathToBackup[-1] == "/"):   
+                    self.implementCustomCopy(i , self.pathToBackup + "additionalFiles/")
+                else:
+                    self.implementCustomCopy(i , self.pathToBackup + "/additionalFiles/")
+
             except Exception as e:
                 self.exceptionList.append(str(e))
 
