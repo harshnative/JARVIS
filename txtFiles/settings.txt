@@ -1,0 +1,24 @@
+# Your defualt city
+City = panipat
+
+# Directories of backup - seperated by comma's in  - ex - D:/myfiles/images , E:/data/documents
+Directories = C:/users/harsh/desktop/hello
+
+# path to backup - ex - F:/myBackup
+backUpPath = F:/hello/
+
+#  path to backup for jarvis - ex - F:/myBackup
+backUpPathForJarvis = Z:/backup 
+
+# User Name :
+userName = Mr. Harsh
+
+# Greeting :
+greeting = Welcome
+
+# Make keyBoard sound (true / false) : 
+makeKeyBoardSound = true
+
+# Make start sound (true / false) :
+makeStartSound = true
+

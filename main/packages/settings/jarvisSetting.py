@@ -1,6 +1,8 @@
 import os
 import time
 from packages.loggerPackage.loggerFile import *
+import shutil
+
 
 
 
@@ -125,8 +127,15 @@ methods -
 
         except FileNotFoundError:
             customClearScreen()
-            print("settings file cannot be found , try restarting or reinstalling the program , or go to website for help")
-            return False
+            self.cLog.log("settings file could not be found , trying to regenerate file" , "w")
+            statusOfRegeneration = self.regenerateFile()
+            if(statusOfRegeneration):
+                self.cLog.log("settings file generated successfully" , "e")
+                self.makeDictionaryFromTxt()
+            else:
+                print("settings file cannot be found , try restarting or reinstalling the program , or go to website for help")
+                self.cLog.log("settings file could not be generated" , "e")
+                return False
 
         except Exception as e:
             customClearScreen()
@@ -152,37 +161,23 @@ methods -
     # function to regenerate the deleted settings file
     def regenerateFile(self):
         try:
-            fil = open(self.pathToSetting  , "w+")
-            fil.write("# Your defualt city\n")
-            fil.write("City = london\n\n")
-
-            fil.write("# Directories of backup - seperated by comma's in "" - ex - D:/myfiles/images , E:/data/documents\n")
-            fil.write("Directories = \n\n")
-
-            fil.write("# path to backup - ex - F:/myBackup\n")
-            fil.write("backUpPath = \n\n")
-
-            fil.write("# path to backup for jarvis - ex - F:/myBackup\n")
-            fil.write("backUpPathForJarvis = \n\n")
-
-            fil.write("# User Name :\n")
-            fil.write("userName = \n\n")
-
-            fil.write("# Greeting :\n")
-            fil.write("greeting = Welcome\n\n")
-
-            fil.close()
+            shutil.copy2("txtFiles/settings.txt" , self.pathToSetting)
             return True
             
-        except Exception:
+        except Exception as e:
             customClearScreen()
             
             if(self.cLog.troubleShoot == False):
                 print("It seems like Jarvis do not have write permission in this folder")
                 print("try reinstalling the program with administrative premission\n")
                 print("\nif error persist, run troubleShoot command")
+                self.cLog.log("error while copying the settins file" , "e")
+                self.cLog.exception(str(e) , "In jarvisSetting.py/regenerate file function")
             else:
                 print("\nerror has been logged - continue...")
+                self.cLog.log("error while copying the settins file" , "e")
+                self.cLog.exception(str(e) , "In jarvisSetting.py/regenerate file function")
+
             input("press enter to continue...")
             customClearScreen()
             return False

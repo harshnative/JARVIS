@@ -29,7 +29,9 @@ import subprocess as sp
 
 # clear screen function 
 def customClearScreen():
+    print("incustom")
     if(isOnWindows == True):
+        print("clear")
         os.system("cls")
     else:
         sp.call('clear',shell=True)
@@ -334,6 +336,7 @@ def troubleShootFunc():
     cLog.setTroubleShoot(troubleShootValue)
     return True
 
+
 # function to handle file sharing using easyFileShare - module 
 def handleFileShare(folderPass , portNumber = 8000):
     obj = FS.FileShareClass()
@@ -362,6 +365,7 @@ def isSubStringsNoCase(string , subString):
             count2 += 1
         else:
             return False
+
 
     if((count1 == count2) and count1 > 0):
         return True
@@ -1387,9 +1391,10 @@ def main():
 
     while(1):
         objMainClass.setUserName()
+
         customClearScreen()
 
-        print(f"welcome {objMainClass.returnUserName()}\n")
+        print(f"Welcome {objMainClass.returnUserName()}\n")
         commandInput = customInput("Enter Command : ")
                   
         if(handleGetHelp(commandInput)):
@@ -1434,6 +1439,11 @@ if __name__ == "__main__":
     # checking if in developer mode
     if(troubleShootValue):
         print("\nIn dev mode\n")
-        time.sleep(0.5)
+        
+    time.sleep(0.5)
+
+    print("\n")
+
+    customClearScreen()
 
     driverForMain()
