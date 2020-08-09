@@ -88,7 +88,6 @@ import shutil
 import ctypes
 from easyFileShare import FS
 from os import path
-import tkfilebrowser    # requires pywin32 package
 from easyTypeWriter import typeWriter
 
 # creating objects of typewriter module
@@ -104,6 +103,13 @@ def customInput(messagePrompt = ""):
 
     x = typeWriterObj.takeInput(toMakeTypingSound , messagePrompt)
     return str(x)
+
+# importing tkinter
+from tkinter import filedialog
+from tkinter import *
+
+root = Tk()
+root.withdraw()
 
 # importing submodules and stuff
 from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
@@ -344,7 +350,7 @@ def handleFileShare(folderPass , portNumber = 8000):
 
 # function to get the folder path of folder selected from the file explorer
 def get_folderPath_fromFileExplorer():
-    folder_selected = tkfilebrowser.askopendirname(title = "Select a folder to share")
+    folder_selected = filedialog.askdirectory()
     return folder_selected
 
 
@@ -1184,20 +1190,18 @@ def executeCommands(command):
     elif(isSubStringsNoCase(command , "start file")):
             
         folderShare = ""
-
-        if(isOnWindows == True):
-            customClearScreen()
-            print("select the folder from the pop window to share")
+        
+        customClearScreen()
+        print("select the folder from the pop window to share")
+        
+        try:    
             folderShare = get_folderPath_fromFileExplorer()
-
-            print("\n\n")
-            customInput("press enter to continue...")
-
-        elif(isOnLinux == True):
-            customClearScreen()
-
+        except Exception:
+            print("could not start the file explorer , enter the path manually\n")
+            
             while(1):
-                folderShare = customInput("Enter the folder path to share : ")
+
+                folderShare = customInput("Enter the folder path to share or enter 0 to quit : ")
 
                 if(path.exists(str(folderShare)) == True):
                     break
@@ -1210,9 +1214,15 @@ def executeCommands(command):
                     print("system could find the entered path, please try again or enter 0 to quit")
                     print("\n\n")
                     customInput("press enter to continue ...")
+
+            print("\n\n")
+            customInput("press enter to continue...")
+
+        
         try:
             handleFileShare(folderShare , portNumberForFileShare)
         except Exception as e:
+            print("could not start file share , make sure you are connected to the internet ")
             cLog.log("error on handle file share function in main.py", "e")
             cLog.exception(str(e), "In handleFileShare function main.py")
 
@@ -1366,7 +1376,7 @@ def main():
 
     # setting api key's
 
-    # for weather module - get your api key from open weather as pass it here
+    # for weather module - get your api key from open weather and pass it here
     WeatherData.setApiKey("")
 
     # checking the api key's
