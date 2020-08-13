@@ -1,6 +1,13 @@
 # showing loading jarvis message just before everything loads up as some times while opening the program for first time, antivirus may scan all the included dlls when importing them into code and it takes time
 print("\nStarting Program...")
 
+
+
+
+
+
+
+# declaring global variables -
 # global variable for making sound while typing
 toMakeTypingSound = False
 
@@ -11,12 +18,40 @@ troubleShootValue = True
 isOnWindows = False
 isOnLinux = False
 
-import os
+# setting default port number for file share 
+portNumberForFileShare = 5000
 
-# Checking weather the user is on windows or not
+# global variable for running loading animation is set to true 
+runLoadingAnimation = True
+loadingAnimationCount = 10
+
+# list of currenlty opened thread
+threadOpenedList = []  
+
+# default paths for program data 
+folderPathWindows = r"C:\programData\Jarvis"
+folderPathLinux = r"~/.config/Jarvis"
+folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
+
+# mutpliprocess thread will be stored in this
+fileShareThread = None
+
+
+
+# importing some essential modules
+import os
 import platform
 import time
+import subprocess as sp
+import time
+from threading import Thread
 
+
+
+
+
+
+# Checking weather the user is on windows or not
 osUsing = platform.system()
 
 if(osUsing == "Linux"):
@@ -29,10 +64,12 @@ else:
     exit()
 
 
-#setting default port number for file share 
-portNumberForFileShare = 5000
 
-import subprocess as sp
+
+
+
+
+
 
 # clear screen function 
 def customClearScreen():
@@ -44,12 +81,11 @@ def customClearScreen():
         sp.call('clear',shell=True)
 
 
-import time
-from threading import Thread
 
-# global variable for running loading animation is set to true 
-runLoadingAnimation = True
-loadingAnimationCount = 10
+
+
+
+
 
 # loading animation thread
 class LoadingAnimation(Thread):
@@ -76,38 +112,43 @@ def changeRunLoadingAnimation():
     runLoadingAnimation = False
 
 
-# list of currenlty opened thread
-threadOpenedList = []    
 
+
+
+
+  
+# importing additional modules
 import pyperclip
 from tabulate import tabulate
 import getpass as getUserName
 from playsound import playsound
-
-# default paths for program data 
-folderPathWindows = r"C:\programData\Jarvis"
-folderPathLinux = r"~/.config/Jarvis"
-folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
-
-# generating jarvis folder
-try:
-    if(isOnWindows):
-        os.makedirs(folderPathWindows , exist_ok=True)
-    else:
-        os.makedirs(folderPathLinux , exist_ok=True)
-
-except Exception:
-    customClearScreen()
-    print("Critical Error - could not generate jarvis folder in program data - contact developer")
-    customInput("press enter to continue...")
-
 import datetime
 import shutil
 import ctypes
 from os import path
 from easyTypeWriter import typeWriter
 import multiprocessing
+from tkinter import filedialog
+from tkinter import *
 
+
+
+# importing custom modules
+from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
+from imports.harshNative_github.txtCompare.txtComparePy import *
+from imports.harshNative_github.hangMan_game.hangmanGame import *
+from packages.loggerPackage.loggerFile import *
+from packages.PasswordStorer.mainForPasswordStorer import *
+from packages.settings.jarvisSetting import *
+from packages.weather.getWeather import *
+from packages.backUp_utility.backUp import *
+from packages.speedTest_utility.speedTestFile import *
+from packages.fileShare import FS
+
+
+
+
+# implementing the type writer module
 # creating objects of typewriter module
 typeWriterObj = typeWriter.EasyInput()
 
@@ -122,36 +163,50 @@ def customInput(messagePrompt = ""):
     x = typeWriterObj.takeInput(toMakeTypingSound , messagePrompt)
     return str(x)
 
-# importing tkinter
-from tkinter import filedialog
-from tkinter import *
 
+
+
+
+
+# generating jarvis folder were the data will be stored
+try:
+    if(isOnWindows):
+        os.makedirs(folderPathWindows , exist_ok=True)
+    else:
+        os.makedirs(folderPathLinux , exist_ok=True)
+
+except Exception:
+    customClearScreen()
+    print("Critical Error - could not generate jarvis folder in program data - contact developer")
+    customInput("press enter to continue...")
+
+
+
+
+
+# generating some objects of important classes
+# importing tkinter
 root = Tk()
 root.withdraw()
 
-# importing submodules and stuff
-from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
-from imports.harshNative_github.txtCompare.txtComparePy import *
-from imports.harshNative_github.hangMan_game.hangmanGame import *
-from packages.loggerPackage.loggerFile import *
-from packages.PasswordStorer.mainForPasswordStorer import *
-from packages.settings.jarvisSetting import *
-from packages.weather.getWeather import *
-from packages.backUp_utility.backUp import *
-from packages.speedTest_utility.speedTestFile import *
-from packages.fileShare import FS
- 
-
-# creating global object of class Clogger
+# creating global object of class Clogger (custom log module)
 cLog = Clogger()
 
 
+
+
+
+
+# some function's
 # function to restart everything - just call the main again
 def restart_program():
 
     customClearScreen()
     cLog.log("program restarting..", "i")
     main()
+
+
+
 
 
 # function to check if the script is running in administrative mode or not
@@ -162,6 +217,9 @@ def isAdmin():
     except AttributeError:
         is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
     return is_admin
+
+
+
 
 
 # function to check for a substring in a string - returns true or false
@@ -181,6 +239,9 @@ def isSubString(string, subString):
         cLog.log("isSubString function failed", "e")
         cLog.exception(str(e), "main.py/isSubString_func")
         return False
+
+
+
 
 
 # function for displaying help
@@ -242,6 +303,9 @@ def getHelp(passObj):
                 print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
             else:
                 print("\nerror has been logged - continue...")
+
+
+
 
 
 # function for handling the get help
@@ -362,10 +426,12 @@ def troubleShootFunc():
     return True
 
 
+
+
+
 # function to handle file sharing using easyFileShare - module 
 def handleFileShare(folderPass , portNumber = 8000):
     obj = FS.FileShareClass()
-    onIp = obj.get_ip_address()
 
     # multi process starts the whole program again
     changeRunLoadingAnimation()
@@ -375,12 +441,16 @@ def handleFileShare(folderPass , portNumber = 8000):
     obj.start_fileShare(str(folderPass) , int(portNumber))
 
 
-fileShareThread = None
+
+
 
 # function to get the folder path of folder selected from the file explorer
 def get_folderPath_fromFileExplorer():
     folder_selected = filedialog.askdirectory()
     return folder_selected
+
+
+
 
 
 # function to compare two strings ignoring case changes
@@ -406,6 +476,17 @@ def isSubStringsNoCase(string , subString):
         return True
     else:
         return False
+
+
+
+
+
+class startingSound(Thread):
+    def run(self):
+        playsound("sounds/jarvisIntro.mp3")
+
+
+
 
 
 
@@ -467,10 +548,9 @@ methods include - getDict()           ->  To generate dictionary - not for outsi
         return self.settingsDict["userName"]
 
 
-class startingSound(Thread):
 
-    def run(self):
-        playsound("sounds/jarvisIntro.mp3")
+
+
 
 
 class MainWeatherClass(MainClass):
@@ -621,6 +701,16 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
                 print("Their is some fog outside :)")
             else:
                 print("No chance of rain and fog today :)")
+
+
+
+
+
+
+
+
+
+
 
 
 # function to execute the passed command by analysing it
@@ -957,8 +1047,6 @@ def executeCommands(command):
         objBackUp.startBackUp(
             commandListCopy, directoriesListEditted, pathToBackup + "/")
 
-        # objBackUp.startBackUp()
-
 
         customClearScreen()
 
@@ -1217,6 +1305,8 @@ def executeCommands(command):
         
         return True
 
+
+    # process for stoping file share
     elif(isSubStringsNoCase(command , "stop file")):
         customClearScreen()
         try:
@@ -1240,7 +1330,7 @@ def executeCommands(command):
             return True
 
 
-
+    # process for starting file share
     elif(isSubStringsNoCase(command , "start file")):
             
         folderShare = ""
@@ -1249,8 +1339,8 @@ def executeCommands(command):
         print("select the folder from the pop window to share")
         
         try:    
-            # folderShare = get_folderPath_fromFileExplorer()
-            folderShare = r"C:/Users/harsh/desktop"
+            folderShare = get_folderPath_fromFileExplorer()
+            # folderShare = r"C:/Users/harsh/desktop"
         except Exception:
             print("could not start the file explorer , enter the path manually\n")
             
@@ -1431,7 +1521,8 @@ def executeCommands(command):
             cLog.log("error on stop file share execute command in main.py", "e")
             cLog.exception(str(e), "In  exit function main.py")
             return True
-
+        
+        customClearScreen()
         exit()
 
     # if none of the above command is executed than return false to tell the user that the command entered was incorrect
@@ -1470,10 +1561,13 @@ def main():
 
         customClearScreen()
 
-        for i in threadOpenedList:
-            print(i)
+        # printing details for currently running threads in background
+        if(len(threadOpenedList) > 0):
+            for i in threadOpenedList:
+                print(i)
 
-        print("\n") 
+            print("\n") 
+        
 
         print(f"Welcome {objMainClass.returnUserName()}\n")
         commandInput = customInput("Enter Command : ")
@@ -1504,7 +1598,7 @@ if __name__ == "__main__":
     changeRunLoadingAnimation()
     lAnimation.join() 
 
-
+    # playing the starting sound
     startingSoundObj = startingSound()
     objMainClass = MainClass()
 
@@ -1515,8 +1609,7 @@ if __name__ == "__main__":
     # checking if in developer mode
     if(troubleShootValue):
         print("\nIn dev mode\n")
-        
-    time.sleep(0.5)
+        time.sleep(0.5)
 
     print("\n")
 
