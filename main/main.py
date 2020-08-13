@@ -14,12 +14,19 @@ isOnLinux = False
 import os
 
 # Checking weather the user is on windows or not
-try:
-    temp = os.environ
-    tempUserName = temp["USERNAME"]
-    isOnWindows = True
-except Exception:
+import platform
+import time
+
+osUsing = platform.system()
+
+if(osUsing == "Linux"):
     isOnLinux = True
+elif(osUsing == "Windows"):
+    isOnWindows = True
+else:
+    print("Jarvis currently does not support this operating system :(")
+    time.sleep(3)
+    exit()
 
 
 #setting default port number for file share 
