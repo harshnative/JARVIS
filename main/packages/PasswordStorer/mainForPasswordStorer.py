@@ -277,8 +277,8 @@ driverFunc()        ->  this is the only method that you need to use this method
             
             else:
                 print(tabulate(tabulateList, headers=['Index' , 'Site' , 'Password']))
-
-                indexOfToCopy = self.customInput("\n\nEnter the index number of site to copy its password : ")
+                print("\n")
+                indexOfToCopy = self.customInput("Enter the index number of site to copy its password : ")
                 try:
                     toCopy = dictToHelpInCopying[indexOfToCopy]
                     pyperclip.copy(str(toCopy))
@@ -317,7 +317,8 @@ driverFunc()        ->  this is the only method that you need to use this method
                         print("please use combination of characters, numbers and special characters as your password")
                         print("\nalso password length must be more than 8 digits")
                         print("\neasy password's are easy to crack and unsecure")
-                        self.customInput("\n\nPress enter to continue : ")
+                        print("\n")
+                        self.customInput("Press enter to continue : ")
                         continue
 
                     passwordInput1 = self.encryptThing(passwordInput1 , passwordInput2)
@@ -557,14 +558,15 @@ driverFunc()        ->  this is the only method that you need to use this method
                             print("Site - ", tempDecrypt , end = "    ")
                             print("Old Password - " , self.decryptThing(row[1] , self.password))
                             toUpdateList.append(row[0])  
-
-                indexInput = int(self.customInput("\nEnter Index for update : "))
+                print()
+                indexInput = int(self.customInput("Enter Index for update : "))
                 
                 ifUpdatedSomething = False
 
                 for i,j in enumerate(toUpdateList):
                     if(i+1 == indexInput):
-                        updated = self.customInput("\nEnter the Updated Password : ")
+                        print()
+                        updated = self.customInput("Enter the Updated Password : ")
                         updated = self.encryptThing(updated , self.password)
                         self.updateInTable(str(j) , str(updated))
                         ifUpdatedSomething = True
