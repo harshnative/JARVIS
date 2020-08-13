@@ -982,7 +982,7 @@ def executeCommands(command):
         customClearScreen()
 
         print("Go to the file saved in google drive and click get shareable link\n")
-        linkGet = customInput("Paste the link here : ")
+        linkGet = input("Paste the link here : ")
         linkFinal = mainForGoogleDriveLink(linkGet)
         if(linkFinal == False):
             print("\n\nThe link is in valid :(")
