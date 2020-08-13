@@ -42,19 +42,21 @@ from threading import Thread
 
 # global variable for running loading animation is set to true 
 runLoadingAnimation = True
-
+loadingAnimationCount = 10
 
 # loading animation thread
 class LoadingAnimation(Thread):
 
     def run(self):
         global runLoadingAnimation 
+        global loadingAnimationCount
         customClearScreen()
         string = ""
-        while(runLoadingAnimation):
+        while(runLoadingAnimation and loadingAnimationCount):
             string = string + "."
             time.sleep(0.5)
             print("\rloading Jarvis , please wait " , string , sep = "" , end = "")
+            loadingAnimationCount -= 1
 
 # loading animation thread started 
 lAnimation = LoadingAnimation()
