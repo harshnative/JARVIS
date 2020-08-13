@@ -57,18 +57,27 @@ class LoadingAnimation(Thread):
     def run(self):
         global runLoadingAnimation 
         global loadingAnimationCount
+        
         customClearScreen()
         string = ""
         while(runLoadingAnimation and loadingAnimationCount):
             string = string + "."
             time.sleep(0.5)
-            print("\rloading Jarvis , please wait " , string , sep = "" , end = "")
+            print("\rloading , please wait " , string , sep = "" , end = "")
             loadingAnimationCount -= 1
 
 # loading animation thread started 
 lAnimation = LoadingAnimation()
 lAnimation.start()
-    
+
+# this function sets the global runLoadingAnimation variable to False so that the while loop in thread stops and it indicates the jarvis is fully loaded now
+def changeRunLoadingAnimation():
+    global runLoadingAnimation 
+    runLoadingAnimation = False
+
+
+# list of currenlty opened thread
+threadOpenedList = []    
 
 import pyperclip
 from tabulate import tabulate
@@ -95,9 +104,9 @@ except Exception:
 import datetime
 import shutil
 import ctypes
-from easyFileShare import FS
 from os import path
 from easyTypeWriter import typeWriter
+import multiprocessing
 
 # creating objects of typewriter module
 typeWriterObj = typeWriter.EasyInput()
@@ -130,6 +139,7 @@ from packages.settings.jarvisSetting import *
 from packages.weather.getWeather import *
 from packages.backUp_utility.backUp import *
 from packages.speedTest_utility.speedTestFile import *
+from packages.fileShare import FS
  
 
 # creating global object of class Clogger
@@ -355,7 +365,17 @@ def troubleShootFunc():
 # function to handle file sharing using easyFileShare - module 
 def handleFileShare(folderPass , portNumber = 8000):
     obj = FS.FileShareClass()
+    onIp = obj.get_ip_address()
+
+    # multi process starts the whole program again
+    changeRunLoadingAnimation()
+    lAnimation.join()
+
+    customClearScreen()
     obj.start_fileShare(str(folderPass) , int(portNumber))
+
+
+fileShareThread = None
 
 # function to get the folder path of folder selected from the file explorer
 def get_folderPath_fromFileExplorer():
@@ -605,6 +625,8 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
 
 # function to execute the passed command by analysing it
 def executeCommands(command):
+    global threadOpenedList
+    global fileShareThread
 
     # statement to run commands passed for cmd in windows
     if(command[:3] == ("cmd" or "CMD" or "Cmd")):
@@ -1195,6 +1217,29 @@ def executeCommands(command):
         
         return True
 
+    elif(isSubStringsNoCase(command , "stop file")):
+        customClearScreen()
+        try:
+            if(fileShareThread == None):
+                print("File sharing is not currently active")
+                return True
+            
+            fileShareThread.terminate()
+
+            fileShareThread = None
+
+            threadOpenedList.remove("File sharing is currently active")
+
+            print("file sharing stopped successfully")
+            return True
+
+        except Exception as e:
+            print("could not stop file share , if the error persist , run the troubleshoot command")
+            cLog.log("error on stop file share execute command in main.py", "e")
+            cLog.exception(str(e), "In stop file share function main.py")
+            return True
+
+
 
     elif(isSubStringsNoCase(command , "start file")):
             
@@ -1204,7 +1249,8 @@ def executeCommands(command):
         print("select the folder from the pop window to share")
         
         try:    
-            folderShare = get_folderPath_fromFileExplorer()
+            # folderShare = get_folderPath_fromFileExplorer()
+            folderShare = r"C:/Users/harsh/desktop"
         except Exception:
             print("could not start the file explorer , enter the path manually\n")
             
@@ -1229,9 +1275,15 @@ def executeCommands(command):
 
         
         try:
-            handleFileShare(folderShare , portNumberForFileShare)
+            customClearScreen()
+            fileShareThread = multiprocessing.Process(target=handleFileShare, args=(folderShare , portNumberForFileShare))
+            fileShareThread.start()
+            
+
+            threadOpenedList.append("File sharing is currently active")
+
         except Exception as e:
-            print("could not start file share , make sure you are connected to the internet ")
+            print("could not start file share , make sure you are connected to the internet .\nif the error persist run the troubleshoot command ")
             cLog.log("error on handle file share function in main.py", "e")
             cLog.exception(str(e), "In handleFileShare function main.py")
 
@@ -1365,15 +1417,20 @@ def executeCommands(command):
     # calling for exit command
     elif(isSubStringsNoCase(command , "exit")):
         customClearScreen()
+        print("existing the program , please wait ...")
 
-        print("See you soon :) , Exiting the program ", end="", flush=True)
-        time.sleep(0.3)
-        print(".", end="", flush=True)
-        time.sleep(0.3)
-        print(".", end="", flush=True)
-        time.sleep(0.4)
-        print(".", end="", flush=True)
-        customClearScreen()
+        # terminating the file share threading
+        try:
+            if(fileShareThread == None):
+                pass
+            else:
+                fileShareThread.terminate()
+
+        except Exception as e:
+            print("could not exit the program , please stop the file sharing first using stop file share command")
+            cLog.log("error on stop file share execute command in main.py", "e")
+            cLog.exception(str(e), "In  exit function main.py")
+            return True
 
         exit()
 
@@ -1413,6 +1470,11 @@ def main():
 
         customClearScreen()
 
+        for i in threadOpenedList:
+            print(i)
+
+        print("\n") 
+
         print(f"Welcome {objMainClass.returnUserName()}\n")
         commandInput = customInput("Enter Command : ")
                   
@@ -1436,17 +1498,12 @@ def driverForMain():
     main()
 
 
-# this function sets the global runLoadingAnimation variable to False so that the while loop in thread stops and it indicates the jarvis is fully loaded now
-def changeRunLoadingAnimation():
-    global runLoadingAnimation 
-    runLoadingAnimation = False
-
-
 if __name__ == "__main__":
     
     # stoping the loading animation
     changeRunLoadingAnimation()
     lAnimation.join() 
+
 
     startingSoundObj = startingSound()
     objMainClass = MainClass()
