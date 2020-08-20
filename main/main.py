@@ -742,21 +742,24 @@ def executeCommands(command):
 
         message = "no message"
 
+        messageFrom = 0
+
         for i,j in enumerate(command):
             if(j == "-"):
+                messageFrom = i
                 if(command[i+1] == "m"):
                     message = command[i+3:]  
                     break      
 
+        commandForCompare = command[:messageFrom]
 
-        if((isSubStringsNoCase(command , "log"))):
-            if(not(isSubStringsNoCase(message , "log"))):
-                print("Generating logs ... , press q to quit , or press ENTER to see more\n\n")
-                os.system("git log --graph --oneline --all --decorate")
-                return True
+        if((isSubStringsNoCase(commandForCompare , "log"))):
+            print("Generating logs ... , press q to quit , or press ENTER to see more\n\n")
+            os.system("git log --graph --oneline --all --decorate")
+            return True
 
         
-        if(isSubStringsNoCase(command , "commit")):
+        if(isSubStringsNoCase(commandForCompare , "commit")):
             
             os.popen('git status').read()
             os.system("git init")
@@ -779,7 +782,7 @@ def executeCommands(command):
             print("process completed (^_^)")
             return True
 
-        elif(isSubStringsNoCase(command , "all")):
+        elif(isSubStringsNoCase(commandForCompare , "all")):
             
             # adding
             try:
@@ -818,7 +821,7 @@ def executeCommands(command):
                 return True
 
             print(result)
-            print("\n\pushed to repo..")
+            print("\n\npushed to repo..")
 
             time.sleep(1)   
             customClearScreen()
