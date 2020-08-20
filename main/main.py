@@ -36,6 +36,8 @@ folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
 # mutpliprocess thread will be stored in this
 fileShareThread = None
 
+# global variable for knowing if the jarvis is runned by cmd arguments
+directRunFromCmd = False
 
 
 # importing some essential modules
@@ -128,6 +130,7 @@ import ctypes
 from os import path
 from easyTypeWriter import typeWriter
 import multiprocessing
+import sys
 from tkinter import filedialog
 from tkinter import *
 
@@ -146,6 +149,10 @@ from packages.speedTest_utility.speedTestFile import *
 from packages.fileShare import FS
 
 
+
+# checking if the jarvis is runned directly from the cmd arguments
+if(len(sys.argv) > 1):
+    directRunFromCmd = True
 
 
 # implementing the type writer module
@@ -1506,8 +1513,10 @@ def executeCommands(command):
 
     # calling for exit command
     elif(isSubStringsNoCase(command , "exit")):
-        customClearScreen()
-        print("existing the program , please wait ...")
+
+        if(not(directRunFromCmd)):
+            customClearScreen()
+            print("existing the program , please wait ...")
 
         # terminating the file share threading
         try:
@@ -1522,7 +1531,9 @@ def executeCommands(command):
             cLog.exception(str(e), "In  exit function main.py")
             return True
         
-        customClearScreen()
+        if(not(directRunFromCmd)):
+            customClearScreen()
+
         exit()
 
     # if none of the above command is executed than return false to tell the user that the command entered was incorrect
@@ -1557,33 +1568,60 @@ def main():
         cLog.exception(str(e), "In getting value of makeKeyBoardSound from dictionary in main function main.py")
 
     while(1):
-        objMainClass.setUserName()
 
-        customClearScreen()
 
-        # printing details for currently running threads in background
-        if(len(threadOpenedList) > 0):
-            for i in threadOpenedList:
-                print(i)
+        if(directRunFromCmd):
+            commandListFromCmd = sys.argv
 
-            print("\n") 
-        
+            # deleting first argument
+            trimmedCommandListFromCmd = commandListFromCmd[1:]
 
-        print(f"Welcome {objMainClass.returnUserName()}\n")
-        commandInput = customInput("Enter Command : ")
-                  
-        if(handleGetHelp(commandInput)):
-            pass
-        else:
-            if(executeCommands(commandInput)):
+            # generating string from list arguments
+            seperator = " "
+            commandString = seperator.join(trimmedCommandListFromCmd)
+
+            if(handleGetHelp(commandString)):
                 pass
             else:
-                customClearScreen()
+                if(executeCommands(commandString)):
+                    pass
+                else:
+                    customClearScreen()
 
-                print("oops could not regonise the command try typing help for info")
+                    print("oops could not regonise the command try typing help for info")
 
-        print("\n\n")
-        customInput("press enter to continue...")
+            print("\n\n")
+            executeCommands("exit")
+
+        else:
+
+            objMainClass.setUserName()
+
+            customClearScreen()
+
+            # printing details for currently running threads in background
+            if(len(threadOpenedList) > 0):
+                for i in threadOpenedList:
+                    print(i)
+
+                print("\n") 
+            
+
+            print(f"Welcome {objMainClass.returnUserName()}\n")
+            commandInput = customInput("Enter Command : ")
+                    
+            if(handleGetHelp(commandInput)):
+                pass
+            else:
+                if(executeCommands(commandInput)):
+                    pass
+                else:
+                    customClearScreen()
+
+                    print("oops could not regonise the command try typing help for info")
+
+            print("\n\n")
+            customInput("press enter to continue...")
 
 
 def driverForMain():
@@ -1603,8 +1641,11 @@ if __name__ == "__main__":
     objMainClass = MainClass()
 
     dictFromMainClass = objMainClass.returnDict()
-    if(dictFromMainClass["makeStartSound"] == "true"):
-        startingSoundObj.start()
+
+    # sound will not play if the jarvis is runned by cmd arguments
+    if(not(directRunFromCmd)):
+        if(dictFromMainClass["makeStartSound"] == "true"):
+            startingSoundObj.start()
 
     # checking if in developer mode
     if(troubleShootValue):
