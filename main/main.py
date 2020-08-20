@@ -751,7 +751,10 @@ def executeCommands(command):
                     message = command[i+3:]  
                     break      
 
-        commandForCompare = command[:messageFrom]
+        if(messageFrom == 0):
+            commandForCompare = command
+        else:
+            commandForCompare = command[:messageFrom]
 
         if((isSubStringsNoCase(commandForCompare , "log"))):
             print("Generating logs ... , press q to quit , or press ENTER to see more\n\n")
