@@ -752,9 +752,15 @@ def executeCommands(command):
                 os.system("git log --graph --oneline --all --decorate")
                 return True
 
+        
+        if(isSubStringsNoCase(command , "commit")):
             
-        if(isSubStringsNoCase(command , "all")):
-            
+            os.popen('git status').read()
+            os.system("git init")
+            print("initialised repo")
+            time.sleep(0.5)
+            customClearScreen()
+
             os.system("git add .")
             print("added to repo")
             time.sleep(0.5)
@@ -767,8 +773,46 @@ def executeCommands(command):
             time.sleep(0.5)
             customClearScreen()
 
+            print("process completed (^_^)")
+            return True
+
+        elif(isSubStringsNoCase(command , "all")):
+            
+            # adding
+            result = os.popen("git add .").read()
+
+            print(result)
+            print("\n\nadded to repo..")
+
+            time.sleep(0.5)
+            customClearScreen()
+            
+            # commiting
+            stringToPass = "git commit -m " + '"' + message + '"'
+
+            result = os.popen(stringToPass).read()
+
+            if(result == ""):
+                print("failed to git commit with message = {}".format(message))
+                return True
+                
+            print(result)
+            print("\n\ncommited to repo..")
+            time.sleep(0.5)
+            customClearScreen()
+
+            
+
             print("pushing to repo, make sure you are connected to internet ...\n\n")
-            os.system("git push")
+
+            result = os.popen("git push").read()
+
+            if(result == ""):
+                print("failed to git push")
+                return True
+
+            print("\n\pushed to repo..")
+
             time.sleep(0.5)   
             customClearScreen()
 
