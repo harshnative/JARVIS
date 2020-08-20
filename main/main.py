@@ -763,26 +763,51 @@ def executeCommands(command):
 
         
         if(isSubStringsNoCase(commandForCompare , "commit")):
+
+            # initialising repo
+            try:
+                result = subprocess.check_output("git init", shell=True)
+            except Exception:
+                print("failed to git init")
+                return True
+
+            print(result)
+            print("\n\ninitialised repo..")
+
+            time.sleep(1)
+            customClearScreen()
+
+            # adding
+            try:
+                result = subprocess.check_output("git add .", shell=True)
+            except Exception:
+                print("failed to git add .")
+                return True
+
+            print(result)
+            print("\n\nadded to repo..")
+
+            time.sleep(1)
+            customClearScreen()
             
-            os.popen('git status').read()
-            os.system("git init")
-            print("initialised repo")
-            time.sleep(0.5)
-            customClearScreen()
-
-            os.system("git add .")
-            print("added to repo")
-            time.sleep(0.5)
-            customClearScreen()
-
+            # commiting
             stringToPass = "git commit -m " + '"' + message + '"'
 
-            os.system(stringToPass)
-            print("commited to repo")
-            time.sleep(0.5)
+            try:
+                result = subprocess.check_output(stringToPass, shell=True)
+            except Exception:
+                print("failed to git commit with message = {}".format(message))
+                return True
+                
+            print(result)
+            print("\n\ncommited to repo..")
+            time.sleep(1)
             customClearScreen()
 
             print("process completed (^_^)")
+            return True
+            
+            
             return True
 
         elif(isSubStringsNoCase(commandForCompare , "all")):
