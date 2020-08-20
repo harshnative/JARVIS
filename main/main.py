@@ -43,6 +43,7 @@ directRunFromCmd = False
 # importing some essential modules
 import os
 import platform
+from subprocess import SubprocessError
 import time
 import subprocess as sp
 import time
@@ -127,12 +128,14 @@ from playsound import playsound
 import datetime
 import shutil
 import ctypes
-from os import path
+from os import execlp, path
 from easyTypeWriter import typeWriter
 import multiprocessing
 import sys
 from tkinter import filedialog
 from tkinter import *
+import subprocess
+
 
 
 
@@ -779,41 +782,45 @@ def executeCommands(command):
         elif(isSubStringsNoCase(command , "all")):
             
             # adding
-            result = os.popen("git add .").read()
+            try:
+                result = subprocess.check_output("git add .", shell=True)
+            except Exception:
+                print("failed to git add .")
+                return True
 
             print(result)
             print("\n\nadded to repo..")
 
-            time.sleep(0.5)
+            time.sleep(1)
             customClearScreen()
             
             # commiting
             stringToPass = "git commit -m " + '"' + message + '"'
 
-            result = os.popen(stringToPass).read()
-
-            if(result == ""):
+            try:
+                result = subprocess.check_output(stringToPass, shell=True)
+            except Exception:
                 print("failed to git commit with message = {}".format(message))
                 return True
                 
             print(result)
             print("\n\ncommited to repo..")
-            time.sleep(0.5)
+            time.sleep(1)
             customClearScreen()
-
             
-
+            #pushing
             print("pushing to repo, make sure you are connected to internet ...\n\n")
 
-            result = os.popen("git push").read()
-
-            if(result == ""):
+            try:
+                result = subprocess.check_output("git push", shell=True)
+            except Exception:
                 print("failed to git push")
                 return True
 
+            print(result)
             print("\n\pushed to repo..")
 
-            time.sleep(0.5)   
+            time.sleep(1)   
             customClearScreen()
 
             print("process completed (^_^)")
