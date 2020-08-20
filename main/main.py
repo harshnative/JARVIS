@@ -735,22 +735,15 @@ def executeCommands(command):
 
     # statement to run commands passed for cmd in windows
     elif(isSubStringsNoCase(command , "git")):
-        print("in git")
         customClearScreen()
 
-        message = ""
-        count = 0
+        message = "no message"
 
-        for i in command:
-
-            if(i == '\"'):
-                count += 1
-
-            if(count == 1):
-                message = message + i
-            
-            if(count == 2):
-                break
+        for i,j in enumerate(command):
+            if(j == "-"):
+                if(command[i+1] == "m"):
+                    message = command[i+3:]  
+                    break      
 
 
         if((isSubStringsNoCase(command , "log"))):
@@ -767,7 +760,8 @@ def executeCommands(command):
             time.sleep(0.5)
             customClearScreen()
 
-            stringToPass = "git commit -m " + message + '"'
+            stringToPass = "git commit -m " + '"' + message + '"'
+
             os.system(stringToPass)
             print("commited to repo")
             time.sleep(0.5)
