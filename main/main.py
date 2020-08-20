@@ -771,7 +771,8 @@ def executeCommands(command):
                 print("failed to git init")
                 return True
 
-            print(result)
+            if(not(result == b'')):
+                print(result)
             print("\n\ninitialised repo..")
 
             time.sleep(1)
@@ -784,7 +785,8 @@ def executeCommands(command):
                 print("failed to git add .")
                 return True
 
-            print(result)
+            if(not(result == b'')):
+                print(result)
             print("\n\nadded to repo..")
 
             time.sleep(1)
@@ -799,7 +801,8 @@ def executeCommands(command):
                 print("failed to git commit with message = {}".format(message))
                 return True
                 
-            print(result)
+            if(not(result == b'')):
+                print(result)
             print("\n\ncommited to repo..")
             time.sleep(1)
             customClearScreen()
@@ -819,7 +822,8 @@ def executeCommands(command):
                 print("failed to git add .")
                 return True
 
-            print(result)
+            if(not(result == b'')):
+                print(result)
             print("\n\nadded to repo..")
 
             time.sleep(1)
@@ -834,7 +838,8 @@ def executeCommands(command):
                 print("failed to git commit with message = {}".format(message))
                 return True
                 
-            print(result)
+            if(not(result == b'')):
+                print(result)
             print("\n\ncommited to repo..")
             time.sleep(1)
             customClearScreen()
@@ -848,7 +853,8 @@ def executeCommands(command):
                 print("failed to git push")
                 return True
 
-            print(result)
+            if(not(result == b'')):
+                print(result)
             print("\n\npushed to repo..")
 
             time.sleep(1)   
