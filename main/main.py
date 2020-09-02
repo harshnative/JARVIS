@@ -76,9 +76,7 @@ else:
 
 # clear screen function 
 def customClearScreen():
-    print("incustom")
     if(isOnWindows == True):
-        print("clear")
         os.system("cls")
     else:
         sp.call('clear',shell=True)
