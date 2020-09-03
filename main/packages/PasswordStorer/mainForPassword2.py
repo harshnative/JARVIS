@@ -1,4 +1,3 @@
-from enum import Flag
 import sqlite3
 from tabulate import tabulate
 import os
@@ -6,6 +5,7 @@ import onetimepad
 from packages.loggerPackage.loggerFile import *
 import stdiomask
 import pyperclip
+from cryptography.fernet import Fernet
 
 
 folderPathWindows = r"C:\programData\Jarvis"
@@ -53,7 +53,7 @@ typeWriterObj.setKeyboardAudioPath("sounds/keysound30.wav")
 
 
 
-class PasswordStorerClass:
+class PasswordStorerClass2:
 
     """
 This class is the main class of the password module
@@ -82,6 +82,7 @@ driverFunc()        ->  this is the only method that you need to use this method
         self.dataBaseFileName = "Jarvis.db"
         self.connectionObj = None
         self.password = None
+        self._key = None
         self.oldPassword = None
         self.onlyAuthenticate = None
         if(isOnWindows):
@@ -221,14 +222,20 @@ driverFunc()        ->  this is the only method that you need to use this method
             tabulateList = []
             for row in cursor:
                 # master password stored - so cannot be shown in which we have stored it to user
+                toCompare = self.decryptThing(row[0] , self.password)
+
                 if(row[0] == "!@#$%^&*("):
-                        pass
+                    pass
+                
+                elif(toCompare == "self.password"):
+                    pass
+
                 else:
-                    tempDecrypt = self.decryptThing(row[0] , self.password)
+                    tempDecrypt = self.decryptThing2(row[0])
                     # getting list for tablute module to show data
                     tempList = []
                     tempList.append(str(tempDecrypt))
-                    tempList.append(self.decryptThing(str(row[1]) , self.password))
+                    tempList.append(self.decryptThing2(str(row[1])))
                     tabulateList.append(tempList)
             
             # showing the data 
@@ -236,10 +243,10 @@ driverFunc()        ->  this is the only method that you need to use this method
             print(tabulate(tabulateList, headers=['Site', 'Password']))
             self.cLog.log("displayAll function runned successfully in main for password" , "i")
         except Exception as e:
-            # if(self.cLog.troubleShoot == False):
-            #     print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
-            # else:
-            #     print("\nerror has been logged - continue...")
+            if(self.cLog.troubleShoot == False):
+                print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
             self.cLog.log("error while displaying all", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/displayAll")
 
@@ -255,20 +262,27 @@ driverFunc()        ->  this is the only method that you need to use this method
             dictToHelpInCopying = {}
             countForTabulate = 1
             for row in cursor:
+
+                toCompare = self.decryptThing(row[0] , self.password)
+
                 if(row[0] == "!@#$%^&*("):
                     pass
+                
+                elif(toCompare == "helloIAmJarvis&IAmHereToAssistYou"):
+                    pass
+
                 else:
-                    tempDecrypt = self.decryptThing(row[0] , self.password)
+                    tempDecrypt = self.decryptThing2(row[0])
                     if(self.isSubString(tempDecrypt , searchItem)):
                         # generating list for tabulate module
                         tempList = []
                         tempList.append(str(countForTabulate))
                         tempList.append(str(tempDecrypt))
-                        tempList.append(self.decryptThing(str(row[1]) , self.password))
+                        tempList.append(self.decryptThing2(str(row[1])))
                         tabulateList.append(tempList)
 
                         # adding things to dict to help in copying - 
-                        dictToHelpInCopying[str(countForTabulate)] = str(self.decryptThing(str(row[1]) , self.password))
+                        dictToHelpInCopying[str(countForTabulate)] = str(self.decryptThing2(str(row[1])))
                         countForTabulate += 1
             
             # showing the data
@@ -279,7 +293,7 @@ driverFunc()        ->  this is the only method that you need to use this method
             else:
                 print(tabulate(tabulateList, headers=['Index' , 'Site' , 'Password']))
                 print("\n")
-                indexOfToCopy = input("Enter the index number of site to copy its password : ")
+                indexOfToCopy = self.customInput("Enter the index number of site to copy its password : ")
                 try:
                     toCopy = dictToHelpInCopying[indexOfToCopy]
                     pyperclip.copy(str(toCopy))
@@ -289,10 +303,10 @@ driverFunc()        ->  this is the only method that you need to use this method
                     print("\nWrong index number entered")
                     self.cLog.log("Wrong index number entered in display search function in main for password" , "e")
                 except Exception as e:
-                    # if(self.cLog.troubleShoot == False):
-                    #     print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
-                    # else:
-                    #     print("\nerror has been logged - continue...")
+                    if(self.cLog.troubleShoot == False):
+                        print("\nSomething went wrong, Please Try again, if error persist, run troubleShoot command")
+                    else:
+                        print("\nerror has been logged - continue...")
                     self.cLog.log("error while displaying search after index number entered", "e")
                     self.cLog.exception(str(e) , "mainForPassword.py/displaySearch")
 
@@ -316,16 +330,24 @@ driverFunc()        ->  this is the only method that you need to use this method
                     
                     if(self.checkPass(passwordInput1) < 2):
                         print("please use combination of characters, numbers and special characters as your password")
-                        print("\nalso password length must be more than 8 digits")
+                        print("\nalso password length must be more than 8 digits and should be of even length")
                         print("\neasy password's are easy to crack and unsecure")
                         print("\n")
-                        input("Press enter to continue : ")
+                        self.customInput("Press enter to continue : ")
                         continue
 
-                    passwordInput1 = self.encryptThing(passwordInput1 , passwordInput2)
+                    
+
+                    key = Fernet.generate_key()
+                    newKey = key.decode("utf-8")
+
+                    toAdd0 = self.encryptThing("helloIAmJarvis&IAmHereToAssistYou", passwordInput2)
+                    toAdd1 = self.encryptThing(newKey , passwordInput2)
+
 
                     # adding password to data base and class variable
-                    self.addToTable("!@#$%^&*(" , passwordInput1)
+                    self.addToTable(toAdd0 , toAdd1)
+                    self.addToTable("!@#$%^&*(" , "!@#$%^&*(")
                     self.password = passwordInput2
                     print("congo , new Password setted successfully")
                     break
@@ -333,7 +355,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                 # if the password does not match , continue the loop
                 else:
                     print("\nPassword did not match\n")
-                    input("press enter to continue...")
+                    self.customInput("press enter to continue...")
             self.cLog.log("setPass func runned successfully in main for password" , "i")
         except Exception as e:
             self.cLog.log("error while setting password in main for password", "e")
@@ -348,27 +370,21 @@ driverFunc()        ->  this is the only method that you need to use this method
             customClearScreen()
             passwordInput = str(hashPasswordInput("Enter Master Password : "))
 
-            if(passwordInput == ""):
-                return False
-
             # generating query for sqlite3 obj to execute
             stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
             cursor = self.connectionObj.execute(stringToPass)
             for row in cursor:
-                if(row[0] == "!@#$%^&*("):
-                    passwordFromDataBase = row[1]
-                    passwordFromDataBase = self.decryptThing(passwordFromDataBase , passwordInput)
-                    # print(passwordFromDataBase , passwordInput)
-                    if(passwordFromDataBase == passwordInput):
-                      
-                        self.password = passwordInput
-                        self.oldPassword = passwordInput
-                        self.cLog.log("authenticate function runned successfully in main for password" , "i")
-                        return True
+                toCompare = self.decryptThing(row[0] , passwordInput)
+                if(toCompare == "helloIAmJarvis&IAmHereToAssistYou"):
+                    self.password = passwordInput
+                    key = self.decryptThing(row[1] , passwordInput)
+                    self._key = bytes(key , "utf-8")
+                    self.cLog.log("authenticate function runned successfully in main for password" , "i")
+                    return True
             
-            else:
-                self.cLog.log("authenticate function runned successfully in main for password" , "i")
-                return False
+            
+            self.cLog.log("authenticate function runned successfully in main for password" , "i")
+            return False
 
 
         except Exception as e:
@@ -378,42 +394,47 @@ driverFunc()        ->  this is the only method that you need to use this method
 
     # function for changing the password
     # it is bit more complicated as we to encrypt all passwords again with the key = newPassword    
-    def changePassword(self):
+    def changePassword(self , transfer = False):
         try:
             while(1):
+                
 
                 # you can only change password if you are rigth user
                 if(self.authenticate()):
-                    self.deleteFromTable("!@#$%^&*(")
-                    self.setPass()
 
                     # generating query for sqlite3 obj to execute
                     stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
-                    cursorForCounting = self.connectionObj.execute(stringToPass)
                     cursor = self.connectionObj.execute(stringToPass)
+
+                    for row in cursor:
+                        toCompare = self.decryptThing(row[0] , self.password)
+                        if(toCompare == "helloIAmJarvis&IAmHereToAssistYou"):
+                            self.deleteFromTable(toCompare)
+                        
+                    self.setPass()
                     
-                    countForCursor = 1          
                     tempList = []
                     
                     print("\nGetting old database")
                     for row in cursor:
                         # do not want to change master password as it as already been updated
-                        if(row[0] == "!@#$%^&*("):
+                        toCompare = self.decryptThing(row[0] , self.password)
+                        if(toCompare == "helloIAmJarvis&IAmHereToAssistYou"):
                             pass
                         else:
                             # getting keys
                             oldKey = row[0]
                             # decrypting it
-                            oldKeyD = self.decryptThing(oldKey , self.oldPassword)
+                            oldKeyD = self.decryptThing2(oldKey)
                             # encrypting it
-                            newKey = self.encryptThing(oldKeyD , self.password)
+                            newKey = self.encryptThing2(oldKeyD)
 
                             # getting passwords
                             oldPass = row[1]
                             # decryting it 
-                            oldPassD = self.decryptThing(oldPass, self.oldPassword)
+                            oldPassD = self.decryptThing2(oldPass)
                             # encrypting it again with new password
-                            newPass = self.encryptThing(oldPassD, self.password)
+                            newPass = self.encryptThing2(oldPassD)
                        
                             
                             # adding to table for latter updation
@@ -435,7 +456,75 @@ driverFunc()        ->  this is the only method that you need to use this method
 
                 else:
                     print("Wrong password...")
-                    input("press enter to continue...")
+                    self.customInput("press enter to continue...")
+            self.cLog.log("change password function runned successfully in main for password" , "i")
+        except Exception as e:
+            self.cLog.log("error while changing password in main for password", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/changePassword")
+
+    
+    def changePassword2(self , tranfer = False):
+        try:
+            while(1):
+                
+
+                # you can only change password if you are rigth user
+                if(tranfer):
+
+                    # generating query for sqlite3 obj to execute
+                    stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
+                    cursor = self.connectionObj.execute(stringToPass)
+
+                    for row in cursor:
+                        if(row[0] == "!@#$%^&*("):
+                            self.deleteFromTable("!@#$%^&*(")
+                    
+                    self.setPass()
+                    
+                    tempList = []
+                    
+                    print("\nGetting old database")
+                    for row in cursor:
+                        # do not want to change master password as it as already been updated
+                        toCompare = self.decryptThing(row[0] , self.password)
+                        if(toCompare == "helloIAmJarvis&IAmHereToAssistYou"):
+                            pass
+                        else:
+                            # getting keys
+                            oldKey = row[0]
+                            # decrypting it
+                            oldKeyD = self.decryptThing(oldKey , self.oldPassword)
+                            # encrypting it
+                            newKey = self.encryptThing2(oldKeyD)
+
+                            # getting passwords
+                            oldPass = row[1]
+                            # decryting it 
+                            oldPassD = self.decryptThing(oldPass, self.oldPassword)
+                            # encrypting it again with new password
+                            newPass = self.encryptThing2(oldPassD)
+                       
+                            
+                            # adding to table for latter updation
+                            innerTempList = []
+                            innerTempList.append(newKey)
+                            innerTempList.append(newPass)
+                            tempList.append(innerTempList)
+
+                            # deleting existing values form data base
+                            self.deleteFromTable(oldKey)
+                    
+                    # adding new values to the data base
+                    print("\nImplementing new database")
+                    for i in tempList:
+                        self.addToTable(i[0] , i[1])
+                    
+                    print("\n\nPassword change process completed")
+                    break
+
+                else:
+                    print("Wrong password...")
+                    self.customInput("press enter to continue...")
             self.cLog.log("change password function runned successfully in main for password" , "i")
         except Exception as e:
             self.cLog.log("error while changing password in main for password", "e")
@@ -450,7 +539,7 @@ driverFunc()        ->  this is the only method that you need to use this method
             return str(stringToReturn)
         except Exception as e:
             print("\nSomething went wrong while encrypting, Please Try again, if error persist, run troubleShoot command")
-            input("press enter to continue...")
+            self.customInput("press enter to continue...")
             self.cLog.log("error while encrypting thing in main for password", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/encryptThing")
 
@@ -462,13 +551,47 @@ driverFunc()        ->  this is the only method that you need to use this method
             self.cLog.log("decrypting thing func runned successfully in main for password" , "i")
             return str(stringToReturn)
         except Exception as e:
-            # if(self.cLog.troubleShoot == False):
-            #     print("\nSomething went wrong while decrypting, Please Try again, if error persist, run troubleShoot command")
-            # else:
-            #     print("\nerror has been logged - continue...")
-            # input("press enter to continue...")
+            if(self.cLog.troubleShoot == False):
+                print("\nSomething went wrong while decrypting, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
+            self.customInput("press enter to continue...")
             self.cLog.log("error while decrypting in main for password", "e")
             self.cLog.exception(str(e) , "mainForPassword.py/decryptingThing")
+
+
+    # function for encrypting a thing with the key passed
+    def encryptThing2(self , thing):
+        try:
+            cipher_suite = Fernet(self._key)
+            stringToPass = bytes(thing , "utf-8")
+            encoded_text = cipher_suite.encrypt(stringToPass)
+            self.cLog.log("encrypting thing func runned successfully in main for password" , "i")
+            return encoded_text.decode("utf-8")
+        except Exception as e:
+            print("\nSomething went wrong while encrypting, Please Try again, if error persist, run troubleShoot command")
+            self.customInput("press enter to continue...")
+            self.cLog.log("error while encrypting thing in main for password", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/encryptThing2")
+
+
+    # function for decrypting a thing with the key passed
+    def decryptThing2(self , thing):
+        try:
+            cipher_suite = Fernet(self._key)
+            stringToPass = bytes(thing , "utf-8")
+            decoded_text = cipher_suite.decrypt(stringToPass)
+            stringToReturn = decoded_text.decode("utf-8")
+            self.cLog.log("decrypting thing func runned successfully in main for password" , "i")
+            return str(stringToReturn)
+        except Exception as e:
+            if(self.cLog.troubleShoot == False):
+                print("\nSomething went wrong while decrypting, Please Try again, if error persist, run troubleShoot command")
+            else:
+                print("\nerror has been logged - continue...")
+            self.customInput("press enter to continue...")
+            self.cLog.log("error while decrypting in main for password", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/decryptingThing2")
 
 
     # function for Getting things done
@@ -478,11 +601,11 @@ driverFunc()        ->  this is the only method that you need to use this method
             # for adding things to DB
             if("-a" in commandList):
                 customClearScreen()
-                x = input("Enter Website name for future referencing : ") 
-                y = input("Enter the Password : ")
+                x = self.customInput("Enter Website name for future referencing : ") 
+                y = self.customInput("Enter the Password : ")
                 
-                x = self.encryptThing(x , self.password)
-                y = self.encryptThing(y , self.password)
+                x = self.encryptThing2(x)
+                y = self.encryptThing2(y)
 
                 self.addToTable(str(x) , str(y))
 
@@ -492,7 +615,7 @@ driverFunc()        ->  this is the only method that you need to use this method
             # for deleting things
             elif("-d" in commandList):
                 customClearScreen()
-                webDelete = input("Enter the Website name for deletion : ")
+                webDelete = self.customInput("Enter the Website name for deletion : ")
                 # generating query for sqlite3 obj to execute
                 stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
                 cursor = self.connectionObj.execute(stringToPass)
@@ -503,10 +626,17 @@ driverFunc()        ->  this is the only method that you need to use this method
 
                 customClearScreen()
                 for row in cursor:
+
+                    toCompare = self.decryptThing2(row[0])
+
                     if(row[0] == "!@#$%^&*("):
                         pass
+
+                    elif(toCompare == self.password):
+                        pass
+
                     else:
-                        tempDecrypt = self.decryptThing(row[0] , self.password)
+                        tempDecrypt = self.decryptThing2(row[0])
                         if(self.isSubString(tempDecrypt , webDelete)):
                             print(indexCount , end = " : ")
                             print("Site - ", tempDecrypt)
@@ -516,10 +646,10 @@ driverFunc()        ->  this is the only method that you need to use this method
                     
                 if(count > 0):
                     print("\nEnter Index for deletion (space seperated for multiple) , Enter 0 to delete all : ")
-                    indexList = [int(x) for x in input().split()]
+                    indexList = [int(x) for x in self.customInput().split()]
 
                     print("\nPress enter to confirm delete , Notice - ones deleted you cannot get them back")
-                    input()
+                    self.customInput()
 
                     somethingDeleted = False
 
@@ -549,31 +679,38 @@ driverFunc()        ->  this is the only method that you need to use this method
                 stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
                 cursor = self.connectionObj.execute(stringToPass)
                 
-                toUpdate = input("Enter the website name to update : ")
+                toUpdate = self.customInput("Enter the website name to update : ")
                 toUpdateList = []
 
                 indexCount = 1
                 
                 for row in cursor:
+
+                    toCompare = self.decryptThing2(row[0])
+
                     if(row[0] == "!@#$%^&*("):
                         pass
+                    
+                    elif(toCompare == self.password):
+                        pass
+     
                     else:
-                        tempDecrypt = self.decryptThing(row[0] , self.password)
+                        tempDecrypt = self.decryptThing2(row[0])
                         if(self.isSubString(tempDecrypt , toUpdate)):
                             print(indexCount , end = " : ")
                             print("Site - ", tempDecrypt , end = "    ")
-                            print("Old Password - " , self.decryptThing(row[1] , self.password))
+                            print("Old Password - " , self.decryptThing2(row[1]))
                             toUpdateList.append(row[0])  
                 print()
-                indexInput = int(input("Enter Index for update : "))
+                indexInput = int(self.customInput("Enter Index for update : "))
                 
                 ifUpdatedSomething = False
 
                 for i,j in enumerate(toUpdateList):
                     if(i+1 == indexInput):
                         print()
-                        updated = input("Enter the Updated Password : ")
-                        updated = self.encryptThing(updated , self.password)
+                        updated = self.customInput("Enter the Updated Password : ")
+                        updated = self.encryptThing2(updated)
                         self.updateInTable(str(j) , str(updated))
                         ifUpdatedSomething = True
                 
@@ -593,7 +730,7 @@ driverFunc()        ->  this is the only method that you need to use this method
             # displaying things in the DB according to search query
             elif("-s" in commandList):
                 customClearScreen()
-                searchItem = input("Enter the website name to display Password : ")
+                searchItem = self.customInput("Enter the website name to display Password : ")
                 self.displaySearch(searchItem)
                 self.cLog.log("getDone func runned successfully in main for password" , "i")
                 return True
@@ -612,6 +749,33 @@ driverFunc()        ->  this is the only method that you need to use this method
             self.cLog.exception(str(e) , "mainForPassword.py/getDone")
             print("Oops something went wrong :( ")
 
+    def authenticatePrev(self):
+        try:
+            customClearScreen()
+            passwordInput = str(hashPasswordInput("Enter Master Password : "))
+
+            # generating query for sqlite3 obj to execute
+            stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
+            cursor = self.connectionObj.execute(stringToPass)
+            for row in cursor:
+                if(row[0] == "!@#$%^&*("):
+                    passwordFromDataBase = row[1]
+                    passwordFromDataBase = self.decryptThing(passwordFromDataBase , passwordInput)
+                    if(passwordFromDataBase == passwordInput):
+                        self.password = passwordInput
+                        self.oldPassword = passwordInput
+                        self.cLog.log("authenticate function runned successfully in main for password" , "i")
+                        return True
+            
+            
+            self.cLog.log("authenticate function runned successfully in main for password" , "i")
+            return False
+
+
+        except Exception as e:
+            self.cLog.log("error while authenticating", "e")
+            self.cLog.exception(str(e) , "mainForPassword.py/authenticate")
+
     # fuction for driving all the things
     def driverFunc(self , onlyAuthenticate = False):
         self.connectToDB()
@@ -622,37 +786,63 @@ driverFunc()        ->  this is the only method that you need to use this method
         stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
         cursor = self.connectionObj.execute(stringToPass)
         count = 0
+        previous = 1
 
-        # checking whether it is users first time or not
         for row in cursor:
-            if (row[0] == "!@#$%^&*("):
-                self.passwordFromDB_encrypted = row[1]
-                count += 1
+            if(row[0] == "!@#$%^&*("):
+                count = 1
+
+        for row in cursor:
+            if((row[0] == "!@#$%^&*(") and (row[1] == "!@#$%^&*(")):
+                previous = 0
+
         
-        # if it is first time then he is required to set a password
+        # if it is first time then required to set a password
         if(count == 0):
             self.setPass()
             print("\n\n")
-            input("press enter to continue...")
+            self.customInput("press enter to continue...")
 
         # checking whether the user is right or not
         while(1):
-            if(self.authenticate()):
-
-                # if the outside inside the password
-                if(self.onlyAuthenticate == True):
-                    return self.password
-                break
+            if(previous == 0):
+                if(self.authenticatePrev()):
+                    # if the outside inside the password
+                    if(self.onlyAuthenticate == True):
+                        return self.password
+                    break
+                else:
+                    print("\nwrong password....\n")
+                    self.customInput("press enter to continue...")
+            
             else:
-                print("\nwrong password....\n")
-                input("press enter to continue...")
+                if(self.authenticate()):
+
+                    # if the outside inside the password
+                    if(self.onlyAuthenticate == True):
+                        return self.password
+                    break
+                else:
+                    print("\nwrong password....\n")
+                    self.customInput("press enter to continue...")
         
         customClearScreen()
 
         # starting module
         while(1):
+            # generating query for sqlite3 obj to execute
+            stringToPass = "SELECT PASSWORD_FOR , PASSWORD_VALUE from " + self.tableNameForDB
+            cursor = self.connectionObj.execute(stringToPass)
+            for row in cursor:
+                if((row[0] == "!@#$%^&*(") and (row[1] != "!@#$%^&*(")):
+                    customClearScreen()
+                    print("jarvis encryption as been updated , so you have to set a new password ...")
+                    input("\n\npress enter to continue ...")
+                    self.changePassword2(True)
+
+            
             # taking command
-            stringOfCommandInput = input("Enter Command For Password Manager in JARVIS : ")
+            stringOfCommandInput = self.customInput("Enter Command For Password Manager in JARVIS : ")
             
             # generating commandList from input
             try:
@@ -672,7 +862,7 @@ driverFunc()        ->  this is the only method that you need to use this method
                     print("Sorry , cannot recognise the command :(\n")
             
             print("\n\n")
-            input("press enter to continue...")
+            self.customInput("press enter to continue...")
             customClearScreen()
 
 

@@ -143,6 +143,7 @@ from imports.harshNative_github.txtCompare.txtComparePy import *
 from imports.harshNative_github.hangMan_game.hangmanGame import *
 from packages.loggerPackage.loggerFile import *
 from packages.PasswordStorer.mainForPasswordStorer import *
+from packages.PasswordStorer.mainForPassword2 import *
 from packages.settings.jarvisSetting import *
 from packages.weather.getWeather import *
 from packages.backUp_utility.backUp import *
@@ -1348,9 +1349,17 @@ def executeCommands(command):
             return False
  
 
+    # calling for password manager old
+    elif(isSubStringsNoCase(command , "password old")):
+        objPasswordStorerClass = PasswordStorerClass(troubleShootValue , toMakeTypingSound)
+        objPasswordStorerClass.driverFunc()
+        return True
+
     # calling for password manager
     elif(isSubStringsNoCase(command , "password")):
-        objPasswordStorerClass = PasswordStorerClass(troubleShootValue , toMakeTypingSound)
+        customClearScreen()
+        print("password module as been updated with new encryption algo , to use old one use password old command")
+        objPasswordStorerClass = PasswordStorerClass2(troubleShootValue , toMakeTypingSound)
         objPasswordStorerClass.driverFunc()
         return True
 
