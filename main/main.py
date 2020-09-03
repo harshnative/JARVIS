@@ -1350,18 +1350,11 @@ def executeCommands(command):
  
 
     # calling for password manager old
-    elif(isSubStringsNoCase(command , "password old")):
+    elif(isSubStringsNoCase(command , "password")):
         objPasswordStorerClass = PasswordStorerClass(troubleShootValue , toMakeTypingSound)
         objPasswordStorerClass.driverFunc()
         return True
 
-    # calling for password manager
-    elif(isSubStringsNoCase(command , "password")):
-        customClearScreen()
-        print("password module as been updated with new encryption algo , to use old one use password old command")
-        objPasswordStorerClass = PasswordStorerClass2(troubleShootValue , toMakeTypingSound)
-        objPasswordStorerClass.driverFunc()
-        return True
 
     # handling cmd commands
     elif(isSubStringsNoCase(command , "start cmd")):
