@@ -9,13 +9,20 @@ isOnLinux = False
 
 import os
 
+import platform
+import time
+
 # Checking weather the user is on windows or not
-try:
-    temp = os.environ
-    tempUserName = temp["USERNAME"]
-    isOnWindows = True
-except Exception:
+osUsing = platform.system()
+
+if(osUsing == "Linux"):
     isOnLinux = True
+elif(osUsing == "Windows"):
+    isOnWindows = True
+else:
+    print("Jarvis currently does not support this operating system :(")
+    time.sleep(3)
+    exit()
 
 
 # custom logger class
