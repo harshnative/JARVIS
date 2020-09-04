@@ -44,15 +44,6 @@ def open_file(filename):
         sp.call([opener, filename])
 
 
-from easyTypeWriter import typeWriter
-
-# creating objects of typewriter module
-typeWriterObj = typeWriter.EasyInput()
-
-# setting paths required for typeWriterObj
-typeWriterObj.setEnterAudioPath("sounds/ding3.wav")
-typeWriterObj.setKeyboardAudioPath("sounds/keysound30.wav")
-
 
 class Setting():
     """
@@ -80,12 +71,6 @@ methods -
         else:
             self.pathToSetting = folderPathLinux + r"/settings.txt"
 
-    # typeWriter input function
-    def customInput(self , messagePrompt = ""):
-        toMakeTypingSound = self.makeKeyboardSound
-
-        x = typeWriterObj.takeInput(toMakeTypingSound , messagePrompt)
-        return str(x)
 
     # method for making dictionary by reading the txt file
     def makeDictionaryFromTxt(self):

@@ -42,16 +42,6 @@ def hashPasswordInput(message):
 
 
 
-from easyTypeWriter import typeWriter
-
-# creating objects of typewriter module
-typeWriterObj = typeWriter.EasyInput()
-
-# setting paths required for typeWriterObj
-typeWriterObj.setEnterAudioPath("sounds/ding3.wav")
-typeWriterObj.setKeyboardAudioPath("sounds/keysound30.wav")
-
-
 
 class PasswordStorerClass:
 
@@ -89,13 +79,7 @@ driverFunc()        ->  this is the only method that you need to use this method
         elif(isOnLinux):
             self.toDataBasePath = folderPathLinux
 
-    
-    # typeWriter input function
-    def customInput(self , messagePrompt = ""):
-        toMakeTypingSound = self.makeKeyboardSound
-            
-        x = typeWriterObj.takeInput(toMakeTypingSound , messagePrompt)
-        return str(x)
+
         
         
     

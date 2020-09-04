@@ -127,7 +127,6 @@ import datetime
 import shutil
 import ctypes
 from os import execlp, path
-from easyTypeWriter import typeWriter
 import multiprocessing
 import sys
 from tkinter import filedialog
@@ -157,26 +156,6 @@ if(len(sys.argv) > 1):
     directRunFromCmd = True
 
 
-# implementing the type writer module
-# creating objects of typewriter module
-typeWriterObj = typeWriter.EasyInput()
-
-# setting paths required for typeWriterObj
-typeWriterObj.setEnterAudioPath("sounds/ding3.wav")
-typeWriterObj.setKeyboardAudioPath("sounds/keysound30.wav")
-
-# typeWriter input function
-def customInput(messagePrompt = ""):
-    global toMakeTypingSound
-
-    x = typeWriterObj.takeInput(toMakeTypingSound , messagePrompt)
-    return str(x)
-
-
-
-
-
-
 # generating jarvis folder were the data will be stored
 try:
     if(isOnWindows):
@@ -187,7 +166,7 @@ try:
 except Exception:
     customClearScreen()
     print("Critical Error - could not generate jarvis folder in program data - contact developer")
-    customInput("press enter to continue...")
+    input("press enter to continue...")
 
 
 
@@ -389,7 +368,7 @@ def troubleShootFunc():
         #main command copied below with some modification
         print(f"welcome {objMainClass.returnUserName()}\n")
         print("You are in touble shoot mode : enter exit to exit troubleShootMode\n")
-        commandInput = customInput("Enter Command in which you faced error and try to repeat the process : ")
+        commandInput = input("Enter Command in which you faced error and try to repeat the process : ")
         if(handleGetHelp(commandInput)):
             pass
         if(isSubString(commandInput , "troubleshoot") or isSubString(commandInput , "TroubleShoot") or isSubString(commandInput , "troubleShoot") or isSubString(commandInput , "Troubleshoot")):
@@ -402,7 +381,7 @@ def troubleShootFunc():
         else:
             if(executeCommands(commandInput)):
                 print("\n\n")
-                customInput("press enter to continue...")
+                input("press enter to continue...")
 
                 customClearScreen()
                 
@@ -419,7 +398,7 @@ def troubleShootFunc():
                     print("\nNOTE : log file only contains diagnos data , NO personal information is stored")
                     
                 print("\n\n")
-                customInput("press enter to continue...")
+                input("press enter to continue...")
                 break
 
             else:
@@ -428,7 +407,7 @@ def troubleShootFunc():
                 print("oops could not regonise the command , please enter the same command in which you previously faced error")
 
         print("\n\n")
-        customInput("press enter to continue...")
+        input("press enter to continue...")
     
     troubleShootValue = False
     cLog.setTroubleShoot(troubleShootValue)
@@ -637,7 +616,7 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
 
                 cLog.log("user as not setted city in setting", "i")
                 print("\nit looks like you have not setted any city in setting , run setting command to open settings\n")
-                customInput("press enter to continue...")
+                input("press enter to continue...")
 
                 # this is a critical error , so calling main again to restart the program
                 main()
@@ -869,7 +848,7 @@ def executeCommands(command):
         customClearScreen()
         print("Hello sir, What can i do for you. You can ask for help also (^_^)")
         print("\n")
-        command = customInput("Enter Command : ")
+        command = input("Enter Command : ")
         executeCommands(command)
         return True
     
@@ -990,7 +969,7 @@ def executeCommands(command):
         customClearScreen()
 
         print("settings have been updated , programm will restart now\n\n")
-        customInput("press enter to continue...")
+        input("press enter to continue...")
         restart_program()
 
     # calling for backup command
@@ -1058,7 +1037,7 @@ def executeCommands(command):
             print("\nAs right now some important files will not be backed up due to permission issues")
             print("\nIf you still want to continue then type continue below or press enter to exit\n")
 
-            inputForContinueOrNot = customInput(" : ")
+            inputForContinueOrNot = input(" : ")
 
             if(inputForContinueOrNot == "continue"):
                 pass
@@ -1099,7 +1078,7 @@ def executeCommands(command):
                 print("folder in path to backup in settings already exit or may be the path is not found")
                 print("\n\nif the folder already exit - then all the file's will be overRidden")
                 print("\n\npress enter to continue with backup or close the program to stop it")
-                customInput()
+                input()
                 customClearScreen()
 
         # checking if -d is in command
@@ -1435,7 +1414,7 @@ def executeCommands(command):
             
             while(1):
 
-                folderShare = customInput("Enter the folder path to share or enter 0 to quit : ")
+                folderShare = input("Enter the folder path to share or enter 0 to quit : ")
 
                 if(path.exists(str(folderShare)) == True):
                     break
@@ -1447,10 +1426,10 @@ def executeCommands(command):
                     customClearScreen()
                     print("system could find the entered path, please try again or enter 0 to quit")
                     print("\n\n")
-                    customInput("press enter to continue ...")
+                    input("press enter to continue ...")
 
             print("\n\n")
-            customInput("press enter to continue...")
+            input("press enter to continue...")
 
         
         try:
@@ -1690,7 +1669,7 @@ def main():
             
 
             print(f"Welcome {objMainClass.returnUserName()}\n")
-            commandInput = customInput("Enter Command : ")
+            commandInput = input("Enter Command : ")
                     
             if(handleGetHelp(commandInput)):
                 pass
@@ -1703,7 +1682,7 @@ def main():
                     print("oops could not regonise the command try typing help for info")
 
             print("\n\n")
-            customInput("press enter to continue...")
+            input("press enter to continue...")
 
 
 def driverForMain():
