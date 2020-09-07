@@ -16,7 +16,6 @@ userName =
 # Greeting :
 greeting = Welcome
 
-# Make keyBoard sound (true / false) : 
-makeKeyBoardSound = true
-
+# Make start sound (true / false) :
+makeStartSound = true
 
