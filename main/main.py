@@ -1608,7 +1608,7 @@ def main():
     # setting api key's
 
     # for weather module - get your api key from open weather and pass it here
-    WeatherData.setApiKey("fe82651e607e46db61dba45e39aa7e17")
+    WeatherData.setApiKey("")
 
     # checking the api key's
     if(WeatherData.returnApiKeyStatus() == False):

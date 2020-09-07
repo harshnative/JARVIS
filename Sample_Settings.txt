@@ -1,17 +1,17 @@
 # Your defualt city
-City = 
+City = London
 
 # Directories of backup - seperated by comma's in  - ex - D:/myfiles/images , E:/data/documents
-Directories = 
+Directories = D:/myfiles
 
 # path to backup - ex - F:/myBackup
-backUpPath = 
+backUpPath = F:/myfiles
 
 #  path to backup for jarvis - ex - F:/myBackup
-backUpPathForJarvis = 
+backUpPathForJarvis = F:/jarvisBackup
 
 # User Name :
-userName = 
+userName = your_name_here
 
 # Greeting :
 greeting = Welcome
