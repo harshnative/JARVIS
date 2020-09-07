@@ -142,7 +142,6 @@ from imports.harshNative_github.txtCompare.txtComparePy import *
 from imports.harshNative_github.hangMan_game.hangmanGame import *
 from packages.loggerPackage.loggerFile import *
 from packages.PasswordStorer.mainForPasswordStorer import *
-from packages.PasswordStorer.mainForPassword2 import *
 from packages.settings.jarvisSetting import *
 from packages.weather.getWeather import *
 from packages.backUp_utility.backUp import *
@@ -862,6 +861,9 @@ def executeCommands(command):
             print("weather api key is either empty or not setted")
             return True
 
+        customClearScreen()
+        print("please wait while jarvis fetches weather data")
+
         # creating object of main weather class
         objMainWeatherClass = MainWeatherClass()
         commandList = command.split()
@@ -1573,7 +1575,7 @@ def executeCommands(command):
         return True
 
     # calling for exit command
-    elif(isSubStringsNoCase(command , "exit")):
+    elif(isSubStringsNoCase(command , "exit") or isSubStringsNoCase(command , "bye")):
 
         if(not(directRunFromCmd)):
             customClearScreen()
@@ -1606,7 +1608,7 @@ def main():
     # setting api key's
 
     # for weather module - get your api key from open weather and pass it here
-    WeatherData.setApiKey("")
+    WeatherData.setApiKey("fe82651e607e46db61dba45e39aa7e17")
 
     # checking the api key's
     if(WeatherData.returnApiKeyStatus() == False):

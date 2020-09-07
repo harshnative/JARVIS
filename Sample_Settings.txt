@@ -1,18 +1,22 @@
 # Your defualt city
-City = london
+City = 
 
-# Directories of backup (mention folders here to directly backup files with backup -d command) - seperated by comma's in  - ex - D:/myfiles/images , E:/data/documents
+# Directories of backup - seperated by comma's in  - ex - D:/myfiles/images , E:/data/documents
 Directories = 
 
-# path to backup (for backup utility) - ex - F:/myBackup
+# path to backup - ex - F:/myBackup
 backUpPath = 
 
-# path to backup for jarvis (for backing up jarvis files like encrypted passwords and settings) - ex - F:/myBackup
+#  path to backup for jarvis - ex - F:/myBackup
 backUpPathForJarvis = 
 
 # User Name :
-userName = your_name_here
+userName = 
 
 # Greeting :
 greeting = Welcome
+
+# Make keyBoard sound (true / false) : 
+makeKeyBoardSound = true
+
 
