@@ -418,8 +418,11 @@ def troubleShootFunc():
 
 
 # function to handle file sharing using easyFileShare - module 
-def handleFileShare(folderPass , portNumber = 8000):
+def handleFileShare(folderPass , portNumber = 8000 , passIpOnly = False):
     obj = FS.FileShareClass()
+
+    if(passIpOnly):
+        return str(obj.get_ip_address())
 
     # multi process starts the whole program again
     changeRunLoadingAnimation()
@@ -1440,8 +1443,8 @@ def executeCommands(command):
             fileShareThread = multiprocessing.Process(target=handleFileShare, args=(folderShare , portNumberForFileShare))
             fileShareThread.start()
             
-
-            threadOpenedList.append("File sharing is currently active")
+            toAppend = "File sharing is currently active at " + handleFileShare(folderShare , portNumberForFileShare , True) + ":" + str(portNumberForFileShare)
+            threadOpenedList.append(toAppend)
 
         except Exception as e:
             print("could not start file share , make sure you are connected to the internet .\nif the error persist run the troubleshoot command ")
