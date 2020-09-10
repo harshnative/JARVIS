@@ -48,6 +48,8 @@ import time
 import subprocess as sp
 import time
 from threading import Thread
+import sys
+
 
 
 
@@ -64,7 +66,7 @@ elif(osUsing == "Windows"):
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
-    exit()
+    sys.exit()
 
 
 
@@ -128,7 +130,6 @@ import shutil
 import ctypes
 from os import execlp, path
 import multiprocessing
-import sys
 from tkinter import filedialog
 from tkinter import *
 import subprocess
@@ -1321,11 +1322,11 @@ def executeCommands(command):
         else:
             if(isOnWindows):
                 os.system("python main/main.py")
-                exit()
+                sys.exit()
 
             elif(isOnLinux):
                 os.system("python3 main/main.py")
-                exit()
+                sys.exit()
                 
             return False
  
@@ -1351,7 +1352,7 @@ def executeCommands(command):
         print("\njarvis opened in command prompt")
         print("\nExisting this instance of jarvis")
         time.sleep(1)
-        exit()
+        sys.exit()
 
     elif(isSubStringsNoCase(command , "set port file")):
         commandList = command.split()
@@ -1597,7 +1598,7 @@ def executeCommands(command):
         if(not(directRunFromCmd)):
             customClearScreen()
 
-        exit()
+        sys.exit()
 
     # if none of the above command is executed than return false to tell the user that the command entered was incorrect
     return False
