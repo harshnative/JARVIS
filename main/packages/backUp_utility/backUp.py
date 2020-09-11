@@ -77,6 +77,7 @@ class BackUp():
         self.exceptionList = []
         self.listOfDirectories = []
         self.countCopy = 1
+        self.noOfFilesCopied = 0
 
 
     def getListOfFiles_forCustomCopy(self , dirName):
@@ -102,6 +103,7 @@ class BackUp():
         print("Currently Copying - \n\n{}\n\nto\n\n{}".format(src , dst))
         print("\n\nfiles left to copy = {}".format(self.countCopy))
         self.countCopy += -1 
+        self.noOfFilesCopied += 1
 
         if not os.path.exists(dst):
             os.makedirs(dst)
@@ -383,6 +385,7 @@ class BackUp():
     # driver function of the class this is what you will be calling
     def startBackUp(self, commandList , additionalDirectoryList , pathToBackup , toGenerateLogFile = True):
         
+        self.noOfFilesCopied = 0
         self.getUserName()
         self.setPathToBackup(pathToBackup)
         self.getListOfDirectories(additionalDirectoryList)
@@ -404,6 +407,8 @@ class BackUp():
 
         if(toGenerateLogFile):
             self.logFileGenerator()
+
+        print("\nCopied = {}".format(self.noOfFilesCopied))
 
         self.cLog.log("startBackUp function runned successfully", "i")
 
