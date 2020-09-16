@@ -3,18 +3,16 @@ import time
 from packages.loggerPackage.loggerFile import *
 import shutil
 
-
-
-
-folderPathWindows = r"C:\programData\Jarvis"
-folderPathLinux = r"~/.config/Jarvis"
-folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
-
-
 import subprocess as sp
 
-isOnWindows = False
-isOnLinux = False
+class GlobalData:
+
+    folderPathWindows = r"C:\programData\Jarvis"
+    folderPathLinux = r"~/.config/Jarvis"
+    folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
+
+    isOnWindows = False
+    isOnLinux = False
 
 import platform
 import time
@@ -23,9 +21,9 @@ import time
 osUsing = platform.system()
 
 if(osUsing == "Linux"):
-    isOnLinux = True
+    GlobalData.isOnLinux = True
 elif(osUsing == "Windows"):
-    isOnWindows = True
+    GlobalData.isOnWindows = True
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
@@ -34,7 +32,7 @@ else:
 
 # clear screen function 
 def customClearScreen():
-    if(isOnWindows == True):
+    if(GlobalData.isOnWindows == True):
         os.system("cls")
     else:
         sp.call('clear',shell=True)
@@ -73,10 +71,10 @@ methods -
         self.troubleShootValue = troubleShootValuePass
         self.cLog = Clogger()
         self.cLog.setTroubleShoot(self.troubleShootValue)
-        if(isOnWindows):
-            self.pathToSetting = folderPathWindows_simpleSlash + r"\settings.txt"
+        if(GlobalData.isOnWindows):
+            self.pathToSetting = GlobalData.folderPathWindows_simpleSlash + r"\settings.txt"
         else:
-            self.pathToSetting = folderPathLinux + r"/settings.txt"
+            self.pathToSetting = GlobalData.folderPathLinux + r"/settings.txt"
 
 
     # method for making dictionary by reading the txt file

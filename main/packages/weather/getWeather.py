@@ -6,8 +6,9 @@ from packages.loggerPackage.loggerFile import *
 import subprocess as sp
 """ this is using the open weather api """
 
-isOnWindows = False
-isOnLinux = False
+class GlobalData:
+    isOnWindows = False
+    isOnLinux = False
 
 
 import platform
@@ -16,9 +17,9 @@ import time
 osUsing = platform.system()
 
 if(osUsing == "Linux"):
-    isOnLinux = True
+    GlobalData.isOnLinux = True
 elif(osUsing == "Windows"):
-    isOnWindows = True
+    GlobalData.isOnWindows = True
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
@@ -28,7 +29,7 @@ else:
 
 # clear screen function 
 def customClearScreen():
-    if(isOnWindows == True):
+    if(GlobalData.isOnWindows == True):
         os.system("cls")
     else:
         sp.call('clear',shell=True)
