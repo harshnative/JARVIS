@@ -4,40 +4,50 @@ print("\nStarting Program...")
 
 
 
-
-
-
 # declaring global variables -
-# global variable for making sound while typing
-toMakeTypingSound = False
+class GlobalData:
+    # global variable for making sound while typing
+    toMakeTypingSound = False
+    
+    # setting TroubleShoot Value
+    troubleShootValue = True
 
-# setting TroubleShoot Value
-troubleShootValue = True
+    # initialising the global variable to False so that it can be changed if the operating system is supported
+    isOnWindows = False
+    isOnLinux = False
 
-# initialising the global variable to False so that it can be changed if the operating system is supported
-isOnWindows = False
-isOnLinux = False
+    # setting default port number for file share 
+    portNumberForFileShare = 5000
+    
+    # global variable for running loading animation is set to true 
+    runLoadingAnimation = True
+    loadingAnimationCount = 10
 
-# setting default port number for file share 
-portNumberForFileShare = 5000
+    # list of currenlty opened thread
+    threadOpenedList = []  
 
-# global variable for running loading animation is set to true 
-runLoadingAnimation = True
-loadingAnimationCount = 10
+    # default paths for program data 
+    folderPathWindows = r"C:\programData\Jarvis"
+    folderPathLinux = r"~/.config/Jarvis"
+    folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
 
-# list of currenlty opened thread
-threadOpenedList = []  
+    # mutpliprocess thread will be stored in this
+    fileShareThread = None
 
-# default paths for program data 
-folderPathWindows = r"C:\programData\Jarvis"
-folderPathLinux = r"~/.config/Jarvis"
-folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
+    # global variable for knowing if the jarvis is runned by cmd arguments
+    directRunFromCmd = False
 
-# mutpliprocess thread will be stored in this
-fileShareThread = None
 
-# global variable for knowing if the jarvis is runned by cmd arguments
-directRunFromCmd = False
+
+
+
+
+
+
+
+
+
+
 
 
 # importing some essential modules
@@ -60,9 +70,9 @@ import sys
 osUsing = platform.system()
 
 if(osUsing == "Linux"):
-    isOnLinux = True
+    GlobalData.isOnLinux = True
 elif(osUsing == "Windows"):
-    isOnWindows = True
+    GlobalData.isOnWindows = True
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
@@ -78,7 +88,7 @@ else:
 
 # clear screen function 
 def customClearScreen():
-    if(isOnWindows == True):
+    if(GlobalData.isOnWindows == True):
         os.system("cls")
     else:
         sp.call('clear',shell=True)
@@ -94,16 +104,14 @@ def customClearScreen():
 class LoadingAnimation(Thread):
 
     def run(self):
-        global runLoadingAnimation 
-        global loadingAnimationCount
         
         customClearScreen()
         string = ""
-        while(runLoadingAnimation and loadingAnimationCount):
+        while(GlobalData.runLoadingAnimation and GlobalData.loadingAnimationCount):
             string = string + "."
             time.sleep(0.5)
             print("\rloading , please wait " , string , sep = "" , end = "")
-            loadingAnimationCount -= 1
+            GlobalData.loadingAnimationCount -= 1
 
 # loading animation thread started 
 lAnimation = LoadingAnimation()
@@ -111,8 +119,8 @@ lAnimation.start()
 
 # this function sets the global runLoadingAnimation variable to False so that the while loop in thread stops and it indicates the jarvis is fully loaded now
 def changeRunLoadingAnimation():
-    global runLoadingAnimation 
-    runLoadingAnimation = False
+
+    GlobalData.runLoadingAnimation = False
 
 
 
@@ -153,15 +161,15 @@ from packages.fileShare import FS
 
 # checking if the jarvis is runned directly from the cmd arguments
 if(len(sys.argv) > 1):
-    directRunFromCmd = True
+    GlobalData.directRunFromCmd = True
 
 
 # generating jarvis folder were the data will be stored
 try:
-    if(isOnWindows):
-        os.makedirs(folderPathWindows , exist_ok=True)
+    if(GlobalData.isOnWindows):
+        os.makedirs(GlobalData.folderPathWindows , exist_ok=True)
     else:
-        os.makedirs(folderPathLinux , exist_ok=True)
+        os.makedirs(GlobalData.folderPathLinux , exist_ok=True)
 
 except Exception:
     customClearScreen()
@@ -342,9 +350,8 @@ def handleGetHelp(command):
 def troubleShootFunc():
 
     # setting troubleshoot value to true for logger module
-    global troubleShootValue
-    troubleShootValue = True
-    cLog.setTroubleShoot(troubleShootValue)
+    GlobalData.troubleShootValue = True
+    cLog.setTroubleShoot(GlobalData.troubleShootValue)
 
     # starting customised main()
     objMainClass = MainClass()
@@ -355,9 +362,9 @@ def troubleShootFunc():
     tempUserName = getUserName.getuser()
     pathToDesktop = ""
     # setting up paths to copy log file to desktop at the end
-    if(isOnWindows):
+    if(GlobalData.isOnWindows):
         pathToDesktop = "C:/Users/" + str(tempUserName) + "/Desktop"
-    elif(isOnLinux):
+    elif(GlobalData.isOnLinux):
         pathToDesktop =  os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop') 
 
     pathToLog = str(cLog.logFileName)
@@ -409,8 +416,8 @@ def troubleShootFunc():
         print("\n\n")
         input("press enter to continue...")
     
-    troubleShootValue = False
-    cLog.setTroubleShoot(troubleShootValue)
+    GlobalData.troubleShootValue = False
+    cLog.setTroubleShoot(GlobalData.troubleShootValue)
     return True
 
 
@@ -502,7 +509,7 @@ methods include - getDict()           ->  To generate dictionary - not for outsi
 
     # function to get the Dictionary from the settings module
     def getDict(self):
-        objSetting = Setting(troubleShootValue ,toMakeTypingSound)
+        objSetting = Setting(GlobalData.troubleShootValue ,GlobalData.toMakeTypingSound)
         self.settingsDict = objSetting.getDictionary()
         if(self.settingsDict == False):
             cLog.log("Their was some error in the settings module so we cannot retreive the dictionary", "e")
@@ -625,7 +632,7 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
                 main()
 
         # making a object of weather data class
-        objGetWeatherData = WeatherData(troubleShootValue , toMakeTypingSound)
+        objGetWeatherData = WeatherData(GlobalData.troubleShootValue , GlobalData.toMakeTypingSound)
 
         # getting the result
         result = objGetWeatherData.getWeatherData(self.cityName, self.weatherArgumentList)
@@ -706,8 +713,6 @@ default things in command list ["tempInC", "pressure", "humidity" , "temp_min" ,
 
 # function to execute the passed command by analysing it
 def executeCommands(command):
-    global threadOpenedList
-    global fileShareThread
 
     # statement to run commands passed for cmd in windows
     if(command[:3] == ("cmd" or "CMD" or "Cmd")):
@@ -910,7 +915,7 @@ def executeCommands(command):
     elif(isSubStringsNoCase(command , "restore")):
 
         if(isSubStringsNoCase(command , "setting")):
-            objSetting = Setting(troubleShootValue , toMakeTypingSound)
+            objSetting = Setting(GlobalData.troubleShootValue , GlobalData.toMakeTypingSound)
             objSetting.regenerateFile()
             customClearScreen()
 
@@ -946,7 +951,7 @@ def executeCommands(command):
             #running restore
             print("running restore , please wait...")
             try:
-                shutil.copytree(pathToBackupForJarvis + "/" + "JarvisBackup" , folderPathWindows_simpleSlash , dirs_exist_ok=True)
+                shutil.copytree(pathToBackupForJarvis + "/" + "JarvisBackup" , GlobalData.folderPathWindows_simpleSlash , dirs_exist_ok=True)
             except Exception as e:
                 print("Cannot restore jarvis properly")
                 if(cLog.troubleShoot == False):
@@ -962,7 +967,7 @@ def executeCommands(command):
 
     # for changing teh setting - this function opens the settings.txt in the defualt txt viewer of the system
     elif(isSubStringsNoCase(command , "open setting")):
-        objSetting = Setting(troubleShootValue , toMakeTypingSound)
+        objSetting = Setting(GlobalData.troubleShootValue , GlobalData.toMakeTypingSound)
         objSetting.openFile()
         customClearScreen()
 
@@ -1009,7 +1014,7 @@ def executeCommands(command):
             print("backing up jarvis , please wait...")
             # running backup
             try:
-                shutil.copytree(folderPathWindows_simpleSlash , pathToBackupForJarvis + "/" + "JarvisBackup" ,  dirs_exist_ok=True)
+                shutil.copytree(GlobalData.folderPathWindows_simpleSlash , pathToBackupForJarvis + "/" + "JarvisBackup" ,  dirs_exist_ok=True)
             except Exception as e:
                 print("Cannot backup jarvis properly")
                 if(cLog.troubleShoot == False):
@@ -1051,10 +1056,10 @@ def executeCommands(command):
                 restart_program()
 
         # creating object of class backUp
-        objBackUp = BackUp(troubleShootValue , toMakeTypingSound)
+        objBackUp = BackUp(GlobalData.troubleShootValue , GlobalData.toMakeTypingSound)
 
         # creating object of class setting
-        objSetting = Setting(troubleShootValue , toMakeTypingSound)
+        objSetting = Setting(GlobalData.troubleShootValue , GlobalData.toMakeTypingSound)
 
         # creating some required assets
         directoriesListEditted = []
@@ -1185,7 +1190,7 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            if(isOnWindows):
+            if(GlobalData.isOnWindows):
                 os.startfile(r"external_exe\harshNative_github\anyRandom.exe")
                 print("The file is opened in other window :)")
             else:
@@ -1208,7 +1213,7 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            if(isOnWindows):
+            if(GlobalData.isOnWindows):
                 os.startfile(r"external_exe\harshNative_github\NSC.exe")
                 print("The file is opened in other window :)")
             else:
@@ -1231,7 +1236,7 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            if(isOnWindows):
+            if(GlobalData.isOnWindows):
                 os.startfile(r"external_exe\harshNative_github\average_finder.exe")
                 print("The file is opened in other window :)")
             else:
@@ -1253,7 +1258,7 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            if(isOnWindows):
+            if(GlobalData.isOnWindows):
                 os.startfile(r"external_exe\harshNative_github\coin_toss.exe")
                 print("The file is opened in other window :)")
             else:
@@ -1276,7 +1281,7 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            if(isOnWindows):
+            if(GlobalData.isOnWindows):
                 os.startfile(r"external_exe\harshNative_github\group_Generator.exe")
                 print("The file is opened in other window :)")
             else:
@@ -1299,7 +1304,7 @@ def executeCommands(command):
         customClearScreen()
 
         try:
-            if(isOnWindows):
+            if(GlobalData.isOnWindows):
                 os.startfile(r"external_exe\harshNative_github\interest_Calculator.exe")
                 print("The file is opened in other window :)")
             else:
@@ -1320,14 +1325,14 @@ def executeCommands(command):
     # function to start the jarvis in updated code base - only for developer
     elif(isSubStringsNoCase(command , "start new ins")):
         customClearScreen()
-        if(troubleShootValue == False):
+        if(GlobalData.troubleShootValue == False):
             return False
         else:
-            if(isOnWindows):
+            if(GlobalData.isOnWindows):
                 os.system("python main/main.py")
                 sys.exit()
 
-            elif(isOnLinux):
+            elif(GlobalData.isOnLinux):
                 os.system("python3 main/main.py")
                 sys.exit()
                 
@@ -1336,7 +1341,7 @@ def executeCommands(command):
 
     # calling for password manager old
     elif(isSubStringsNoCase(command , "password")):
-        objPasswordStorerClass = PasswordStorerClass(troubleShootValue , toMakeTypingSound)
+        objPasswordStorerClass = PasswordStorerClass(GlobalData.troubleShootValue , GlobalData.toMakeTypingSound)
         objPasswordStorerClass.driverFunc()
         return True
 
@@ -1359,15 +1364,14 @@ def executeCommands(command):
 
     elif(isSubStringsNoCase(command , "set port file")):
         commandList = command.split()
-        global portNumberForFileShare
 
         for i in commandList:
             try:
-                portNumberForFileShare = int(i)
+                GlobalData.portNumberForFileShare = int(i)
             except Exception:
                 pass
 
-        if(999 < portNumberForFileShare < 10000):
+        if(999 < GlobalData.portNumberForFileShare < 10000):
             pass
         else:
             customClearScreen()
@@ -1375,7 +1379,7 @@ def executeCommands(command):
             return True
         
         customClearScreen()
-        print("port number setted successfully as {}".format(portNumberForFileShare))
+        print("port number setted successfully as {}".format(GlobalData.portNumberForFileShare))
         
         return True
 
@@ -1384,15 +1388,15 @@ def executeCommands(command):
     elif(isSubStringsNoCase(command , "stop file")):
         customClearScreen()
         try:
-            if(fileShareThread == None):
+            if(GlobalData.fileShareThread == None):
                 print("File sharing is not currently active")
                 return True
             
-            fileShareThread.terminate()
+            GlobalData.fileShareThread.terminate()
 
-            fileShareThread = None
+            GlobalData.fileShareThread = None
 
-            threadOpenedList.remove("File sharing is currently active")
+            GlobalData.threadOpenedList.remove("File sharing is currently active")
 
             print("file sharing stopped successfully")
             return True
@@ -1440,11 +1444,11 @@ def executeCommands(command):
         
         try:
             customClearScreen()
-            fileShareThread = multiprocessing.Process(target=handleFileShare, args=(folderShare , portNumberForFileShare))
-            fileShareThread.start()
+            GlobalData.fileShareThread = multiprocessing.Process(target=handleFileShare, args=(folderShare , GlobalData.portNumberForFileShare))
+            GlobalData.fileShareThread.start()
             
-            toAppend = "File sharing is currently active at " + handleFileShare(folderShare , portNumberForFileShare , True) + ":" + str(portNumberForFileShare)
-            threadOpenedList.append(toAppend)
+            toAppend = "File sharing is currently active at " + handleFileShare(folderShare , GlobalData.portNumberForFileShare , True) + ":" + str(GlobalData.portNumberForFileShare)
+            GlobalData.threadOpenedList.append(toAppend)
 
         except Exception as e:
             print("could not start file share , make sure you are connected to the internet .\nif the error persist run the troubleshoot command ")
@@ -1482,7 +1486,7 @@ def executeCommands(command):
     # handling font size command
     elif(isSubStringsNoCase(command , "font size")):
         customClearScreen()
-        if(isOnLinux):
+        if(GlobalData.isOnLinux):
             print("Only for windows users :(")
             return True
             
@@ -1499,7 +1503,7 @@ def executeCommands(command):
     # handling font colour command
     elif(isSubStringsNoCase(command , "font col")):
         customClearScreen()
-        if(isOnLinux):
+        if(GlobalData.isOnLinux):
             print("Only for windows users :(")
             return True
 
@@ -1560,7 +1564,7 @@ def executeCommands(command):
                 pass
 
         # creating object of class in module speed test utility 
-        objSpeedTestClass = SpeedTestClass(troubleShootValue)
+        objSpeedTestClass = SpeedTestClass(GlobalData.troubleShootValue)
 
         # calling method of class for execution
         objSpeedTestClass.runSpeedTestUtility(inBytes , numberOfTime)
@@ -1581,16 +1585,16 @@ def executeCommands(command):
     # calling for exit command
     elif(isSubStringsNoCase(command , "exit") or isSubStringsNoCase(command , "bye")):
 
-        if(not(directRunFromCmd)):
+        if(not(GlobalData.directRunFromCmd)):
             customClearScreen()
             print("existing the program , please wait ...")
 
         # terminating the file share threading
         try:
-            if(fileShareThread == None):
+            if(GlobalData.fileShareThread == None):
                 pass
             else:
-                fileShareThread.terminate()
+                GlobalData.fileShareThread.terminate()
 
         except Exception as e:
             print("could not exit the program , please stop the file sharing first using stop file share command")
@@ -1598,7 +1602,7 @@ def executeCommands(command):
             cLog.exception(str(e), "In  exit function main.py")
             return True
         
-        if(not(directRunFromCmd)):
+        if(not(GlobalData.directRunFromCmd)):
             customClearScreen()
 
         sys.exit()
@@ -1619,17 +1623,15 @@ def main():
         raise NotImplementedError("Set the open weather api")
 
     # setting trouble shoot value
-    cLog.setTroubleShoot(troubleShootValue)
+    cLog.setTroubleShoot(GlobalData.troubleShootValue)
 
     objMainClass = MainClass()
-
-    global toMakeTypingSound
 
     dictFromMainClass = objMainClass.returnDict()
 
     try:
         if(dictFromMainClass["makeKeyBoardSound"] == "true"):
-            toMakeTypingSound = True
+            GlobalData.toMakeTypingSound = True
     except Exception as e:
         cLog.log("error on getting value of makeKeyBoardSound from dictionary in main function in main.py", "e")
         cLog.exception(str(e), "In getting value of makeKeyBoardSound from dictionary in main function main.py")
@@ -1637,7 +1639,7 @@ def main():
     while(1):
 
 
-        if(directRunFromCmd):
+        if(GlobalData.directRunFromCmd):
             commandListFromCmd = sys.argv
 
             # deleting first argument
@@ -1667,8 +1669,8 @@ def main():
             customClearScreen()
 
             # printing details for currently running threads in background
-            if(len(threadOpenedList) > 0):
-                for i in threadOpenedList:
+            if(len(GlobalData.threadOpenedList) > 0):
+                for i in GlobalData.threadOpenedList:
                     print(i)
 
                 print("\n") 
@@ -1710,12 +1712,12 @@ if __name__ == "__main__":
     dictFromMainClass = objMainClass.returnDict()
 
     # sound will not play if the jarvis is runned by cmd arguments
-    if(not(directRunFromCmd)):
+    if(not(GlobalData.directRunFromCmd)):
         if(dictFromMainClass["makeStartSound"] == "true"):
             startingSoundObj.start()
 
     # checking if in developer mode
-    if(troubleShootValue):
+    if(GlobalData.troubleShootValue):
         print("\nIn dev mode\n")
         time.sleep(0.5)
 
