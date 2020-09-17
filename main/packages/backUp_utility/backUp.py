@@ -11,7 +11,7 @@ import stat
 import subprocess as sp
 
 
-class GlobalData:
+class GlobalData_backUp:
     isOnWindows = False
     isOnLinux = False
     pathForLinux1 = "/home/" + str(getUserName.getuser())
@@ -25,9 +25,9 @@ import time
 osUsing = platform.system()
 
 if(osUsing == "Linux"):
-    GlobalData.isOnLinux = True
+    GlobalData_backUp.isOnLinux = True
 elif(osUsing == "Windows"):
-    GlobalData.isOnWindows = True
+    GlobalData_backUp.isOnWindows = True
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
@@ -37,7 +37,7 @@ else:
 
 # clear screen function 
 def customClearScreen():
-    if(GlobalData.isOnWindows == True):
+    if(GlobalData_backUp.isOnWindows == True):
         os.system("cls")
     else:
         sp.call('clear',shell=True)
@@ -185,14 +185,14 @@ class BackUp():
         self.exceptionList.clear()
 
         print("\nbackuping up home folder\n")
-        path = GlobalData.pathForLinux1
+        path = GlobalData_backUp.pathForLinux1
         try:
             self.implementCustomCopy(path , self.pathToBackup)
         except Exception as e:
             self.exceptionList.append(str(e))
 
         print("\nbackuping up root folder\n")
-        path = GlobalData.pathForLinux2
+        path = GlobalData_backUp.pathForLinux2
         try:
             self.implementCustomCopy(path , self.pathToBackup)
         except Exception as e:
@@ -393,7 +393,7 @@ class BackUp():
         self.setPathToBackup(pathToBackup)
         self.getListOfDirectories(additionalDirectoryList)
 
-        if(GlobalData.isOnWindows):
+        if(GlobalData_backUp.isOnWindows):
             if(("-a" in commandList) and ("-c" in commandList) and ("-e" in commandList)):
                 self.forCommand_A_C_E()
             elif(("-a" in commandList) and ("-c" in commandList) and ("-e" not in commandList)):
@@ -402,7 +402,7 @@ class BackUp():
                 self.forCommand_A_E()
             elif(("-a" in commandList) and ("-c" not in commandList) and ("-e" not in commandList)):
                 self.forCommand_A()
-        elif(GlobalData.isOnLinux):
+        elif(GlobalData_backUp.isOnLinux):
             self.forLinux()
         
         if("-d" in commandList):

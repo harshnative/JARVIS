@@ -5,7 +5,7 @@ import shutil
 
 import subprocess as sp
 
-class GlobalData:
+class GlobalData_jarvisSetting:
 
     folderPathWindows = r"C:\programData\Jarvis"
     folderPathLinux = r"~/.config/Jarvis"
@@ -21,9 +21,9 @@ import time
 osUsing = platform.system()
 
 if(osUsing == "Linux"):
-    GlobalData.isOnLinux = True
+    GlobalData_jarvisSetting.isOnLinux = True
 elif(osUsing == "Windows"):
-    GlobalData.isOnWindows = True
+    GlobalData_jarvisSetting.isOnWindows = True
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
@@ -32,7 +32,7 @@ else:
 
 # clear screen function 
 def customClearScreen():
-    if(GlobalData.isOnWindows == True):
+    if(GlobalData_jarvisSetting.isOnWindows == True):
         os.system("cls")
     else:
         sp.call('clear',shell=True)
@@ -71,10 +71,10 @@ methods -
         self.troubleShootValue = troubleShootValuePass
         self.cLog = Clogger()
         self.cLog.setTroubleShoot(self.troubleShootValue)
-        if(GlobalData.isOnWindows):
-            self.pathToSetting = GlobalData.folderPathWindows_simpleSlash + r"\settings.txt"
+        if(GlobalData_jarvisSetting.isOnWindows):
+            self.pathToSetting = GlobalData_jarvisSetting.folderPathWindows_simpleSlash + r"\settings.txt"
         else:
-            self.pathToSetting = GlobalData.folderPathLinux + r"/settings.txt"
+            self.pathToSetting = GlobalData_jarvisSetting.folderPathLinux + r"/settings.txt"
 
 
     # method for making dictionary by reading the txt file

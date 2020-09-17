@@ -9,7 +9,7 @@ import pyperclip
 
 import subprocess as sp
 
-class GlobalData:
+class GlobalData_mainForPasswordStorer:
 
     folderPathWindows = r"C:\programData\Jarvis"
     folderPathLinux = r"~/.config/Jarvis"
@@ -25,9 +25,9 @@ import time
 osUsing = platform.system()
 
 if(osUsing == "Linux"):
-    GlobalData.isOnLinux = True
+    GlobalData_mainForPasswordStorer.isOnLinux = True
 elif(osUsing == "Windows"):
-    GlobalData.isOnWindows = True
+    GlobalData_mainForPasswordStorer.isOnWindows = True
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
@@ -36,7 +36,7 @@ else:
 
 # clear screen function 
 def customClearScreen():
-    if(GlobalData.isOnWindows == True):
+    if(GlobalData_mainForPasswordStorer.isOnWindows == True):
         os.system("cls")
     else:
         sp.call('clear',shell=True)
@@ -80,10 +80,10 @@ driverFunc()        ->  this is the only method that you need to use this method
         self.password = None
         self.oldPassword = None
         self.onlyAuthenticate = None
-        if(GlobalData.isOnWindows):
-            self.toDataBasePath = GlobalData.folderPathWindows_simpleSlash
-        elif(GlobalData.isOnLinux):
-            self.toDataBasePath = GlobalData.folderPathLinux
+        if(GlobalData_mainForPasswordStorer.isOnWindows):
+            self.toDataBasePath = GlobalData_mainForPasswordStorer.folderPathWindows_simpleSlash
+        elif(GlobalData_mainForPasswordStorer.isOnLinux):
+            self.toDataBasePath = GlobalData_mainForPasswordStorer.folderPathLinux
 
 
         

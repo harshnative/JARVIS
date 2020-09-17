@@ -1,6 +1,6 @@
 import logging
 
-class GlobalData:
+class GlobalData_loggerFile:
 
     folderPathWindows = r"C:\programData\Jarvis"
     folderPathLinux = r"~/.config/Jarvis"
@@ -18,9 +18,9 @@ import time
 osUsing = platform.system()
 
 if(osUsing == "Linux"):
-    GlobalData.isOnLinux = True
+    GlobalData_loggerFile.isOnLinux = True
 elif(osUsing == "Windows"):
-    GlobalData.isOnWindows = True
+    GlobalData_loggerFile.isOnWindows = True
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
@@ -61,12 +61,12 @@ methods included - setTroubleShoot()    ->    used to set the the log level -
     def __init__(self):
         self.troubleShoot = False
         try:
-            if(GlobalData.isOnWindows):
+            if(GlobalData_loggerFile.isOnWindows):
                 self.logFileName = r"C:\programData\Jarvis\jarvisLogs.log"
-            elif(GlobalData.isOnLinux):
-                self.logFileName = GlobalData.folderPathLinux + "/jarvisLogs.log"
+            elif(GlobalData_loggerFile.isOnLinux):
+                self.logFileName = GlobalData_loggerFile.folderPathLinux + "/jarvisLogs.log"
         except Exception as e:
-            print("\nfailed to generate log file in windows = {} , linux = {} , exception = {}\n".format(GlobalData.isOnWindows , GlobalData.isOnLinux , e))
+            print("\nfailed to generate log file in windows = {} , linux = {} , exception = {}\n".format(GlobalData_loggerFile.isOnWindows , GlobalData_loggerFile.isOnLinux , e))
 
         self.getLogFileMessage = "Email us this file at myjarvispa@gmail.com and we will fix the error as soon as possible"
         self.setLoggerConfig()

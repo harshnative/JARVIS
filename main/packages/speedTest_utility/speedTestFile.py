@@ -5,7 +5,7 @@ from packages.loggerPackage.loggerFile import *
 
 import subprocess as sp
 
-class GlobalData:
+class GlobalData_speedTestFile:
     isOnWindows = False
     isOnLinux = False
 
@@ -16,9 +16,9 @@ import time
 osUsing = platform.system()
 
 if(osUsing == "Linux"):
-    GlobalData.isOnLinux = True
+    GlobalData_speedTestFile.isOnLinux = True
 elif(osUsing == "Windows"):
-    GlobalData.isOnWindows = True
+    GlobalData_speedTestFile.isOnWindows = True
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
@@ -27,7 +27,7 @@ else:
 
 # clear screen function 
 def customClearScreen():
-    if(GlobalData.isOnWindows == True):
+    if(GlobalData_speedTestFile.isOnWindows == True):
         os.system("cls")
     else:
         sp.call('clear',shell=True)
