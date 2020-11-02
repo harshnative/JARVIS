@@ -16,6 +16,7 @@ class GlobalData_jarvisSetting:
 
 import platform
 import time
+import sys
 
 # Checking weather the user is on windows or not
 osUsing = platform.system()
@@ -27,7 +28,7 @@ elif(osUsing == "Windows"):
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
-    exit()
+    sys.exit()
 
 
 # clear screen function 
@@ -38,8 +39,7 @@ def customClearScreen():
         sp.call('clear',shell=True)
 
 
-# start file function for diff operating systems
-import sys
+
 
 def open_file(filename):
     try:

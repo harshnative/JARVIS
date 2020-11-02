@@ -150,7 +150,8 @@ from imports.harshNative_github.googleDrive.googleDriveLinkPy import *
 from imports.harshNative_github.txtCompare.txtComparePy import *
 from imports.harshNative_github.hangMan_game.hangmanGame import *
 from packages.loggerPackage.loggerFile import *
-from packages.PasswordStorer.mainForPasswordStorer import *
+from packages.PasswordStorer.newMainForPassword import *
+from packages.PasswordStorer.mainForPasswordStorer import PasswordStorerClass as PasswordStorerClassOld
 from packages.settings.jarvisSetting import *
 from packages.weather.getWeather import *
 from packages.backUp_utility.backUp import *
@@ -1337,13 +1338,21 @@ def executeCommands(command):
                 sys.exit()
                 
             return False
+
+    # calling for password manager old
+    elif(isSubStringsNoCase(command , "old password")):
+        objPasswordStorerClass = PasswordStorerClassOld(GlobalData_main.troubleShootValue)
+        objPasswordStorerClass.driverFunc()
+        return True
  
 
     # calling for password manager old
     elif(isSubStringsNoCase(command , "password")):
-        objPasswordStorerClass = PasswordStorerClass(GlobalData_main.troubleShootValue , GlobalData_main.toMakeTypingSound)
+        objPasswordStorerClass = PasswordStorerClass()
         objPasswordStorerClass.driverFunc()
         return True
+
+    
 
 
     # handling cmd commands

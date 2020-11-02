@@ -11,6 +11,7 @@ class GlobalData_speedTestFile:
 
 import platform
 import time
+import sys
 
 # Checking weather the user is on windows or not
 osUsing = platform.system()
@@ -22,7 +23,7 @@ elif(osUsing == "Windows"):
 else:
     print("Jarvis currently does not support this operating system :(")
     time.sleep(3)
-    exit()
+    sys.exit()
 
 
 # clear screen function 

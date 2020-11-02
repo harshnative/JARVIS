@@ -69,8 +69,7 @@ driverFunc()        ->  this is the only method that you need to use this method
     """
 
     # constructor
-    def __init__(self , troubleShootValuePass , makeKeyboardSound):
-        self.makeKeyboardSound = makeKeyboardSound
+    def __init__(self , troubleShootValuePass):
         self.troubleShootValue = troubleShootValuePass
         self.cLog = Clogger()
         self.cLog.setTroubleShoot(self.troubleShootValue)
