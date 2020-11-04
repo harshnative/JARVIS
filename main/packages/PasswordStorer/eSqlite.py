@@ -363,7 +363,8 @@ class SQLiteConnect:
                     count += 1
                 found = True
         
-            table.append(tempTable)
+            if(len(tempTable) > 0):
+                table.append(tempTable) 
 
         if(found):
             print(tabulate(table, headers=colList))
@@ -503,8 +504,10 @@ class SQLiteConnect:
                     else:    
                         tempTable.append(row[count])
                     count += 1
-        
-            table.append(tempTable)
+
+            
+            if(len(tempTable) > 0):
+                table.append(tempTable) 
 
         if(len(table) > 0):
             return table
@@ -643,7 +646,7 @@ class SQLiteConnect:
             self.connObj.commit()
 
         if(updateId):
-            self.updateIDs(tempTableName)
+            self.updateIDs(tempTableName , commit=commit)
 
     
     # updated id's function
@@ -678,6 +681,9 @@ class SQLiteConnect:
                 self.updateRow("ID" , count , row[0] , tempTableName , commit)
             
             count = count + 1
+
+        if(commit):
+            self.connObj.commit()
 
 
     # function to upadte the entire row corresponding to a key

@@ -246,11 +246,17 @@ class PasswordStorerClass:
             temp = input("\nabove website is going to be deleted , enter 1 to continue or anything else to skip : ")
 
             if(temp == "1"):
-                self.dbObj.deleteRow(key , True)
+                self.dbObj.deleteRow(key , updateId=True)
 
-            print("\ndeleted successfully")
+                print("\ndeleted successfully")
 
-            input("\npress enter to continue")
+                input("\npress enter to continue")
+
+            else:
+
+                print("\noperation cancelled")
+
+                input("\npress enter to continue")
 
 
         elif(command == "-s"):

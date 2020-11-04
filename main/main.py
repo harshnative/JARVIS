@@ -1630,7 +1630,7 @@ def main():
     # checking the api key's
     if(WeatherData.returnApiKeyStatus() == False):
         raise NotImplementedError("Set the open weather api")
-
+    
     # setting trouble shoot value
     cLog.setTroubleShoot(GlobalData_main.troubleShootValue)
 
