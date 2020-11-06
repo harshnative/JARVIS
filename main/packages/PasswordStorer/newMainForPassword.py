@@ -57,7 +57,7 @@ class PasswordStorerClass:
     def __init__(self):
 
         # data base name
-        self.dataBaseName = "jarvisPassDB"
+        self.dataBaseName = "jarvisPassDB.db"
 
         # setting the actaul path with name
         if(GlobalData_mainForPasswordStorer.isOnWindows):
