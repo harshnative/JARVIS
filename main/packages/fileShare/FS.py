@@ -4,6 +4,12 @@ import socketserver
 import os
 import socket
 from os import path
+import multiprocessing
+
+
+class quietServer(http.server.SimpleHTTPRequestHandler):
+    def log_message(self, format, *args):
+        pass
 
 
 # main module class 
@@ -14,6 +20,8 @@ class FileShareClass:
         self.ipAddress = None
         self.port = 8000
         self.folderToShare = None
+        self.logToConsole = False
+        self.mulProcess = multiprocessing.Process(target=self.startServerAtFolderSetted)
 
     # method to set the custom port number
     # raises exception if not a four digit integer
@@ -58,31 +66,46 @@ class FileShareClass:
 
         web_dir = os.path.join(self.folderToShare)
         os.chdir(web_dir)
+        
+        if(not(self.logToConsole)):
+            with socketserver.TCPServer(("", self.port), quietServer) as httpd:
+                httpd.serve_forever()
 
-        Handler = http.server.SimpleHTTPRequestHandler
-        httpd = socketserver.TCPServer(("", self.port), Handler)
+        else:
+            Handler = http.server.SimpleHTTPRequestHandler
+            httpd = socketserver.TCPServer(("", self.port), Handler)
 
-        try:
             httpd.serve_forever()
-        except KeyboardInterrupt:
-            return 
+
+
     
     # function ot operate the class methods
-    def start_fileShare(self , folderToShare , port = 8000):
+    def start_fileShare(self , folderToShare , port = 8000 , logToConsole = False):
         self.setSharePath(folderToShare)
         self.setPort(port)
         self.ipAddress = self.get_ip_address()
+        self.logToConsole = logToConsole
 
-        print("file share started ...")
-        print("\nVisit http://{}:{} to browse or download the files".format(self.ipAddress , self.port))
-        print("\nFiles only available to devices present in the same network connection")
-        print("\nEnter stop file share command to stop file sharing\n\n")
-        print("press enter to continue...")
+        toReturn = []
 
+        toReturn.append("Visit http://{}:{} to browse or download the files".format(self.ipAddress , self.port))
+        toReturn.append("Files only available to devices present in the same network connection")
 
+        self.mulProcess.start()
+
+        return toReturn
+
+    # method to stop file share
+    def stopFileShare(self):
+        self.mulProcess.terminate()
+        
 
 # for testing purpose
 if __name__ == "__main__":
     pass
-    # fil = FileShareClass()
-    # fil.start_fileShare("C:/users/harsh/desktop")
+    fil = FileShareClass()
+    print(fil.start_fileShare("C:/users/harsh/desktop"))
+
+    import time
+    time.sleep(60)
+    fil.stopFileShare()

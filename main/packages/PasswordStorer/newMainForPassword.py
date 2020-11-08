@@ -288,7 +288,7 @@ class PasswordStorerClass:
                 customClearScreen()
                 oldPass = hashPasswordInput("Enter old password : ")
                 try:
-                    oldPin = int(hashPasswordInput("Enter old password : "))
+                    oldPin = int(hashPasswordInput("Enter old pin : "))
                 except Exception:
                     print("\nenter valid pin , press enter to continue")
                     input()

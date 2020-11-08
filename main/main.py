@@ -1,9 +1,3 @@
-# showing loading jarvis message just before everything loads up as some times while opening the program for first time, antivirus may scan all the included dlls when importing them into code and it takes time
-print("\nStarting Program...")
-
-
-
-
 # declaring global variables -
 class GlobalData_main:
     # global variable for making sound while typing
@@ -26,13 +20,13 @@ class GlobalData_main:
     # list of currenlty opened thread
     threadOpenedList = []  
 
+    # file share obj
+    fileShareObj = None
+
     # default paths for program data 
     folderPathWindows = r"C:\programData\Jarvis"
     folderPathLinux = r"~/.config/Jarvis"
     folderPathWindows_simpleSlash = r"C:/programData/Jarvis"
-
-    # mutpliprocess thread will be stored in this
-    fileShareThread = None
 
     # global variable for knowing if the jarvis is runned by cmd arguments
     directRunFromCmd = False
@@ -104,18 +98,22 @@ def customClearScreen():
 class LoadingAnimation(Thread):
 
     def run(self):
-        
+
         customClearScreen()
         string = ""
+
         while(GlobalData_main.runLoadingAnimation and GlobalData_main.loadingAnimationCount):
             string = string + "."
             time.sleep(0.5)
             print("\rloading , please wait " , string , sep = "" , end = "")
             GlobalData_main.loadingAnimationCount -= 1
 
-# loading animation thread started 
-lAnimation = LoadingAnimation()
-lAnimation.start()
+        print()
+
+if __name__ == "__main__":
+    # loading animation thread started 
+    lAnimation = LoadingAnimation()
+    lAnimation.start()
 
 # this function sets the global runLoadingAnimation variable to False so that the while loop in thread stops and it indicates the jarvis is fully loaded now
 def changeRunLoadingAnimation():
@@ -1371,50 +1369,30 @@ def executeCommands(command):
         time.sleep(1)
         sys.exit()
 
-    elif(isSubStringsNoCase(command , "set port file")):
-        commandList = command.split()
-
-        for i in commandList:
-            try:
-                GlobalData_main.portNumberForFileShare = int(i)
-            except Exception:
-                pass
-
-        if(999 < GlobalData_main.portNumberForFileShare < 10000):
-            pass
-        else:
-            customClearScreen()
-            print("port number must be 4 digit integer , default port number is 5000")
-            return True
-        
-        customClearScreen()
-        print("port number setted successfully as {}".format(GlobalData_main.portNumberForFileShare))
-        
-        return True
-
 
     # process for stoping file share
     elif(isSubStringsNoCase(command , "stop file")):
         customClearScreen()
-        try:
-            if(GlobalData_main.fileShareThread == None):
-                print("File sharing is not currently active")
-                return True
-            
-            GlobalData_main.fileShareThread.terminate()
-
-            GlobalData_main.fileShareThread = None
-
-            GlobalData_main.threadOpenedList.remove("File sharing is currently active")
-
-            print("file sharing stopped successfully")
+        # try:
+        if(GlobalData_main.fileShareObj == None):
+            print("File sharing is not currently active")
             return True
+        
+        GlobalData_main.fileShareObj.stopFileShare()
 
-        except Exception as e:
-            print("could not stop file share , if the error persist , run the troubleshoot command")
-            cLog.log("error on stop file share execute command in main.py", "e")
-            cLog.exception(str(e), "In stop file share function main.py")
-            return True
+        for i in GlobalData_main.threadOpenedList:
+            if(isSubStringsNoCase(i , "file sharing")):
+                GlobalData_main.threadOpenedList.remove(i)
+                break
+
+        print("file sharing stopped successfully")
+        return True
+
+        # except Exception as e:
+        #     print("could not stop file share , if the error persist , run the troubleshoot command")
+        #     cLog.log("error on stop file share execute command in main.py", "e")
+        #     cLog.exception(str(e), "In stop file share function main.py")
+        #     return True
 
 
     # process for starting file share
@@ -1453,11 +1431,20 @@ def executeCommands(command):
         
         try:
             customClearScreen()
-            GlobalData_main.fileShareThread = multiprocessing.Process(target=handleFileShare, args=(folderShare , GlobalData_main.portNumberForFileShare))
-            GlobalData_main.fileShareThread.start()
+
+            GlobalData_main.fileShareObj = FS.FileShareClass()
+            # stoping the loading animation
+            changeRunLoadingAnimation()
+            lAnimation.join() 
+
+            returned = GlobalData_main.fileShareObj.start_fileShare(str(folderShare))
             
-            toAppend = "File sharing is currently active at " + handleFileShare(folderShare , GlobalData_main.portNumberForFileShare , True) + ":" + str(GlobalData_main.portNumberForFileShare)
+            toAppend = "File sharing is currently active at " + str(GlobalData_main.fileShareObj.get_ip_address()) + ":8000"
             GlobalData_main.threadOpenedList.append(toAppend)
+
+            for i in returned:
+                print(i , "\n")
+
 
         except Exception as e:
             print("could not start file share , make sure you are connected to the internet .\nif the error persist run the troubleshoot command ")
@@ -1600,10 +1587,10 @@ def executeCommands(command):
 
         # terminating the file share threading
         try:
-            if(GlobalData_main.fileShareThread == None):
+            if(GlobalData_main.fileShareObj == None):
                 pass
             else:
-                GlobalData_main.fileShareThread.terminate()
+                GlobalData_main.fileShareObj.stopFileShare()
 
         except Exception as e:
             print("could not exit the program , please stop the file sharing first using stop file share command")
