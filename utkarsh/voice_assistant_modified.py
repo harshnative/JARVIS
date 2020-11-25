@@ -1,6 +1,11 @@
 import pyttsx3
+# pip install pyttsx3==2.71
+
+# speechRecognition
 import speech_recognition as sr
 import datetime
+
+
 import pyaudio
 import wikipedia
 import webbrowser
@@ -51,6 +56,8 @@ def takeCommand():
         print("Say that again please...")
         return "None"
     return query
+
+
 if __name__ == "__main__":
     
     wishMe()
