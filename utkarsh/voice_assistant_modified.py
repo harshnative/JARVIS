@@ -5,7 +5,9 @@ import pyttsx3
 import speech_recognition as sr
 import datetime
 
-
+# install via whl download from here 
+# https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio
+# then pip install downloadedFileName
 import pyaudio
 import wikipedia
 import webbrowser
