@@ -1404,8 +1404,10 @@ def executeCommands(command):
         print("select the folder from the pop window to share")
         
         try:    
-            folderShare = get_folderPath_fromFileExplorer()
+            # folderShare = get_folderPath_fromFileExplorer()
             # folderShare = r"C:/Users/harsh/desktop"
+            folderShare = r"F:\Etc"
+            
         except Exception:
             print("could not start the file explorer , enter the path manually\n")
             

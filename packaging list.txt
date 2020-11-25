@@ -1,0 +1,13 @@
+weather api
+
+sample testing 
+
+pyinstaller with icon
+
+making new release folder
+
+inno packaging 
+
+send for testing
+
+uploading 
