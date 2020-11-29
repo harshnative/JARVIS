@@ -1405,8 +1405,8 @@ def executeCommands(command):
         
         try:    
             # folderShare = get_folderPath_fromFileExplorer()
-            # folderShare = r"C:/Users/harsh/desktop"
-            folderShare = r"F:\Etc"
+            folderShare = r"C:/Users/harsh/desktop"
+            # folderShare = r"F:\Etc"
             
         except Exception:
             print("could not start the file explorer , enter the path manually\n")
@@ -1431,27 +1431,37 @@ def executeCommands(command):
             input("press enter to continue...")
 
         
-        try:
-            customClearScreen()
+        # try:
+        customClearScreen()
 
-            GlobalData_main.fileShareObj = FS.FileShareClass()
-            # stoping the loading animation
-            changeRunLoadingAnimation()
-            lAnimation.join() 
+        GlobalData_main.fileShareObj = FS.FileShareClass()
+        # stoping the loading animation
+        changeRunLoadingAnimation()
+        lAnimation.join() 
 
-            returned = GlobalData_main.fileShareObj.start_fileShare(str(folderShare))
+        returned = []
+
+        if(isSubStringsNoCase(command , "2")):
+            returned = GlobalData_main.fileShareObj.start_fileShare(str(folderShare) , http = True)
+            toAppend = "File sharing is currently active at http://" + str(GlobalData_main.fileShareObj.get_ip_address()) + ":8000"
             
-            toAppend = "File sharing is currently active at " + str(GlobalData_main.fileShareObj.get_ip_address()) + ":8000"
+            GlobalData_main.threadOpenedList.append(toAppend)
+        else:
+            returned = GlobalData_main.fileShareObj.start_fileShare(str(folderShare) , http = False)
+            
+            toAppend = "File sharing is currently active at ftp://" + str(GlobalData_main.fileShareObj.get_ip_address()) + ":8000"
+            GlobalData_main.threadOpenedList.append(toAppend)
+            toAppend = "And at ftp://user:225588@" + str(GlobalData_main.fileShareObj.get_ip_address()) + ":8000"
             GlobalData_main.threadOpenedList.append(toAppend)
 
-            for i in returned:
-                print(i , "\n")
+        for i in returned:
+            print("\n" , i )
 
 
-        except Exception as e:
-            print("could not start file share , make sure you are connected to the internet .\nif the error persist run the troubleshoot command ")
-            cLog.log("error on handle file share function in main.py", "e")
-            cLog.exception(str(e), "In handleFileShare function main.py")
+        # except Exception as e:
+        #     print("could not start file share , make sure you are connected to the internet .\nif the error persist run the troubleshoot command ")
+        #     cLog.log("error on handle file share function in main.py", "e")
+        #     cLog.exception(str(e), "In handleFileShare function main.py")
 
         return True
 
