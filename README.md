@@ -10,7 +10,7 @@ https://letscodeofficial.com/jarvis
 
 click here to visit the website for latest updates and documentation / user guide - 
 
-https:/www.letscodeofficial.com/jarvis_docs_home
+https://letscodeofficial.com/jarvis_docs_home
 
 
 #### please note latest documentation and info is available on website only this readme is not updated anymore
