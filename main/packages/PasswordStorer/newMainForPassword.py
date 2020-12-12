@@ -164,6 +164,10 @@ class PasswordStorerClass:
             if(command.strip() == "exit"):
                 break
 
+            if(command.strip() == "exit all"):
+                sys.exit()
+            
+
             self.executeCommand(command)
 
 
@@ -359,7 +363,7 @@ class PasswordStorerClass:
 
         else:
             customClearScreen()
-            print("wrong command , try -a , -s , -sa , -c , -d , -u instead..")
+            print("wrong command , try -a , -s , -sa , -c , -d , -u , exit , exit all instead..")
             input("\n\npress enter to continue...")
 
 
